@@ -280,7 +280,7 @@ const userSeeding = function () {
   }, 2000);
 };
 
-// userSeeding();
+userSeeding();
 
 //Dish Posts
 const dishes = [
