@@ -10,11 +10,19 @@ module.exports = {
       fontSize: {
         14: "14px",
         xxl: "10rem",
+        xxs: "0.6rem",
+        nav: [
+          "1.9rem",
+          {
+            lineHeight: "1rem",
+            letterSpacing: "-0.01em",
+            fontWeight: "500",
+          },
+        ],
       },
       backgroundColor: {
-        "main-bg": "#FAE8E0",
-        "secondary-white-bg": "#FAFBFB",
-        "light-gray": "#F7F7F7",
+        "main-bg": "#FFFFFF",
+        "secondary-orange-bg": "#F0A375",
         "half-transparent": "rgba(0, 0, 0, 0.5)",
       },
       borderWidth: {
@@ -39,7 +47,9 @@ module.exports = {
         590: "590px",
       },
       colors: {
-        "dark-pink": "#EF7C8E",
+        orange: "#F0A375",
+        purple: "#9D7D9B",
+        green: "#90BC3F",
       },
     },
   },
