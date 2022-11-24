@@ -1,0 +1,10 @@
+export { default as Landing } from "./Landing";
+export { default as Login} from "./Landing"; 
+export { default as Registration } from "./Registration"; 
+export { default as UserProfile } from "./UserProfile"; 
+export { default as Dish } from "./Dish";
+export { default as Stall } from "./Stall"; 
+export { default as Order } from "./Order"; 
+export { default as Search } from "./Search"; 
+export { default as CreateDish } from "./CreateDish"; 
+export { default as CreateStall } from "./CreateStall";  
