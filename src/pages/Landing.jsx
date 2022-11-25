@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, NavBar, StallCarousel, SearchFunction } from "../components";
+import { Header, NavBar, StallCarousel, SearchFunction, DishCards } from "../components";
 
 const Landing = () => {
   return (
@@ -17,7 +17,9 @@ const Landing = () => {
         </p>
         <SearchFunction />
       </div>
-      <div>Dish Cards</div>
+      <div className="flex justify-around flex-wrap w-screen p-1">
+        <DishCards />
+      </div>
     </div>
   );
 };
