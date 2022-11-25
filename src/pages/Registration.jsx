@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { database, auth } from "../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { push, ref as databaseRef, set } from "firebase/database";
 import { Header, NavBar } from "../components";
 
@@ -42,6 +42,12 @@ const Registration = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
+
+        updateProfile(auth.currentUser, {
+          displayName: registrationDetails.username,
+        }).catch((error) => {
+          console.log(error);
+        });
 
         const usersListRef = databaseRef(database, USER_PROFILES_DATABASE);
         const newUserRef = push(usersListRef);
@@ -133,15 +139,16 @@ const Registration = () => {
             <input
               onChange={handleFormInputs}
               value={registrationDetails.password}
+              type="password"
               name="password"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </label>
           <div className="md:w-2/3">
             <button
-              className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+              className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
               type="button"
-              onClick={handleSubmit}
+              onSubmit={handleSubmit}
             >
               Sign Up
             </button>
