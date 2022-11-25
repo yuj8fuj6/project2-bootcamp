@@ -3,22 +3,11 @@
 .App {
   text-align: center;
   font-family: "Sansita";
-  background-color: #fae8e0;
-}
-
-.App-logo {
-  height: 150px;
-  width: 150px;
-  pointer-events: none;
-}
-
-.App-name {
-  font-size: calc(20px + 10vmin);
-  color: #ef7c8e;
+  background-color: #ffffff;
 }
 
 .base-container {
-  background-color: #fae8e0;
+  background-color: #ffffff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -28,10 +17,17 @@
 }
 
 .base-container-secondary {
-  background-color: #fae8e0;
+  background-color: #ffffff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: white;
+}
+
+.h1 {
+  color: white;
+  text-shadow: -1px -1px 0 #9D7D9B, 1px -1px 0 #9D7D9B, -1px 1px 0 #9D7D9B,
+    1px 1px 0 #9D7D9B;
+  font-size: 0.7rem;
 }

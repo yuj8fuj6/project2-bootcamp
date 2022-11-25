@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { database, auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { push, ref as databaseRef, set } from "firebase/database";
+import { Header, NavBar } from "../components";
 
 const USER_PROFILES_DATABASE = "users";
 
@@ -54,12 +55,16 @@ const Registration = () => {
       })
       .catch((error) => {
         setErrorCode({ code: error.code, message: error.message });
-        console.log(error.code, error.message);
+        console.log(errorCode);
       });
   };
 
   return (
     <div>
+      <div className="flex justify-around flex-wrap w-screen p-4">
+        <Header />
+        <NavBar />
+      </div>
       <div className="inline-block relative w-64">
         <label className="block text-gray-700 text-sm font-bold mb-2">
           Choose Account Type
