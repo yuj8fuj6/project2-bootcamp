@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { auth } from "../firebase";
+import { database, auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { push, ref as databaseRef, set } from "firebase/database";
+
+const USER_PROFILES_DATABASE = "users";
 
 const Registration = () => {
   const defaultForm = {
@@ -38,13 +41,21 @@ const Registration = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
+
+        const usersListRef = databaseRef(database, USER_PROFILES_DATABASE);
+        const newUserRef = push(usersListRef);
+
+        set(newUserRef, {
+          ...registrationDetails,
+          date: Date(),
+        });
+
+        setRegistrationDetails(defaultForm);
       })
       .catch((error) => {
         setErrorCode({ code: error.code, message: error.message });
         console.log(error.code, error.message);
       });
-
-    setRegistrationDetails(defaultForm);
   };
 
   return (
