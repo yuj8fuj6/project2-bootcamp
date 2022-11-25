@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import {
@@ -6,15 +6,29 @@ import {
   CreateStall,
   Dish,
   Landing,
-  Login,
   Order,
   Registration,
   Search,
   Stall,
-  UserProfile,}
-  from "./pages"
+  UserProfile,
+  Login,
+} from "./pages";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
 
 function App() {
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser("");
+      }
+    });
+  }, []);
+
   return (
     <div className="App">
       <BrowserRouter basename={window.location.pathname || ""}>
