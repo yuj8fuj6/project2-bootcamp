@@ -8,7 +8,7 @@ const Landing = () => {
         <Header />
         <NavBar />
       </div>
-      <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-10">
+      <div className="2xl:container 2xl:mx-auto 2xl:px-0">
         <StallCarousel />
       </div>
       <div className="flex justify-around flex-wrap w-screen p-4">
