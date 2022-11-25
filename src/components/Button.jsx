@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Button = () => {
+const Button = (props) => {
   return (
-    <div>Button</div>
+    <button className="bg-purple text-white px-4 py-1 rounded-lg">{props.children}</button>
   )
 }
 

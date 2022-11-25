@@ -51,6 +51,9 @@ module.exports = {
         purple: "#9D7D9B",
         green: "#90BC3F",
       },
+      aspectRatio: {
+        "4/3": "4 / 3",
+      },
     },
   },
   plugins: [],
