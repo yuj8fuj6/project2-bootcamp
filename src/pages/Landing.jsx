@@ -1,5 +1,12 @@
 import React from "react";
-import { Header, NavBar, StallCarousel, SearchFunction, DishCards, FormFeedback } from "../components";
+import {
+  Header,
+  NavBar,
+  StallCarousel,
+  SearchFunction,
+  DishCards,
+  FormFeedback,
+} from "../components";
 
 const Landing = () => {
   return (
@@ -11,7 +18,7 @@ const Landing = () => {
       <div className="2xl:container 2xl:mx-auto 2xl:px-0">
         <StallCarousel />
       </div>
-      <div className="flex justify-around flex-wrap w-screen p-4">
+      <div className="flex justify-evenly flex-wrap w-screen mt-5">
         <p className="text-orange text-xl font-semibold drop-shadow-lg text-left">
           Community Reviews
         </p>

@@ -11,7 +11,7 @@ const FormFeedback = (props) => {
     setFeedback({ ...feedback, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
-    e.prevent.default();
+    e.preventDefault();
     setSubmission([...submission, feedback]);
     setFeedback({});
   };
