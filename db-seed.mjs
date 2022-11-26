@@ -1,5 +1,5 @@
 import { ref as databaseRef, set, push } from "firebase/database";
-import { ref as storageRef } from "firebase/storage";
+import { getDownloadURL, ref as storageRef } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 import { getStorage } from "firebase/storage";
@@ -280,50 +280,324 @@ const userSeeding = function () {
   }, 2000);
 };
 
-userSeeding();
-
-//Dish Posts
-const dishes = [
+//hawker sample data
+const stallsSampleData = [
   {
-    dishID: 7,
-    dishName: "prawn noodles",
-    stall: {
-      stallName: "hawker2 even better stall",
-      stallLocation: "Ubi Avenue 4",
-    },
-    dishPhoto:
-      "./project2-bootcamp/public/SampleDishPhotos/beach-road-prawn-noodle-house-ngoh-hiang-platter.jpg",
-    ingredientList: "prawn, noodles, beansprouts",
-    attribute: "sweet, salty, umami",
-    price: "$5",
+    useremail: "email15@email.com",
+    stallname: "Rolina Traditional Hainanese Curry Puffs",
+    foodcentername: "Tanjong Pagar Plaza Market and Food Centre,",
+    stalllocation:
+      "6 Tanjong Pagar Plaza Market and Food Centre, #02-15, Singapore 081006",
+    openinghours: "06:30am to 02:00pm",
+    openingdays: "Wed-Mon",
+    stallstory:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    stallmenu: [1],
+    storefrontPhoto: "rolina-curry-puff-storefront.jpg",
   },
   {
-    dishID: 8,
-    stall: {
-      stallName: "tasty dishes stall",
-      stallLocation: "Ubi Avenue 3",
-    },
-    dishName: "fried rice",
-    dishPhoto:
-      "./project2-bootcamp/public/SampleDishPhotos/beach-road-prawn-noodle-house-ngoh-hiang-platter.jpg",
-    ingredientList: "prawn, noodles, beansprouts",
-    attribute: "sweet, salty, umami",
-    price: "$5",
+    useremail: "email4@email.com",
+    stallname: "Ding Gua Gua Fried Rice",
+    foodcentername: "null",
+    stalllocation: "Block 69, Bedok South Avenue 3, #01-498, Singapore 460069",
+    openinghours: "10:30am to 08:30pm",
+    openingdays: "Daily",
+    stallstory:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna fringilla urna porttitor rhoncus dolor purus non. Lacinia at quis risus sed vulputate odio ut.",
+    stallmenu: [2, 3],
+    storefrontPhoto: "ding-gua-gua-fried-rice-ambience.jpg",
   },
   {
-    dishID: 9,
-    stall: {
-      stallName: "hawker1 best stall",
-      stallLocation: "Ubi Avenue 3",
-    },
-    dishName: "fried rice",
-    dishPhoto:
-      "./project2-bootcamp/public/SampleDishPhotos/beach-road-prawn-noodle-house-ngoh-hiang-platter.jpg",
-    ingredientList: "prawn, noodles, beansprouts",
-    attribute: "sweet, salty, umami",
-    price: "$5",
+    useremail: "email10@email.com",
+    stallname: "Cendol Geylang Serai",
+    foodcentername: "Geylang Serai Market and Food Centre",
+    stalllocation: "1 Geylang Serai, #02-107, Singapore 402001",
+    openinghours: "11:00am to 10:00pm",
+    openingdays: "Daily",
+    stallstory:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    stallmenu: [4],
+    storefrontPhoto: "cendol-geylang-serai-storefront.jpg",
+  },
+  {
+    useremail: "email2@email.com",
+    stallname: "Minced Pork Bros",
+    foodcentername: "Old Airport Road Food Centre",
+    stalllocation: "51 Old Airport Road, #01-113, Singapore 390051",
+    openinghours: "09:00am to 05:30pm",
+    openingdays: "Wed-Mon",
+    stallstory:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget arcu dictum varius duis at consectetur. Magna fermentum iaculis eu non diam phasellus vestibulum lorem sed. Elementum tempus egestas sed sed risus pretium quam vulputate dignissim.",
+    stallmenu: [5, 6],
+    storefrontPhoto: "minced-pork-bros-storefront.jpg",
+  },
+  {
+    useremail: "email6@email.com",
+    stallname: "Beach Road Prawn Noodle House",
+    foodcentername: "null",
+    stalllocation: "370/372 East Coast Road, Singapore 428981",
+    openinghours: "07:00am to 04:00pm",
+    openingdays: "Wed-Mon",
+    stallstory:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget arcu dictum varius duis at consectetur. Magna fermentum iaculis eu non diam phasellus vestibulum lorem sed. Elementum tempus egestas sed sed risus pretium quam vulputate dignissim.",
+    stallmenu: [11, 12],
+    storefrontPhoto: "beach-road-prawn-noodle-house-storefront.jpg",
+  },
+  {
+    useremail: "email8@email.com",
+    stallname: "First Street Teochew Fish Soup",
+    foodcentername: "null",
+    stalllocation: "1014 Upper Serangoon Road, Singapore 534752",
+    openinghours: "08:00am to 03:30pm",
+    openingdays: "Daily",
+    stallstory:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget velit aliquet sagittis id.",
+    stallmenu: [7],
+    storefrontPhoto: "first-street-teochew-fish-soup-storefront.jpg",
+  },
+  {
+    useremail: "email17@email.com",
+    stallname: "Ah Gong Minced Pork Noodles",
+    foodcentername: "Maxwell Food Centre",
+    stalllocation: "1 Kadayanallur Street, #01-02, Singapore 069184",
+    openinghours: "10:30am to 03:00pm",
+    openingdays: "Mon-Sat",
+    stallstory:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    stallmenu: [8],
+    storefrontPhoto:
+      "ah-gong-minced-pork-noodle-storefront-with-owner-elin.jpg",
+  },
+  {
+    useremail: "email12@email.com",
+    stallname: "Midas",
+    foodcentername: "Hong Lim Market & Food Centre",
+    stalllocation: "531A Upper Cross Street, #02-07, Singapore 051531",
+    openinghours: "10:00am to 04:00pm",
+    openingdays: "Tue-Fri",
+    stallstory:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lacus sed viverra tellus in hac. Libero id faucibus nisl tincidunt eget nullam non nisi est.",
+    stallmenu: [9, 10],
+    storefrontPhoto: "midas-curry-storefront.jpg",
+  },
+  {
+    useremail: "email21@email.com",
+    stallname: "Balestier Road Hoover Rojak",
+    foodcentername: "Whampoa Makan Place",
+    stalllocation: "90 Whampoa Drive, #01-06, Singapore 320090",
+    openinghours: "10:00am to 04:00pm",
+    openingdays: "Wed-Sun",
+    stallstory:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Venenatis lectus magna fringilla urna porttitor.",
+    stallmenu: [],
+    storefrontPhoto: "Balestier-Road-Hoover-Rojak-storefront.jpg",
   },
 ];
 
-const DISH_PHOTOS_STORAGE = "dish";
-const dishPhotoRef = storageRef(storage, DISH_PHOTOS_STORAGE);
+//Dishes Sample Data
+const dishes = [
+  {
+    dishID: 1,
+    dishname: "Curry Puff",
+    stalllname: "Rolina Traditional Hainanese Curry Puffs",
+    ingredientlist: ["Potatoes", "Flour", "Chicken", "Curry", "Egg"],
+    attribute: ["Crunchy", "Spicy", "Salty", "Buttery"],
+    photos: ["rolina-curry-puff.jpg"],
+    photoURLs: [],
+    story:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    dishID: 2,
+    dishname: "Prawn Fried Rice",
+    stalllname: "Ding Gua Gua Fried Rice",
+    ingredientlist: ["Rice", "Eggs", "Scallions", "Prawns"],
+    attribute: ["Salty", "Sweet", "Wok Hei"],
+    photos: [
+      "dgg-egg-fried-rice-with-shrimp.jpg",
+      "ding-gua-gua-chilli-sauce.jpg",
+      "ding-gua-gua-flatlay.jpg",
+    ],
+    photoURLs: [],
+    story:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    dishID: 3,
+    dishname: "Egg Fried Rice",
+    stalllname: "Ding Gua Gua Fried Rice",
+    ingredientlist: ["Rice", "Eggs", "Scallions"],
+    attribute: ["Salty", "Eggy", "Wok Hei"],
+    photos: ["egg-fried-rice-close-up.jpg"],
+    photoURLs: [],
+    story:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    dishID: 4,
+    dishname: "Cendol",
+    stalllname: "Cendol Geylang Serai",
+    ingredientlist: ["Gula Melaka", "Flour", "Milk"],
+    attribute: ["Sweet"],
+    photos: ["cendol-geylang-serai-scooping.jpg"],
+    photoURLs: [],
+    story:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    dishID: 5,
+    dishname: "Seafood Minced Meat Noodles",
+    stalllname: "Minced Pork Bros",
+    ingredientlist: [
+      "Egg Noodles",
+      "Minced Meat",
+      "Prawn",
+      "Abalone",
+      "Vinegar",
+    ],
+    attribute: ["Salty", "Peppery", "Vinegary"],
+    photos: ["minced-pork-bros-seafood.jpg"],
+    photoURLs: [],
+    story:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    dishID: 6,
+    dishname: "Modern Pork Noodles",
+    stalllname: "Minced Pork Bros",
+    ingredientlist: ["Egg Noodles", "Minced Meat", "Pork Slices", "Vinegar"],
+    attribute: ["Salty", "Peppery", "Vinegary"],
+    photos: ["minced-pork-bros-teochew-modern-pork-noodles.jpg"],
+    photoURLs: [],
+    story:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    dishID: 7,
+    dishname: "Fish Soup",
+    stalllname: "First Street Teochew Fish Soup",
+    ingredientlist: ["Fish", "Ginger", "Scallions", "Prawns"],
+    attribute: ["Gingery", "Refreshing"],
+    photos: ["first-street-teochew-fish-soup-flatlay.jpg"],
+    photoURLs: [],
+    story:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    dishID: 8,
+    dishname: "Minced Meat Noodles",
+    stalllname: "Ah Gong Minced Pork Noodles",
+    ingredientlist: ["Pork", "Beancurd Skin", "Noodles", "Lard"],
+    attribute: ["Salty", " Vinegary", "Umami"],
+    photos: ["ah-gong-minced-pork-noodle-signature-bak-chor-mee-dry.jpg"],
+    photoURLs: [],
+    story:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    dishID: 9,
+    dishname: "Curry Set",
+    stalllname: "Midas",
+    ingredientlist: ["Curry paste", "Curry Leaf", "Potatoes", "Chicken"],
+    attribute: ["Spicy", "Sweet"],
+    photos: ["midas-curry-only.jpg"],
+    photoURLs: [],
+    story:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    dishID: 10,
+    dishname: "Prata",
+    stalllname: "Midas",
+    ingredientlist: ["Flour"],
+    attribute: ["Crispy"],
+    photos: ["midas-curry-prata.jpg"],
+    photoURLs: [],
+    story:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    dishID: 11,
+    dishname: "Prawn Noodles",
+    stalllname: "Beach Road Prawn Noodle House",
+    ingredientlist: ["Yellow Noodles", "Prawns", "Scallions"],
+    attribute: ["Sweet", "Light", "Fresh"],
+    photos: ["beach-road-prawn-noodle-house-prawn-with-pig-tail-mee.jpg"],
+    photoURLs: [],
+    story:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    dishID: 12,
+    dishname: "Ngoh Hiang Platter",
+    stalllname: "Beach Road Prawn Noodle House",
+    ingredientlist: [
+      "Beancurd Skin",
+      "Fishcake",
+      "Pork Sausage",
+      "Ngoh Hiang",
+      "Prawn Crackers",
+    ],
+    attribute: ["Crunchy", "Salty"],
+    photos: ["beach-road-prawn-noodle-house-ngoh-hiang-platter.jpg"],
+    photoURLs: [],
+    story:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+];
+
+//Hawker and Dishes Seeding
+//Dish photos have been uploaded to Storage prior.
+//Create reference to the dish photo, retrieve the url and update it to the dish post
+
+//reference folders names here, rename the variables if your storage file names differ
+const HAWKER_PHOTOS_FOLDER = "hawkerphotos";
+const HAWKER_DATABASE = "hawkers";
+const DISH_PHOTOS_FOLDER = "dishphotos";
+const DISH_DATABASE = "dishes";
+
+const hawkerSeeding = function () {
+  for (let i = 0; i < stallsSampleData.length; i++) {
+    const stall = stallsSampleData[i];
+    getDownloadURL(
+      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.storefrontPhoto}`)
+    )
+      .then((url) => {
+        stall.storefrontURL = url;
+        console.log(stall);
+        const stallsListRef = databaseRef(database, HAWKER_DATABASE);
+        const newStallRef = push(stallsListRef);
+        set(newStallRef, { ...stall });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+};
+
+const dishSeeding = async function () {
+  for (let i = 0; i < dishes.length; i++) {
+    const dish = dishes[i];
+    for (let m = 0; m < dish.photos.length; m++) {
+      let dishPhoto = dish.photos[m];
+      await getDownloadURL(
+        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`)
+      )
+        .then((url) => {
+          dish.photoURLs.push(url);
+        })
+        .catch((error) => {
+          return console.log(error);
+        });
+    }
+
+    const dishListRef = databaseRef(database, DISH_DATABASE);
+    const newDishRef = push(dishListRef);
+    set(newDishRef, { ...dish });
+  }
+};
+
+//function calls
+userSeeding();
+hawkerSeeding();
+dishSeeding();
