@@ -1,34 +1,40 @@
 import React, { useState } from "react";
 import { Header, NavBar } from "../components";
 import { Button } from "../components";
+import { storage, database } from "../firebase";
+import {
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+import { ref as databaseRef, set, push } from "firebase/database";
+import { useNavigate } from "react-router-dom";
 
-const CreateStall = () => {
+const HAWKER_PHOTOS_FOLDER = "hawkerphotos";
+const HAWKER_DATABASE = "hawkers";
+
+const CreateStall = ({ user }) => {
   const emptyStallDetails = {
     stallName: "",
     stallLocation: "",
     foodCenterName: "",
     openingHours: "",
     openingDays: "",
-    stallstory: "",
+    stallStory: "",
   };
 
+  const [stallDetails, setStallDetails] = useState(emptyStallDetails);
   const [stallFrontPhoto, setStallFrontPhoto] = useState();
   const [otherStallPhotos, setOtherStallPhotos] = useState([]);
-
-  const [stallDetails, setStallDetails] = useState(emptyStallDetails);
   const [stallFrontImg, setStallFrontImg] = useState();
   const [otherStallImgs, setOtherStallImgs] = useState([]);
 
-  const handleStallInputs = (event) => {
-    setStallDetails({
-      ...stallDetails,
-      [event.target.name]: event.target.value,
-    });
-  };
-
   const handleStallFrontPhoto = (event) => {
     setStallFrontImg(URL.createObjectURL(event.target.files[0]));
-    setStallFrontPhoto(event.target.files[0]);
+    setStallFrontPhoto({
+      name: event.target.value,
+      file: event.target.files[0],
+    });
   };
 
   const handleOtherStallPhotos = (event) => {
@@ -36,11 +42,81 @@ const CreateStall = () => {
       URL.createObjectURL(event.target.files[0]),
       ...prevPhotos,
     ]);
-    setOtherStallPhotos((prevPhotos) => [...prevPhotos, event.target.files[0]]);
+    setOtherStallPhotos((prevPhotos) => [
+      ...prevPhotos,
+      { name: event.target.value, file: event.target.files[0] },
+    ]);
   };
 
-  const submitStallDetails = (event) => {
+  const handleStallInputs = (event) => {
+    setStallDetails({
+      ...stallDetails,
+      [event.target.name]: event.target.value,
+    });
+    console.log(stallDetails);
+  };
+
+  let navigate = useNavigate();
+
+  const submitStallDetails = async (event) => {
     event.preventDefault();
+    const stallFrontPhotoRef = storageRef(
+      storage,
+      `${HAWKER_PHOTOS_FOLDER}/${stallFrontPhoto.name}`
+    );
+    const otherStallPhotosURLArr = [];
+    const otherStallPhotosRef = storageRef(
+      storage,
+      `${HAWKER_PHOTOS_FOLDER}/${otherStallPhotos[0].name}`
+    );
+
+    await uploadBytes(stallFrontPhotoRef, stallFrontPhoto.file)
+      .then(() => getDownloadURL(stallFrontPhotoRef))
+      .then((url) => {
+        setStallDetails({ ...stallDetails, stallFrontPhotoURL: url });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    await uploadBytes(otherStallPhotosRef, otherStallPhotos[0])
+      .then(() => getDownloadURL(otherStallPhotosRef))
+      .then((url) => {
+        otherStallPhotosURLArr.push(url);
+        setStallDetails({
+          ...stallDetails,
+          otherStallPhotosURL: otherStallPhotosURLArr,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    for (let i = 0; i < otherStallPhotos.length; i++) {
+      console.log("here" + otherStallPhotos[i].name);
+      const otherStallPhotosRef = storageRef(
+        storage,
+        `${HAWKER_PHOTOS_FOLDER}/${otherStallPhotos[i].name}`
+      );
+
+      await uploadBytes(otherStallPhotosRef, otherStallPhotos[i].file)
+        .then(() => getDownloadURL(otherStallPhotosRef))
+        .then((url) => {
+          otherStallPhotosURLArr.push(url);
+          setStallDetails({
+            ...stallDetails,
+            otherStallPhotosURL: otherStallPhotosURLArr,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    const hawkersListRef = databaseRef(database, HAWKER_DATABASE);
+    const newHawkerRef = push(hawkersListRef);
+    set(newHawkerRef, { ...stallDetails, useremail: user });
+
+    navigate("/");
   };
 
   return (
@@ -50,7 +126,10 @@ const CreateStall = () => {
         <NavBar />
       </div>
       <div>
-        <form className="container mx-1 text-left">
+        <form
+          className="container mx-1 text-left"
+          onSubmit={submitStallDetails}
+        >
           <label>
             Stall Name:
             <input
@@ -60,6 +139,7 @@ const CreateStall = () => {
               value={stallDetails.stallName}
             />
           </label>
+          <p>Stall Front Image:</p>
           <div className="container mx-auto flex flex-wrap">
             <div className="flex flex-auto items-center justify-center w-f">
               <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -93,7 +173,7 @@ const CreateStall = () => {
                       drag and drop
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      SVG, PNG, JPG or GIF (MAX. 800x400px)
+                      SVG, PNG, JPG or GIF (MAX 5MB)
                     </p>
                   </div>
                 )}
@@ -106,58 +186,90 @@ const CreateStall = () => {
               </label>
             </div>
           </div>
-
-          <div className="container border mx-auto grid grid-cols-3 w-50">
-            {otherStallImgs.map((imgs) => (
-              <img src={imgs} alt="stall" />
-            ))}
-            <div className="flex flex-auto items-center justify-center w-30">
-              <label className="flex flex-col items-center justify-center w-full h-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold">Click to upload</span>
-                  </p>
+          <div className="flex">
+            <div className="container border rounded m-1 w-1/2">
+              <p>Other Stall Images:</p>
+              <div className="grid grid-cols-3">
+                {otherStallImgs.map((imgs) => (
+                  <img src={imgs} alt="stall" />
+                ))}
+                <div className="flex flex-auto items-center justify-center w-30">
+                  <label className="flex flex-col items-center justify-center w-full h-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                    <div className="pt-5 pb-6">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        <span className="font-semibold">Click to upload</span>
+                      </p>
+                    </div>
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={handleOtherStallPhotos}
+                    />
+                  </label>
                 </div>
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={handleOtherStallPhotos}
-                />
-              </label>
+              </div>
+            </div>
+
+            <div className="container p-3 border border-grey rounded-lg w-1/2 m-1">
+              <p>Details</p>
+              <p className="underline">Location</p>
+              <p>
+                <label>
+                  Food Center:
+                  <input
+                    className="border border-black rounded-lg w-full max-w-xs"
+                    name="foodCenterName"
+                    onChange={handleStallInputs}
+                  />
+                </label>
+              </p>
+              <p>
+                <label>
+                  Address:
+                  <input
+                    className="border border-black rounded-lg w-full max-w-xs"
+                    name="stallLocation"
+                    onChange={handleStallInputs}
+                  />
+                </label>
+              </p>
+
+              <p className="underline">Opening Hours</p>
+              <p>
+                <label>
+                  Days:
+                  <input
+                    className="border border-black rounded-lg w-full max-w-xs"
+                    name="openingDays"
+                    onChange={handleStallInputs}
+                  />
+                </label>
+              </p>
+              <p>
+                <label>
+                  Time:
+                  <input
+                    className="border border-black rounded-lg w-full max-w-xs"
+                    name="openingHours"
+                    onChange={handleStallInputs}
+                  />
+                </label>
+              </p>
             </div>
           </div>
 
           <div className="container p-3 border border-grey rounded-lg">
-            <p>Details</p>
-            <p className="underline">Location</p>
-            <p>
-              <label>
-                Food Center:
-                <input className="border border-black rounded-lg" />
-              </label>
-            </p>
-            <p>
-              <label>
-                Address:
-                <input className="border border-black rounded-lg" />
-              </label>
-            </p>
-
-            <p className="underline">Opening Hours</p>
-            <p>
-              <label>
-                Days:
-                <input className="border border-black rounded-lg" />
-              </label>
-            </p>
-            <p>
-              <label>
-                Time:
-                <input className="border border-black rounded-lg" />
-              </label>
-            </p>
+            <label>
+              <p>Our Story</p>
+              <textarea
+                className="border border-black rounded-lg w-full"
+                type="text"
+                name="stallStory"
+                onChange={handleStallInputs}
+              />
+            </label>
           </div>
-          <Button onSubmit={submitStallDetails}>Submit</Button>
+          <Button type="submit">Submit</Button>
         </form>
       </div>
     </div>
