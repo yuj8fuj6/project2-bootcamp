@@ -4,7 +4,7 @@ import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const Dish = (props) => {
-  const dishData = props.dishPost;
+  const dishData = props.dishData;
   console.log(dishData);
 
   //Filter Function to be added here.
