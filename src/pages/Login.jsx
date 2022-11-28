@@ -57,7 +57,7 @@ const Login = () => {
               type="password"
               name="password"
               value={loginDetails.password}
-              onchange={handleUserInput}
+              onChange={handleUserInput}
             />
           </label>
           <button
