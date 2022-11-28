@@ -7,7 +7,13 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
-import { ref as databaseRef, set, push } from "firebase/database";
+import {
+  ref as databaseRef,
+  set,
+  push,
+  child,
+  update,
+} from "firebase/database";
 import { useNavigate } from "react-router-dom";
 
 const HAWKER_PHOTOS_FOLDER = "hawkerphotos";
@@ -31,10 +37,8 @@ const CreateStall = ({ user }) => {
 
   const handleStallFrontPhoto = (event) => {
     setStallFrontImg(URL.createObjectURL(event.target.files[0]));
-    setStallFrontPhoto({
-      name: event.target.value,
-      file: event.target.files[0],
-    });
+    setStallFrontPhoto(event.target.files[0]);
+    console.log(stallFrontPhoto.name);
   };
 
   const handleOtherStallPhotos = (event) => {
@@ -42,10 +46,8 @@ const CreateStall = ({ user }) => {
       URL.createObjectURL(event.target.files[0]),
       ...prevPhotos,
     ]);
-    setOtherStallPhotos((prevPhotos) => [
-      ...prevPhotos,
-      { name: event.target.value, file: event.target.files[0] },
-    ]);
+    setOtherStallPhotos((prevPhotos) => [...prevPhotos, event.target.files[0]]);
+    console.log(otherStallPhotos);
   };
 
   const handleStallInputs = (event) => {
@@ -58,65 +60,85 @@ const CreateStall = ({ user }) => {
 
   let navigate = useNavigate();
 
-  const submitStallDetails = async (event) => {
+  const submitStallDetails = function (event) {
     event.preventDefault();
+
     const stallFrontPhotoRef = storageRef(
       storage,
       `${HAWKER_PHOTOS_FOLDER}/${stallFrontPhoto.name}`
     );
     const otherStallPhotosURLArr = [];
-    const otherStallPhotosRef = storageRef(
-      storage,
-      `${HAWKER_PHOTOS_FOLDER}/${otherStallPhotos[0].name}`
-    );
 
-    await uploadBytes(stallFrontPhotoRef, stallFrontPhoto.file)
+    uploadBytes(stallFrontPhotoRef, stallFrontPhoto)
       .then(() => getDownloadURL(stallFrontPhotoRef))
       .then((url) => {
         setStallDetails({ ...stallDetails, stallFrontPhotoURL: url });
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(async () => {
+        for (let i = 0; i < otherStallPhotos.length; i++) {
+          const otherStallPhotosRef = storageRef(
+            storage,
+            `${HAWKER_PHOTOS_FOLDER}/${otherStallPhotos[i].name}`
+          );
 
-    await uploadBytes(otherStallPhotosRef, otherStallPhotos[0])
-      .then(() => getDownloadURL(otherStallPhotosRef))
-      .then((url) => {
-        otherStallPhotosURLArr.push(url);
-        setStallDetails({
-          ...stallDetails,
-          otherStallPhotosURL: otherStallPhotosURLArr,
-        });
+          await uploadBytes(otherStallPhotosRef, otherStallPhotos[i])
+            .then(() => getDownloadURL(otherStallPhotosRef))
+            .then(async (url) => {
+              otherStallPhotosURLArr.push(url);
+              await setStallDetails({
+                ...stallDetails,
+                otherStallPhotosURL: otherStallPhotosURLArr,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       })
+      .then(() => {
+        const hawkersListRef = databaseRef(database, HAWKER_DATABASE);
+        const newHawkerRef = push(hawkersListRef);
+        set(newHawkerRef, { ...stallDetails, useremail: user });
+      })
+      .then(console.log("loaded into storage"), navigate("/"))
       .catch((error) => {
         console.log(error);
       });
 
-    for (let i = 0; i < otherStallPhotos.length; i++) {
-      console.log("here" + otherStallPhotos[i].name);
-      const otherStallPhotosRef = storageRef(
-        storage,
-        `${HAWKER_PHOTOS_FOLDER}/${otherStallPhotos[i].name}`
-      );
+    // for (let i = 0; i < otherStallPhotos.length; i++) {
+    //   const otherStallPhotosRef = storageRef(
+    //     storage,
+    //     `${HAWKER_PHOTOS_FOLDER}/${otherStallPhotos[i].name}`
+    //   );
 
-      await uploadBytes(otherStallPhotosRef, otherStallPhotos[i].file)
-        .then(() => getDownloadURL(otherStallPhotosRef))
-        .then((url) => {
-          otherStallPhotosURLArr.push(url);
-          setStallDetails({
-            ...stallDetails,
-            otherStallPhotosURL: otherStallPhotosURLArr,
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-    const hawkersListRef = databaseRef(database, HAWKER_DATABASE);
-    const newHawkerRef = push(hawkersListRef);
-    set(newHawkerRef, { ...stallDetails, useremail: user });
+    //   await uploadBytes(otherStallPhotosRef, otherStallPhotos[i])
+    //     .then(() => getDownloadURL(otherStallPhotosRef))
+    //     .then((url) => {
+    //       otherStallPhotosURLArr.push(url);
+    //       setStallDetails({
+    //         ...stallDetails,
+    //         otherStallPhotosURL: otherStallPhotosURLArr,
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }
 
-    navigate("/");
+    // uploadBytes(stallFrontPhotoRef, stallFrontPhoto)
+    //   .then(() => getDownloadURL(stallFrontPhotoRef))
+    //   .then((url) => {
+    //     setStallDetails({ ...stallDetails, stallFrontPhotoURL: url });
+    //   })
+    //   .then(() => {
+    //     const hawkersListRef = databaseRef(database, HAWKER_DATABASE);
+    //     const newHawkerRef = push(hawkersListRef);
+    //     set(newHawkerRef, { ...stallDetails, useremail: user });
+    //   })
+    //   .then(console.log("loaded into storage"), navigate("/"))
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   };
 
   return (
@@ -257,7 +279,6 @@ const CreateStall = ({ user }) => {
               </p>
             </div>
           </div>
-
           <div className="container p-3 border border-grey rounded-lg">
             <label>
               <p>Our Story</p>
