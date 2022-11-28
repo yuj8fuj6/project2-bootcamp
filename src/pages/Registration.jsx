@@ -3,20 +3,22 @@ import { database, auth } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { push, ref as databaseRef, set } from "firebase/database";
 import { Header, NavBar } from "../components";
+import Button from "../components/Button";
 
 const USER_PROFILES_DATABASE = "users";
 
 const Registration = () => {
   const defaultForm = {
-    name: "",
-    contactemail: "",
+    firstName: "",
+    lastName: "",
+    contactEmail: "",
     username: "",
     password: "",
-    stallname: "",
+    stallName: "",
   };
 
   const [registrationDetails, setRegistrationDetails] = useState(defaultForm);
-  const [displayedForm, setDisplayedForm] = useState("userform");
+  const [displayedForm, setDisplayedForm] = useState("user");
   const [errorCode, setErrorCode] = useState("");
 
   const handleFormInputs = (event) => {
@@ -36,12 +38,11 @@ const Registration = () => {
 
     createUserWithEmailAndPassword(
       auth,
-      registrationDetails.contactemail,
+      registrationDetails.contactEmail,
       registrationDetails.password
     )
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
 
         updateProfile(auth.currentUser, {
           displayName: registrationDetails.username,
@@ -55,6 +56,7 @@ const Registration = () => {
         set(newUserRef, {
           ...registrationDetails,
           date: Date(),
+          userType: displayedForm,
         });
 
         setRegistrationDetails(defaultForm);
@@ -78,8 +80,8 @@ const Registration = () => {
             onChange={handleSelect}
             className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
           >
-            <option value="userform">User</option>
-            <option value="hawkerform">Hawker</option>
+            <option value="user">User</option>
+            <option value="hawker">Hawker</option>
           </select>
         </label>
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -92,25 +94,41 @@ const Registration = () => {
           </svg>
         </div>
       </div>
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <p>
+        {displayedForm.charAt(0).toUpperCase() + displayedForm.slice(1)} Sign Up
+      </p>
+      <form
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        onSubmit={handleSubmit}
+      >
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Name
+            First Name
             <input
               onChange={handleFormInputs}
-              name="name"
-              value={registrationDetails.name}
+              name="firstName"
+              value={registrationDetails.firstName}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               type="text"
             />
           </label>
-          {displayedForm === "hawkerform" && (
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Last Name
+            <input
+              onChange={handleFormInputs}
+              name="lastName"
+              value={registrationDetails.lastName}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="text"
+            />
+          </label>
+          {displayedForm === "hawker" && (
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Stall Name
               <input
                 onChange={handleFormInputs}
-                value={registrationDetails.stallname}
-                name="stallname"
+                value={registrationDetails.stallName}
+                name="stallName"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
               />
@@ -120,8 +138,8 @@ const Registration = () => {
             Contact Email
             <input
               onChange={handleFormInputs}
-              value={registrationDetails.contactemail}
-              name="contactemail"
+              value={registrationDetails.contactEmail}
+              name="contactEmail"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </label>
@@ -145,13 +163,8 @@ const Registration = () => {
             />
           </label>
           <div className="md:w-2/3">
-            <button
-              className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
-              type="button"
-              onSubmit={handleSubmit}
-            >
-              Sign Up
-            </button>
+            <Button type="submit">Sign Up</Button>
+            <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"></button>
           </div>
         </div>
       </form>
