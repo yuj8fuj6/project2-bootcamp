@@ -7,14 +7,6 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 //please enter firebaseConfig here
 const firebaseConfig = {
-  apiKey: "AIzaSyBo2PGzm-C4VdHppLkMl_CLIgIm4Y_Ws04",
-  authDomain: "yumee-c40e4.firebaseapp.com",
-  databaseURL:
-    "https://yumee-c40e4-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "yumee-c40e4",
-  storageBucket: "yumee-c40e4.appspot.com",
-  messagingSenderId: "151596412389",
-  appId: "1:151596412389:web:83cd186d0560a628d5130c",
 };
 
 // // Initialize Firebase
