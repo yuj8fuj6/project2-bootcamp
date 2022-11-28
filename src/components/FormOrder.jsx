@@ -1,68 +1,127 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Button } from "../components";
 
 const FormOrder = (props) => {
   //Dish ID
 
-  const [feedback, setFeedback] = useState({
-    name: "",
-    email: "",
-    comment: "",
+  // const dishData = props.dishData;
+
+  // const dishSelected = dishData[0];
+
+  // To delete after passing props/ context
+  const dishPrice = 4.5;
+  const dishName = "Curry Puff";
+
+  const [order, setOrder] = useState({
+    name: dishName,
+    qty: 0,
+    option: "",
+    time: "",
+    cost: 0,
   });
-  const [submission, setSubmission] = useState([]);
-  const handleFeedback = (e) => {
-    setFeedback({ ...feedback, [e.target.name]: e.target.value });
+  const [fullOrder, setFullOrder] = useState([]);
+  const [checked, setChecked] = useState({
+    takeaway: false,
+    consume: false,
+  });
+
+  const totalCost = order.qty * dishPrice;
+
+  useEffect(() => {
+    setOrder({ ...order, cost: totalCost });
+  }, [totalCost]);
+
+  const handleOrder = (e) => {
+    setOrder({ ...order, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmission([...submission, feedback]);
-    setFeedback({});
+    setFullOrder([...fullOrder, order]);
+    setOrder({});
   };
 
+  const changeOption = (e) => {
+    setChecked({ [e.target.value]: true });
+  };
+
+  // console.log(order);
+  // console.log(fullOrder);
+
   return (
-    <div className="text-left text-white text-xl font-bold">
-      <p>Contact Us</p>
-      <p className="text-sm mt-2">Contact us at abcde@gmail.com</p>
-      <p className="text-sm mt-2">to find out more about our platform</p>
-      <p className="mt-5">Feedback Form</p>
-      <form className="grid grid-cols-1 space-y-2">
+    <div className="text-left text-purple text-lg font-bold border-2 rounded-xl shadow-lg p-2 mt-2">
+      <p className="font-black">
+        $ {dishPrice} SGD <span className="font-normal">per bowl</span>
+      </p>
+      <form className="grid grid-cols-1 justify-start mt-2">
+        <label className="text-lg">Qty: </label>
         <input
-          className="border-solid border-2 rounded text-sm"
-          type="name"
-          id="name"
+          className="bg-neutral-200 rounded-xl text-lg ml-3 indent-3 w-1/2"
+          type="number"
+          id="qty"
           required
-          placeholder="Name"
-          value={feedback.name}
-          onChange={handleFeedback}
-          name="name"
+          placeholder="1"
+          value={order.qty}
+          onChange={handleOrder}
+          name="qty"
         ></input>
+        <fieldset className="mt-4">
+          <legend>Choose meal option: </legend>
+          <div>
+            <div>
+              <input
+                type="radio"
+                id="takeaway"
+                value="takeaway"
+                checked={checked.takeaway}
+                onChange={handleOrder}
+                onClick={changeOption}
+                name="option"
+              />
+              <label for="takeaway" className="font-normal text-sm pl-3">
+                Takeaway (Pick from stall)
+              </label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="consume"
+                value="consume"
+                checked={checked.consume}
+                onChange={handleOrder}
+                onClick={changeOption}
+                name="option"
+              />
+              <label for="consume" className="font-normal text-sm pl-3">
+                Consume at Hawker Centre
+              </label>
+            </div>
+          </div>
+        </fieldset>
+        <label className="text-lg mt-4">
+          Time of Pick-Up (Only for Today):{" "}
+        </label>
         <input
-          className="border-solid border-2 rounded text-sm"
-          type="text"
-          id="email"
+          className="bg-neutral-200 rounded-xl text-lg ml-3 indent-3 w-1/2"
+          type="time"
+          id="time"
           required
-          placeholder="Email"
-          value={feedback.email}
-          onChange={handleFeedback}
-          name="email"
-        ></input>
-        <input
-          className="border-solid border-2 rounded text-sm py-8"
-          type="text"
-          id="comment"
-          required
-          placeholder="Fill"
-          value={feedback.comment}
-          onChange={handleFeedback}
-          name="comment"
+          value={order.time}
+          onChange={handleOrder}
+          name="time"
         ></input>
       </form>
-      <div className="flex justify-center mt-5">
-        <button
-          onClick={handleSubmit}
-          className="flex justify-center text-purple border-purple border-solid border-2 text-lg bg-white rounded-xl px-5 drop-shadow-xl"
-        >
-          Submit
-        </button>
+      <div className="border-t-1 w-11/12 border-purple mt-4 pt-4">
+        Total:{" "}
+        <span className="bg-neutral-200 rounded-full px-5 py-1">
+          {order.cost ? order.cost : 0.0}
+        </span>{" "}
+        SGD
+      </div>
+      <div className="text-sm mt-4 ">
+        If you have confirmed the above, please proceed to order:
+      </div>
+      <div className="flex justify-center m-3">
+        <Button onClick={handleSubmit}>Order</Button>
       </div>
     </div>
   );

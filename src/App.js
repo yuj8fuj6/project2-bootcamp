@@ -43,6 +43,8 @@ function App() {
     });
   }, []);
 
+  console.log(dishData)
+
   return (
     <div className="App">
       <BrowserRouter basename={window.location.pathname || ""}>
@@ -51,7 +53,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="/dish" element={<Dish dishData = {dishData}/>} />
+          <Route path="/dish" element={<Dish dishData={dishData} />} />
           <Route path="/stall" element={<Stall />} />
           <Route path="/order" element={<Order />} />
           <Route path="/search" element={<Search />} />

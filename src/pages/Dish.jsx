@@ -110,15 +110,15 @@ const Dish = (props) => {
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1">
           <p className="text-xl font-semibold drop-shadow-lg">Description</p>
-          <p className="text-sm font-semibold pt-4">Story</p>
+          <p className="text-lg font-semibold pt-4">Story</p>
           <p className="text-xxs lg:text-sm pt-4">{dishSelected.val.story}</p>
-          <p className="text-sm font-semibold pt-4">Contains</p>
+          <p className="text-lg font-semibold pt-4">Contains</p>
           <p className="text-green text-sm lg:text-sm pt-4">
             {dishIngredients}
           </p>
-          <p className="text-sm font-semibold pt-4">Attributes</p>
+          <p className="text-lg font-semibold pt-4">Attributes</p>
           <p className="text-green text-sm lg:text-sm pt-4">{dishAttributes}</p>
-          <p className="text-sm font-semibold mb-3 pt-4">
+          <p className="text-lg font-semibold mb-3 pt-4">
             Wanna know more about the stall?
           </p>
           <Link to="/stall">
