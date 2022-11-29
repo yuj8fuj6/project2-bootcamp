@@ -7,14 +7,6 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 //please enter firebaseConfig here
 const firebaseConfig = {
-  apiKey: "AIzaSyDJGqF1X3Eww7KlLB6OZ-5X26KeK1xwQO0",
-  authDomain: "bootcamp-project2-85bd8.firebaseapp.com",
-  databaseURL:
-    "https://bootcamp-project2-85bd8-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "bootcamp-project2-85bd8",
-  storageBucket: "bootcamp-project2-85bd8.appspot.com",
-  messagingSenderId: "262930681369",
-  appId: "1:262930681369:web:e28d7ffe92c734ab986488",
 };
 
 // // Initialize Firebase
