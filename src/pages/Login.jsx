@@ -3,6 +3,7 @@ import { Header, NavBar } from "../components";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../components";
 
 const Login = () => {
   const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
@@ -38,7 +39,10 @@ const Login = () => {
         <NavBar />
       </div>
       <div>Login</div>
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <form
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        onSubmit={handleSubmit}
+      >
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Email
@@ -57,16 +61,10 @@ const Login = () => {
               type="password"
               name="password"
               value={loginDetails.password}
-              onchange={handleUserInput}
+              onChange={handleUserInput}
             />
           </label>
-          <button
-            className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
-            type="button"
-            onClick={handleSubmit}
-          >
-            Log In
-          </button>
+          <Button type="submit">Log In</Button>
         </div>
       </form>
     </div>

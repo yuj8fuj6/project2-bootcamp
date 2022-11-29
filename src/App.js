@@ -11,11 +11,11 @@ import {
   Search,
   Stall,
   UserProfile,
-  Login,
 } from "./pages";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, database } from "./firebase";
 import { onChildAdded, ref as databaseRef } from "firebase/database";
+import Login from "./pages/Login";
 
 function App() {
   const [user, setUser] = useState("");
@@ -43,7 +43,7 @@ function App() {
     });
   }, []);
 
-  console.log(dishData)
+  console.log(dishData);
 
   return (
     <div className="App">
