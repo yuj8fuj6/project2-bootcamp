@@ -6,8 +6,7 @@ import { getStorage } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 //please enter firebaseConfig here
-const firebaseConfig = {
-};
+const firebaseConfig = {};
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -551,10 +550,10 @@ const hawkerSeeding = function () {
   for (let i = 0; i < stallsSampleData.length; i++) {
     const stall = stallsSampleData[i];
     getDownloadURL(
-      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.storefrontPhoto}`)
+      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`)
     )
       .then((url) => {
-        stall.storefrontURL = url;
+        stall.stallFrontURL = url;
         console.log(stall);
         const stallsListRef = databaseRef(database, HAWKER_DATABASE);
         const newStallRef = push(stallsListRef);
