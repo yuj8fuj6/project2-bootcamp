@@ -6,16 +6,7 @@ import { getStorage } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 //please enter firebaseConfig here
-const firebaseConfig = {
-  apiKey: "AIzaSyDJGqF1X3Eww7KlLB6OZ-5X26KeK1xwQO0",
-  authDomain: "bootcamp-project2-85bd8.firebaseapp.com",
-  databaseURL:
-    "https://bootcamp-project2-85bd8-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "bootcamp-project2-85bd8",
-  storageBucket: "bootcamp-project2-85bd8.appspot.com",
-  messagingSenderId: "262930681369",
-  appId: "1:262930681369:web:e28d7ffe92c734ab986488",
-};
+const firebaseConfig = {};
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -601,50 +592,10 @@ const hawkerAndDishSeeding = async function () {
 
     const dishListRef = databaseRef(database, DISH_DATABASE);
     const newDishRef = push(dishListRef);
-    const newDishRefKey = newDishRef.key;
     set(newDishRef, { ...dish });
-
-    for (let i = 0; i < hawkerDish.length; i++) {
-      const hawkerKey = Object.keys(hawkerDish[i]);
-      if (dish.hawkerKey === hawkerKey[0]) {
-        hawkerDish[i][hawkerKey[0]] = { [newDishRefKey]: true };
-      }
-    }
-
-    const hawkerDishListRef = databaseRef(
-      database,
-      HAWKER_DISH_RELATION_DATABASE
-    );
-    const newHawkerDishRef = push(hawkerDishListRef);
-    set(newHawkerDishRef, { ...hawkerDish });
   }
 };
 
-// const dishSeeding = async function () {
-//   for (let i = 0; i < dishes.length; i++) {
-//     const dish = dishes[i];
-//     console.log(dishes[i]);
-//     for (let m = 0; m < dish.photos.length; m++) {
-//       let dishPhoto = dish.photos[m];
-//       await getDownloadURL(
-//         storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`)
-//       )
-//         .then((url) => {
-//           dish.photoURLs.push(url);
-//         })
-//         .catch((error) => {
-//           return console.log(error);
-//         });
-//     }
-
-//     const dishListRef = databaseRef(database, DISH_DATABASE);
-//     const newDishRef = push(dishListRef);
-//     set(newDishRef, { ...dish });
-//   }
-// };
-
 //function calls
-// userSeeding();
-
+userSeeding();
 hawkerAndDishSeeding();
-// dishSeeding();
