@@ -6,7 +6,16 @@ import { getStorage } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 //please enter firebaseConfig here
-const firebaseConfig = {};
+const firebaseConfig = {
+  apiKey: "AIzaSyDJGqF1X3Eww7KlLB6OZ-5X26KeK1xwQO0",
+  authDomain: "bootcamp-project2-85bd8.firebaseapp.com",
+  databaseURL:
+    "https://bootcamp-project2-85bd8-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "bootcamp-project2-85bd8",
+  storageBucket: "bootcamp-project2-85bd8.appspot.com",
+  messagingSenderId: "262930681369",
+  appId: "1:262930681369:web:e28d7ffe92c734ab986488",
+};
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -545,27 +554,36 @@ const HAWKER_PHOTOS_FOLDER = "hawkerphotos";
 const HAWKER_DATABASE = "hawkers";
 const DISH_PHOTOS_FOLDER = "dishphotos";
 const DISH_DATABASE = "dishes";
+const HAWKER_DISH_RELATION_DATABASE = "hawkerdishes";
 
-const hawkerSeeding = function () {
+const hawkerAndDishSeeding = async function () {
+  const hawkerDish = [];
+
   for (let i = 0; i < stallsSampleData.length; i++) {
     const stall = stallsSampleData[i];
-    getDownloadURL(
+    await getDownloadURL(
       storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`)
     )
       .then((url) => {
-        stall.stallFrontURL = url;
-        console.log(stall);
+        stall.stallFrontPhotoURL = url;
         const stallsListRef = databaseRef(database, HAWKER_DATABASE);
         const newStallRef = push(stallsListRef);
+        const newStallRefKey = newStallRef.key;
+        //push hawker keys into dishes sample data
+        for (let m = 0; m < dishes.length; m++) {
+          if (stallsSampleData[i].stallName === dishes[m].stallName) {
+            dishes[m].hawkerKey = newStallRefKey;
+          }
+        }
+        hawkerDish.push({ [newStallRefKey]: {} });
+        console.log(hawkerDish);
         set(newStallRef, { ...stall });
       })
       .catch((error) => {
         console.log(error);
       });
   }
-};
 
-const dishSeeding = async function () {
   for (let i = 0; i < dishes.length; i++) {
     const dish = dishes[i];
     for (let m = 0; m < dish.photos.length; m++) {
@@ -583,11 +601,50 @@ const dishSeeding = async function () {
 
     const dishListRef = databaseRef(database, DISH_DATABASE);
     const newDishRef = push(dishListRef);
+    const newDishRefKey = newDishRef.key;
     set(newDishRef, { ...dish });
+
+    for (let i = 0; i < hawkerDish.length; i++) {
+      const hawkerKey = Object.keys(hawkerDish[i]);
+      if (dish.hawkerKey === hawkerKey[0]) {
+        hawkerDish[i][hawkerKey[0]] = { [newDishRefKey]: true };
+      }
+    }
+
+    const hawkerDishListRef = databaseRef(
+      database,
+      HAWKER_DISH_RELATION_DATABASE
+    );
+    const newHawkerDishRef = push(hawkerDishListRef);
+    set(newHawkerDishRef, { ...hawkerDish });
   }
 };
 
+// const dishSeeding = async function () {
+//   for (let i = 0; i < dishes.length; i++) {
+//     const dish = dishes[i];
+//     console.log(dishes[i]);
+//     for (let m = 0; m < dish.photos.length; m++) {
+//       let dishPhoto = dish.photos[m];
+//       await getDownloadURL(
+//         storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`)
+//       )
+//         .then((url) => {
+//           dish.photoURLs.push(url);
+//         })
+//         .catch((error) => {
+//           return console.log(error);
+//         });
+//     }
+
+//     const dishListRef = databaseRef(database, DISH_DATABASE);
+//     const newDishRef = push(dishListRef);
+//     set(newDishRef, { ...dish });
+//   }
+// };
+
 //function calls
-userSeeding();
-hawkerSeeding();
-dishSeeding();
+// userSeeding();
+
+hawkerAndDishSeeding();
+// dishSeeding();
