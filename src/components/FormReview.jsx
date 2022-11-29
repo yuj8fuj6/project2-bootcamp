@@ -1,68 +1,71 @@
 import React, { useState } from "react";
+import { Button } from "../components";
+import { BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
 
 const FormReview = (props) => {
   //Dish ID
 
-  const [feedback, setFeedback] = useState({
-    name: "",
-    email: "",
-    comment: "",
+  // Conditional rendering needed based on past order history of user
+
+  // const dishData = props.dishData;
+
+  // const dishSelected = dishData[0];
+
+  // To delete after passing props/ context
+
+  const [review, setReview] = useState({
+    likeCount: 1,
+    review: "",
   });
-  const [submission, setSubmission] = useState([]);
-  const handleFeedback = (e) => {
-    setFeedback({ ...feedback, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmission([...submission, feedback]);
-    setFeedback({});
+
+  const [finalReview, setFinalReview] = useState([]);
+  const [checked, setChecked] = useState({
+    like: false,
+  });
+  // Like function to be passed into Firebase realtime storage
+  // Conditional rendering of review component required after checking like
+
+  const handleReview = (e) => {
+    setReview({ ...review, [e.target.name]: e.target.value });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFinalReview([...finalReview, review]);
+    setReview({ likeCount: 1, review: "" });
+  };
+
+  // console.log(review)
+  // console.log(finalReview)
+
   return (
-    <div className="text-left text-white text-xl font-bold">
-      <p>Contact Us</p>
-      <p className="text-sm mt-2">Contact us at abcde@gmail.com</p>
-      <p className="text-sm mt-2">to find out more about our platform</p>
-      <p className="mt-5">Feedback Form</p>
-      <form className="grid grid-cols-1 space-y-2">
+    <div className="text-left text-purple text-lg font-bold border-2 rounded-xl shadow-lg p-2 mt-2">
+      <p>You have eaten this dish before!</p>
+      <p className="text-sm font-normal mt-4">
+        If you liked this dish and wish to support your favourite hawker, while
+        earning Karma points, please leave a like and a review!
+      </p>
+      <div className=" flex flex-wrap text-3xl font-semibold mt-4">
+        <BsHandThumbsUp />
+        <span className="text-sm indent-4 font-normal">
+          Like this dish to leave a review
+        </span>
+      </div>
+      <form className="grid grid-cols-1 justify-start mt-4">
+        <label className="text-lg">Review: </label>
         <input
-          className="border-solid border-2 rounded text-sm"
-          type="name"
-          id="name"
-          required
-          placeholder="Name"
-          value={feedback.name}
-          onChange={handleFeedback}
-          name="name"
-        ></input>
-        <input
-          className="border-solid border-2 rounded text-sm"
+          className="border-2 rounded-xl text-sm indent-3 py-6 mt-2"
           type="text"
-          id="email"
+          id="review"
           required
-          placeholder="Email"
-          value={feedback.email}
-          onChange={handleFeedback}
-          name="email"
-        ></input>
-        <input
-          className="border-solid border-2 rounded text-sm py-8"
-          type="text"
-          id="comment"
-          required
-          placeholder="Fill"
-          value={feedback.comment}
-          onChange={handleFeedback}
-          name="comment"
+          placeholder="Fill here"
+          value={review.review}
+          onChange={handleReview}
+          name="review"
         ></input>
       </form>
-      <div className="flex justify-center mt-5">
-        <button
-          onClick={handleSubmit}
-          className="flex justify-center text-purple border-purple border-solid border-2 text-lg bg-white rounded-xl px-5 drop-shadow-xl"
-        >
-          Submit
-        </button>
+      <div className="flex justify-center m-3">
+        <Button onClick={handleSubmit}>Submit</Button>
       </div>
     </div>
   );

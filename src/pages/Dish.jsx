@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Header, NavBar, Button, FormOrder, FormReview } from "../components";
-import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
+import {
+  BsHandThumbsUp,
+  BsChatLeftText,
+  BsHandThumbsUpFill,
+} from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const Dish = (props) => {
@@ -24,6 +28,11 @@ const Dish = (props) => {
   const dishAttributes = dishSelected.val.attribute.map((item) => (
     <>{item}, </>
   ));
+
+  const [checked, setChecked] = useState({
+    like: false,
+  });
+  // Like function to be passed into Firebase realtime storage
 
   //To comment out later
   const reviews = [
@@ -131,6 +140,7 @@ const Dish = (props) => {
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
           <p className="text-xl font-semibold drop-shadow-lg">Add A Review</p>
+          {/* Need conditional rendering after checking whether past history - user has ordered this dish */}
           <FormReview />
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
