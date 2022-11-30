@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 const Dish = (props) => {
   const dishData = props.dishData;
-  console.log(dishData);
+  // console.log(dishData);
 
   //Filter Function to be added here.
   const dishSelected = dishData[0];
