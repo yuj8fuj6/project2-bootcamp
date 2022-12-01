@@ -1,12 +1,19 @@
-import { ref as databaseRef, set, push } from "firebase/database";
+import {
+  ref as databaseRef,
+  set,
+  push,
+  getDatabase,
+  get,
+  child,
+} from "firebase/database";
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
 import { getStorage } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 //please enter firebaseConfig here
-const firebaseConfig = {};
+const firebaseConfig = {
+};
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -230,7 +237,8 @@ const userSampleData = [
   },
 ];
 
-const USER_PROFILES_DATABASE = "users";
+const USER_PROFILES_DATABASE = "users/";
+const USERKEYS_DATABASE = "userkeys/";
 
 const userSeeding = function () {
   let i = 0;
@@ -259,14 +267,27 @@ const userSeeding = function () {
           karmaPoints,
           reviewsDone,
         };
-        const usersRef = databaseRef(database, USER_PROFILES_DATABASE);
-        const usersListRef = push(usersRef);
-        await set(usersListRef, userRef);
+        const usersRef = databaseRef(database, USER_PROFILES_DATABASE + uid);
+        // const usersListRef = push(usersRef);
+        // const userKey = usersListRef.key;
+
+        const userKeysRef = databaseRef(
+          database,
+          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ","),
+        );
+        // const userKeysListRef = push(userKeysRef);
+
+        await set(usersRef, userRef);
+
+        await set(userKeysRef, uid);
         console.log(`added user to realtime database`, userRef.contactEmail);
       })
       .catch((error) => console.log(error));
     i += 1;
-    if (i === userSampleData.length) clearInterval(interval);
+    if (i === userSampleData.length) {
+      clearInterval(interval);
+      console.log("all user data added");
+    }
   }, 2000);
 };
 
@@ -542,33 +563,53 @@ const dishes = [
 
 //reference folders names here, rename the variables if your storage file names differ
 const HAWKER_PHOTOS_FOLDER = "hawkerphotos";
-const HAWKER_DATABASE = "hawkers";
+const HAWKER_DATABASE = "hawkers/";
 const DISH_PHOTOS_FOLDER = "dishphotos";
 const DISH_DATABASE = "dishes";
-const HAWKER_DISH_RELATION_DATABASE = "hawkerdishes";
+const HAWKER_DISH_RELATION_DATABASE = "hawker-dishes/";
 
 const hawkerAndDishSeeding = async function () {
-  const hawkerDish = [];
+  const hawkerDishKeys = {};
 
   for (let i = 0; i < stallsSampleData.length; i++) {
     const stall = stallsSampleData[i];
+    const stallEmailRef = stall.userEmail.replace(".", ",");
+    let userID = "";
+
+    //get userKey from userkeys database in realtime database
+    const dbRef = databaseRef(database);
+    await get(child(dbRef, `${USERKEYS_DATABASE}/${stallEmailRef}`)).then(
+      (snapshot) => {
+        userID = snapshot.val();
+      },
+    );
+
     await getDownloadURL(
       storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`),
     )
       .then((url) => {
         stall.stallFrontPhotoURL = url;
+        const newStallObj = {
+          stallName: stall.stallName,
+          foodCenterName: stall.foodCenterName,
+          openingDays: stall.openingDays,
+          openingHours: stall.openingHours,
+          stallAddress: stall.stallAddress,
+          stallFrontPhotoURL: stall.stallFrontPhotoURL,
+          userKey: userID,
+        };
         const stallsListRef = databaseRef(database, HAWKER_DATABASE);
-        const newStallRef = push(stallsListRef);
-        const newStallRefKey = newStallRef.key;
-        //push hawker keys into dishes sample data
+        const newStallsRef = push(stallsListRef);
+        const newStallsRefKey = newStallsRef.key;
+        hawkerDishKeys[newStallsRefKey] = {};
+        set(newStallsRef, { ...newStallObj });
+
         for (let m = 0; m < dishes.length; m++) {
           if (stallsSampleData[i].stallName === dishes[m].stallName) {
-            dishes[m].hawkerKey = newStallRefKey;
+            dishes[m].userKey = userID;
+            dishes[m].hawkerKey = newStallsRefKey;
           }
         }
-        hawkerDish.push({ [newStallRefKey]: {} });
-        console.log(hawkerDish);
-        set(newStallRef, { ...stall });
       })
       .catch((error) => {
         console.log(error);
@@ -577,6 +618,7 @@ const hawkerAndDishSeeding = async function () {
 
   for (let i = 0; i < dishes.length; i++) {
     const dish = dishes[i];
+
     for (let m = 0; m < dish.photos.length; m++) {
       let dishPhoto = dish.photos[m];
       await getDownloadURL(
@@ -590,52 +632,31 @@ const hawkerAndDishSeeding = async function () {
         });
     }
 
+    const newDish = {
+      dishName: dish.dishName,
+      stallName: dish.stallName,
+      ingredientList: dish.ingredientList,
+      attribute: dish.attribute,
+      photoURLs: dish.photoURLs,
+      story: dish.story,
+      hawkerKey: dish.hawkerKey,
+      userKey: dish.userKey,
+    };
     const dishListRef = databaseRef(database, DISH_DATABASE);
     const newDishRef = push(dishListRef);
-    const newDishRefKey = newDishRef.key;
-    set(newDishRef, { ...dish });
+    const newDishKey = newDishRef.key;
+    set(newDishRef, { ...newDish });
 
-    for (let i = 0; i < hawkerDish.length; i++) {
-      const hawkerKey = Object.keys(hawkerDish[i]);
-      if (dish.hawkerKey === hawkerKey[0]) {
-        hawkerDish[i][hawkerKey[0]] = { [newDishRefKey]: true };
-      }
-    }
-
-    const hawkerDishListRef = databaseRef(
-      database,
-      HAWKER_DISH_RELATION_DATABASE,
-    );
-    const newHawkerDishRef = push(hawkerDishListRef);
-    set(newHawkerDishRef, { ...hawkerDish });
+    hawkerDishKeys[dish.hawkerKey][newDishKey] = true;
   }
+
+  const hawkerDishKeysRef = databaseRef(
+    database,
+    HAWKER_DISH_RELATION_DATABASE,
+  );
+  set(hawkerDishKeysRef, hawkerDishKeys);
 };
 
-// const dishSeeding = async function () {
-//   for (let i = 0; i < dishes.length; i++) {
-//     const dish = dishes[i];
-//     console.log(dishes[i]);
-//     for (let m = 0; m < dish.photos.length; m++) {
-//       let dishPhoto = dish.photos[m];
-//       await getDownloadURL(
-//         storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`)
-//       )
-//         .then((url) => {
-//           dish.photoURLs.push(url);
-//         })
-//         .catch((error) => {
-//           return console.log(error);
-//         });
-//     }
-
-//     const dishListRef = databaseRef(database, DISH_DATABASE);
-//     const newDishRef = push(dishListRef);
-//     set(newDishRef, { ...dish });
-//   }
-// };
-
 //function calls
-// userSeeding();
-
+userSeeding();
 hawkerAndDishSeeding();
-// dishSeeding();
