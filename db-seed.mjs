@@ -12,8 +12,7 @@ import { getStorage } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 //please enter firebaseConfig here
-const firebaseConfig = {
-};
+const firebaseConfig = {};
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -273,7 +272,7 @@ const userSeeding = function () {
 
         const userKeysRef = databaseRef(
           database,
-          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ","),
+          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ",")
         );
         // const userKeysListRef = push(userKeysRef);
 
@@ -581,7 +580,7 @@ const hawkerAndDishSeeding = async function () {
     await get(child(dbRef, `${USERKEYS_DATABASE}/${stallEmailRef}`)).then(
       (snapshot) => {
         userID = snapshot.val();
-      },
+      }
     );
 
     await getDownloadURL(
@@ -652,7 +651,7 @@ const hawkerAndDishSeeding = async function () {
 
   const hawkerDishKeysRef = databaseRef(
     database,
-    HAWKER_DISH_RELATION_DATABASE,
+    HAWKER_DISH_RELATION_DATABASE
   );
   set(hawkerDishKeysRef, hawkerDishKeys);
 };
