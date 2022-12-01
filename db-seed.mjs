@@ -12,7 +12,16 @@ import { getStorage } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 //please enter firebaseConfig here
-const firebaseConfig = {};
+const firebaseConfig = {
+  apiKey: "AIzaSyC2Ityf-J7yIIHqzpzycCdugPDv4sMF2jg",
+  authDomain: "project2-bootcamp-60212.firebaseapp.com",
+  databaseURL:
+    "https://project2-bootcamp-60212-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "project2-bootcamp-60212",
+  storageBucket: "project2-bootcamp-60212.appspot.com",
+  messagingSenderId: "771559810358",
+  appId: "1:771559810358:web:470659e17c89d4f0603f97",
+};
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -595,7 +604,8 @@ const hawkerAndDishSeeding = async function () {
           openingHours: stall.openingHours,
           stallAddress: stall.stallAddress,
           stallFrontPhotoURL: stall.stallFrontPhotoURL,
-          userKey: userID,
+          stallStory: stall.stallStory,
+          [userID]: true,
         };
         const stallsListRef = databaseRef(database, HAWKER_DATABASE);
         const newStallsRef = push(stallsListRef);
@@ -638,7 +648,7 @@ const hawkerAndDishSeeding = async function () {
       attribute: dish.attribute,
       photoURLs: dish.photoURLs,
       story: dish.story,
-      hawkerKey: dish.hawkerKey,
+      [dish.hawkerKey]: true,
       userKey: dish.userKey,
     };
     const dishListRef = databaseRef(database, DISH_DATABASE);
@@ -657,5 +667,5 @@ const hawkerAndDishSeeding = async function () {
 };
 
 //function calls
-userSeeding();
+// userSeeding();
 hawkerAndDishSeeding();
