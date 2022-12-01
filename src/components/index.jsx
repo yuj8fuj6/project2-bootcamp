@@ -7,3 +7,4 @@ export { default as DishCards } from "./DishCards";
 export { default as FormFeedback } from "./FormFeedback";
 export { default as FormOrder } from "./FormOrder";
 export { default as FormReview } from "./FormReview";
+export { default as StallDishCards } from "./StallDishCards"; 

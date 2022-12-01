@@ -1,10 +1,10 @@
 import React from "react";
-import { Header, NavBar } from "../components";
+import { Header, NavBar, StallDishCards } from "../components";
 import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
 
 const Stall = (props) => {
   const hawkerData = props.hawkerData;
-  console.log(hawkerData);
+  // console.log(hawkerData);
 
   // Filter Function to be added here.
   const hawkerSelected = hawkerData[0];
@@ -81,10 +81,12 @@ const Stall = (props) => {
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1">
           <p className="text-xl font-semibold drop-shadow-lg">Our Story</p>
           <p className="text-xs lg:text-sm mt-2">
-            {hawkerSelected.val.stallAddress}
+            {hawkerSelected.val.stallStory}
           </p>
         </div>
-        <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1"></div>
+        <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1">
+          <StallDishCards dishData={props.dishData}/>
+        </div>
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ import Login from "./pages/Login";
 function App() {
   const [user, setUser] = useState("");
   const [dishData, setDishData] = useState([]);
-  const [hawkerData, setHawkerData] = useState([]); 
+  const [hawkerData, setHawkerData] = useState([]);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -53,17 +53,17 @@ function App() {
 
   // console.log(dishData);
 
-  const HAWKERS_FOLDER_NAME = "hawkers"; 
+  const HAWKERS_FOLDER_NAME = "hawkers";
 
-  const hawkerDataRef = databaseRef(database, HAWKERS_FOLDER_NAME); 
+  const hawkerDataRef = databaseRef(database, HAWKERS_FOLDER_NAME);
 
   useEffect(() => {
-    const hawker = []; 
+    const hawker = [];
     onChildAdded(hawkerDataRef, (data) => {
-      hawker.push({key: data.key, val: data.val()}); 
-      setHawkerData([...hawker]); 
-    })
-  }, []); 
+      hawker.push({ key: data.key, val: data.val() });
+      setHawkerData([...hawker]);
+    });
+  }, []);
 
   // console.log(hawkerData);
 
@@ -76,7 +76,10 @@ function App() {
           <Route path="/registration" element={<Registration />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/dish" element={<Dish dishData={dishData} />} />
-          <Route path="/stall" element={<Stall hawkerData={hawkerData}/>} />
+          <Route
+            path="/stall"
+            element={<Stall hawkerData={hawkerData} dishData={dishData} />}
+          />
           <Route path="/order" element={<Order />} />
           <Route path="/search" element={<Search />} />
           <Route path="/createDish" element={<CreateDish />} />
