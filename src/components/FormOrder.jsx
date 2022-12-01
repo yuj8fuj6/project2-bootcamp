@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "../components";
+import { useNavigate } from "react-router-dom"
 
 const FormOrder = (props) => {
   //Dish ID
@@ -27,6 +28,8 @@ const FormOrder = (props) => {
 
   const totalCost = order.qty * dishPrice;
 
+  let navigate = useNavigate(); 
+
   useEffect(() => {
     setOrder({ ...order, cost: totalCost });
   }, [totalCost]);
@@ -37,7 +40,9 @@ const FormOrder = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFullOrder([...fullOrder, order]);
+    // Need to push dishID in this order. 
     setOrder({});
+    navigate("/order"); 
   };
 
   const changeOption = (e) => {

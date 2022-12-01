@@ -80,7 +80,7 @@ function App() {
             path="/stall"
             element={<Stall hawkerData={hawkerData} dishData={dishData} />}
           />
-          <Route path="/order" element={<Order />} />
+          <Route path="/order" element={<Order dishData={dishData}/>} />
           <Route path="/search" element={<Search />} />
           <Route path="/createDish" element={<CreateDish />} />
           <Route path="/createStall" element={<CreateStall />} />
