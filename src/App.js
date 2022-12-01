@@ -17,8 +17,6 @@ import { auth, database } from "./firebase";
 import { onChildAdded, ref as databaseRef } from "firebase/database";
 import Login from "./pages/Login";
 
-const HAWKER_FOLDER_NAME = "hawkers";
-
 function App() {
   const [user, setUser] = useState("");
   const [dishData, setDishData] = useState([]);
@@ -37,7 +35,6 @@ function App() {
   const DISHES_FOLDER_NAME = "dishes";
 
   const dishDataRef = databaseRef(database, DISHES_FOLDER_NAME);
-  const hawkerDataRef = databaseRef(database, HAWKER_FOLDER_NAME);
 
   useEffect(() => {
     const dish = [];
@@ -68,8 +65,7 @@ function App() {
     })
   }, []); 
 
-  console.log(hawkerData); 
-  console.log(hawkerData);
+  // console.log(hawkerData);
 
   return (
     <div className="App">

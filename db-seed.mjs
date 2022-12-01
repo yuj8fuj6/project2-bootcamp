@@ -6,8 +6,7 @@ import { getStorage } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 //please enter firebaseConfig here
-const firebaseConfig = {
-};
+const firebaseConfig = {};
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -554,7 +553,7 @@ const hawkerAndDishSeeding = async function () {
   for (let i = 0; i < stallsSampleData.length; i++) {
     const stall = stallsSampleData[i];
     await getDownloadURL(
-      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`)
+      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`),
     )
       .then((url) => {
         stall.stallFrontPhotoURL = url;
@@ -581,7 +580,7 @@ const hawkerAndDishSeeding = async function () {
     for (let m = 0; m < dish.photos.length; m++) {
       let dishPhoto = dish.photos[m];
       await getDownloadURL(
-        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`)
+        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`),
       )
         .then((url) => {
           dish.photoURLs.push(url);
@@ -605,7 +604,7 @@ const hawkerAndDishSeeding = async function () {
 
     const hawkerDishListRef = databaseRef(
       database,
-      HAWKER_DISH_RELATION_DATABASE
+      HAWKER_DISH_RELATION_DATABASE,
     );
     const newHawkerDishRef = push(hawkerDishListRef);
     set(newHawkerDishRef, { ...hawkerDish });

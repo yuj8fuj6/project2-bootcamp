@@ -13,13 +13,14 @@ const Dish = (props) => {
 
   //Filter Function to be added here.
   const dishSelected = dishData[0];
+  // console.log(dishSelected);
 
   //Try to make image modal popup.
   const dishPhotos = dishSelected.val.photoURLs.map((photoURL) => (
     <img src={photoURL} className="w-1/3 m-2 rounded-lg" />
   ));
 
-  const dishIngredients = dishSelected.val.ingredientlist.map((item) => (
+  const dishIngredients = dishSelected.val.ingredientList.map((item) => (
     <ul>
       <li>{item}</li>
     </ul>
@@ -122,10 +123,10 @@ const Dish = (props) => {
       <div className="flex justify-evenly flex-wrap w-screen">
         <div className="text-left">
           <p className="text-orange text-xl font-semibold drop-shadow-lg">
-            {dishSelected.val.dishname}
+            {dishSelected.val.dishName}
           </p>
           <p className="text-orange text-xxs italic font-semibold">
-            by {dishSelected.val.stalllname}
+            by {dishSelected.val.stallName}
           </p>
           <p className="text-orange text-xxs italic font-semibold">Location</p>
         </div>
