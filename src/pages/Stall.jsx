@@ -62,17 +62,29 @@ const Stall = (props) => {
           {otherStallPhotos}
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1">
-          <p className="text-xl font-semibold drop-shadow-lg">Description</p>
-          <p className="text-lg font-semibold pt-4">Story</p>
-          <p className="text-xxs lg:text-sm pt-4">
-            {hawkerSelected.val.stallStory}
-          </p>
-          <p className="text-lg font-semibold pt-4">Contains</p>
-          <p className="text-lg font-semibold pt-4">Attributes</p>
-          <p className="text-lg font-semibold mb-3 pt-4">
-            Wanna know more about the stall?
+          <div className="shadow-xl border-1 rounded-2xl p-3 mt-1 mb-1">
+            <p className="text-xl font-semibold drop-shadow-lg">Description</p>
+            <p className="text-xs lg:text-sm font-bold underline mt-2">
+              Location
+            </p>
+            <p className="text-xs lg:text-sm mt-2">
+              {hawkerSelected.val.stallAddress}
+            </p>
+            <p className="text-xs lg:text-sm font-bold underline mt-2">
+              Opening Hours
+            </p>
+            <p className="text-xs lg:text-sm mt-2">
+              {hawkerSelected.val.openingHours}
+            </p>
+          </div>
+        </div>
+        <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1">
+          <p className="text-xl font-semibold drop-shadow-lg">Our Story</p>
+          <p className="text-xs lg:text-sm mt-2">
+            {hawkerSelected.val.stallAddress}
           </p>
         </div>
+        <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1"></div>
       </div>
     </div>
   );
