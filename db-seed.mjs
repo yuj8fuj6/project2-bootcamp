@@ -595,7 +595,8 @@ const hawkerAndDishSeeding = async function () {
           openingHours: stall.openingHours,
           stallAddress: stall.stallAddress,
           stallFrontPhotoURL: stall.stallFrontPhotoURL,
-          userKey: userID,
+          stallStory: stall.stallStory,
+          [userID]: true,
         };
         const stallsListRef = databaseRef(database, HAWKER_DATABASE);
         const newStallsRef = push(stallsListRef);
@@ -638,7 +639,7 @@ const hawkerAndDishSeeding = async function () {
       attribute: dish.attribute,
       photoURLs: dish.photoURLs,
       story: dish.story,
-      hawkerKey: dish.hawkerKey,
+      [dish.hawkerKey]: true,
       userKey: dish.userKey,
     };
     const dishListRef = databaseRef(database, DISH_DATABASE);
