@@ -5,6 +5,7 @@ import {
   getDatabase,
   get,
   child,
+  update,
 } from "firebase/database";
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
 import { initializeApp } from "firebase/app";
@@ -12,16 +13,7 @@ import { getStorage } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 //please enter firebaseConfig here
-const firebaseConfig = {
-  apiKey: "AIzaSyC2Ityf-J7yIIHqzpzycCdugPDv4sMF2jg",
-  authDomain: "project2-bootcamp-60212.firebaseapp.com",
-  databaseURL:
-    "https://project2-bootcamp-60212-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "project2-bootcamp-60212",
-  storageBucket: "project2-bootcamp-60212.appspot.com",
-  messagingSenderId: "771559810358",
-  appId: "1:771559810358:web:470659e17c89d4f0603f97",
-};
+const firebaseConfig = {};
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -575,9 +567,11 @@ const HAWKER_DATABASE = "hawkers/";
 const DISH_PHOTOS_FOLDER = "dishphotos";
 const DISH_DATABASE = "dishes";
 const HAWKER_DISH_RELATION_DATABASE = "hawker-dishes/";
+const USER_HAWKERS_DATABASE = "user-hawkers/";
 
 const hawkerAndDishSeeding = async function () {
   const hawkerDishKeys = {};
+  const userHawkerKeys = {};
 
   for (let i = 0; i < stallsSampleData.length; i++) {
     const stall = stallsSampleData[i];
@@ -591,6 +585,8 @@ const hawkerAndDishSeeding = async function () {
         userID = snapshot.val();
       }
     );
+
+    userHawkerKeys[userID] = {};
 
     await getDownloadURL(
       storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`)
@@ -606,12 +602,15 @@ const hawkerAndDishSeeding = async function () {
           stallFrontPhotoURL: stall.stallFrontPhotoURL,
           stallStory: stall.stallStory,
           [userID]: true,
+          userEmail: stall.userEmail,
         };
         const stallsListRef = databaseRef(database, HAWKER_DATABASE);
         const newStallsRef = push(stallsListRef);
         const newStallsRefKey = newStallsRef.key;
         hawkerDishKeys[newStallsRefKey] = {};
         set(newStallsRef, { ...newStallObj });
+
+        userHawkerKeys[userID][newStallsRefKey] = true;
 
         for (let m = 0; m < dishes.length; m++) {
           if (stallsSampleData[i].stallName === dishes[m].stallName) {
@@ -624,6 +623,10 @@ const hawkerAndDishSeeding = async function () {
         console.log(error);
       });
   }
+
+  const userStallsListRef = databaseRef(database, USER_HAWKERS_DATABASE);
+
+  set(userStallsListRef, userHawkerKeys);
 
   for (let i = 0; i < dishes.length; i++) {
     const dish = dishes[i];
@@ -664,8 +667,10 @@ const hawkerAndDishSeeding = async function () {
     HAWKER_DISH_RELATION_DATABASE
   );
   set(hawkerDishKeysRef, hawkerDishKeys);
+  console.log("end of uploads, ctrl+c to exit");
 };
 
 //function calls
-// userSeeding();
+//please run userSeeding() first, then run hawkerAndDishSeeding(), to do so comment out the function you are not running before executing this file.
+userSeeding();
 hawkerAndDishSeeding();
