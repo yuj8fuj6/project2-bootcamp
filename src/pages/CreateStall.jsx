@@ -7,22 +7,17 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
-import {
-  ref as databaseRef,
-  set,
-  push,
-  child,
-  update,
-} from "firebase/database";
+import { ref as databaseRef, set, push } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 
 const HAWKER_PHOTOS_FOLDER = "hawkerphotos";
 const HAWKER_DATABASE = "hawkers";
+const USER_HAWKERS_DATABASE = "user-hawkers/";
 
 const CreateStall = ({ user }) => {
   const emptyStallDetails = {
     stallName: "",
-    stallLocation: "",
+    stallAddress: "",
     foodCenterName: "",
     openingHours: "",
     openingDays: "",
@@ -46,7 +41,6 @@ const CreateStall = ({ user }) => {
       ...prevPhotos,
     ]);
     setOtherStallPhotos((prevPhotos) => [...prevPhotos, event.target.files[0]]);
-    console.log(otherStallPhotos);
   };
 
   const handleStallInputs = (event) => {
@@ -54,14 +48,12 @@ const CreateStall = ({ user }) => {
       ...stallDetails,
       [event.target.name]: event.target.value,
     });
-    console.log(stallDetails);
   };
 
   let navigate = useNavigate();
 
   const submitStallDetails = async function (event) {
     event.preventDefault();
-
     const stallFrontPhotoRef = storageRef(
       storage,
       `${HAWKER_PHOTOS_FOLDER}/${stallFrontPhoto.name}`
@@ -69,7 +61,7 @@ const CreateStall = ({ user }) => {
 
     const uploadPhotoPromises = [];
     const otherStallPhotosURLArr = [];
-    let stallFrontPhotoURLRef = "";
+    let stallFrontURL = "";
 
     for (let i = 0; i < otherStallPhotos.length; i++) {
       const otherStallPhotosRef = storageRef(
@@ -82,7 +74,6 @@ const CreateStall = ({ user }) => {
           .then(() => {
             getDownloadURL(otherStallPhotosRef).then((url) => {
               otherStallPhotosURLArr.push(url);
-              console.log(otherStallPhotosURLArr);
             });
           })
           .catch((error) => {
@@ -94,26 +85,34 @@ const CreateStall = ({ user }) => {
     uploadPhotoPromises.push(
       await uploadBytes(stallFrontPhotoRef, stallFrontPhoto).then(() =>
         getDownloadURL(stallFrontPhotoRef).then((url) => {
-          stallFrontPhotoURLRef = url;
+          stallFrontURL = url;
         })
       )
     );
 
     try {
       await Promise.all(uploadPhotoPromises).then(() => {
-        setStallDetails({
+        const newStall = {
           ...stallDetails,
+          [user.uid]: true,
+          stallFrontURL: stallFrontURL,
           otherStallPhotosURL: otherStallPhotosURLArr,
-          stallFrontPhotoURL: stallFrontPhotoURLRef,
-          userEmail: user,
-        });
+        };
+        const hawkersListRef = databaseRef(database, HAWKER_DATABASE);
+        const newHawkerRef = push(hawkersListRef);
+        const newHawkerRefKey = newHawkerRef.key;
+        set(newHawkerRef, newStall);
+
+        const userHawkerKeys = databaseRef(
+          database,
+          USER_HAWKERS_DATABASE + user.uid
+        );
+        const newHawkerEntry = { [newHawkerRefKey]: true };
+        set(userHawkerKeys, newHawkerEntry);
+        console.log("end");
       });
     } catch (error) {
       console.log(error);
-    } finally {
-      const hawkersListRef = databaseRef(database, HAWKER_DATABASE);
-      const newHawkerRef = push(hawkersListRef);
-      set(newHawkerRef, { ...stallDetails });
     }
   };
 
@@ -226,7 +225,7 @@ const CreateStall = ({ user }) => {
                   Address:
                   <input
                     className="border border-black rounded-lg w-full max-w-xs"
-                    name="stallLocation"
+                    name="stallAddress"
                     onChange={handleStallInputs}
                   />
                 </label>
