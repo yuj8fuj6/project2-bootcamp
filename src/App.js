@@ -14,7 +14,15 @@ import {
 } from "./pages";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, database } from "./firebase";
-import { onChildAdded, ref as databaseRef } from "firebase/database";
+import {
+  onChildAdded,
+  ref as databaseRef,
+  getDatabase,
+  query,
+  equalTo,
+  get,
+  orderByChild,
+} from "firebase/database";
 import Login from "./pages/Login";
 
 function App() {
@@ -31,6 +39,19 @@ function App() {
       }
     });
   }, []);
+
+  const userDetails = [];
+  const db = getDatabase();
+  const currentUser = query(
+    databaseRef(db, "users"),
+    orderByChild("username"),
+    equalTo(`${user.displayName}`),
+  );
+  get(currentUser).then((snapshot) => {
+    userDetails.push(snapshot.val());
+  });
+
+  console.log(userDetails);
 
   const DISHES_FOLDER_NAME = "dishes";
 
@@ -80,7 +101,7 @@ function App() {
             path="/stall"
             element={<Stall hawkerData={hawkerData} dishData={dishData} />}
           />
-          <Route path="/order" element={<Order dishData={dishData}/>} />
+          <Route path="/order" element={<Order dishData={dishData} />} />
           <Route path="/search" element={<Search />} />
           <Route path="/createDish" element={<CreateDish />} />
           <Route path="/createStall" element={<CreateStall />} />

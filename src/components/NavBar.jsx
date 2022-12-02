@@ -5,11 +5,11 @@ import { BsTelephone, BsSearch, BsPersonCircle } from "react-icons/bs";
 const NavBar = () => {
   return (
     <div className="text-orange flex justify-evenly w-5/12 text-nav place-items-center">
-      <Link to="/createStall">
+      <Link to="/login">
         <BsTelephone />
         <div className="text-xxs">Contact</div>
       </Link>
-      <Link to="/search">
+      <Link to="/registration">
         <BsSearch />
         <div className="text-xxs">Search</div>
       </Link>
