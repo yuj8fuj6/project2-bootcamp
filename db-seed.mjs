@@ -10,7 +10,11 @@ import {
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 
 //please enter firebaseConfig here
 const firebaseConfig = {};
@@ -257,6 +261,7 @@ const userSeeding = function () {
     await createUserWithEmailAndPassword(auth, contactEmail, password)
       .then(async (response) => {
         console.log(`created user in authentication`);
+        updateProfile(auth.currentUser, { displayName: username });
         const uid = response.user.uid;
         const userRef = {
           username,
@@ -286,7 +291,7 @@ const userSeeding = function () {
     i += 1;
     if (i === userSampleData.length) {
       clearInterval(interval);
-      console.log("all user data added");
+      console.log("all user data added, ctrl+c to exit");
     }
   }, 2000);
 };
@@ -408,7 +413,6 @@ const stallsSampleData = [
 //Dishes Sample Data
 const dishes = [
   {
-    dishID: 1,
     dishName: "Curry Puff",
     stallName: "Rolina Traditional Hainanese Curry Puffs",
     ingredientList: ["Potatoes", "Flour", "Chicken", "Curry", "Egg"],
@@ -419,7 +423,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 2,
     dishName: "Prawn Fried Rice",
     stallName: "Ding Gua Gua Fried Rice",
     ingredientList: ["Rice", "Eggs", "Scallions", "Prawns"],
@@ -434,7 +437,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 3,
     dishName: "Egg Fried Rice",
     stallName: "Ding Gua Gua Fried Rice",
     ingredientList: ["Rice", "Eggs", "Scallions"],
@@ -445,7 +447,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 4,
     dishName: "Cendol",
     stallName: "Cendol Geylang Serai",
     ingredientList: ["Gula Melaka", "Flour", "Milk"],
@@ -456,7 +457,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 5,
     dishName: "Seafood Minced Meat Noodles",
     stallName: "Minced Pork Bros",
     ingredientList: [
@@ -473,7 +473,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 6,
     dishName: "Modern Pork Noodles",
     stallName: "Minced Pork Bros",
     ingredientList: ["Egg Noodles", "Minced Meat", "Pork Slices", "Vinegar"],
@@ -484,7 +483,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 7,
     dishName: "Fish Soup",
     stallName: "First Street Teochew Fish Soup",
     ingredientList: ["Fish", "Ginger", "Scallions", "Prawns"],
@@ -495,7 +493,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 8,
     dishName: "Minced Meat Noodles",
     stallName: "Ah Gong Minced Pork Noodles",
     ingredientList: ["Pork", "Beancurd Skin", "Noodles", "Lard"],
@@ -506,7 +503,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 9,
     dishName: "Curry Set",
     stallName: "Midas",
     ingredientList: ["Curry paste", "Curry Leaf", "Potatoes", "Chicken"],
@@ -517,7 +513,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 10,
     dishName: "Prata",
     stallName: "Midas",
     ingredientList: ["Flour"],
@@ -528,7 +523,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 11,
     dishName: "Prawn Noodles",
     stallName: "Beach Road Prawn Noodle House",
     ingredientList: ["Yellow Noodles", "Prawns", "Scallions"],
@@ -539,7 +533,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 12,
     dishName: "Ngoh Hiang Platter",
     stallName: "Beach Road Prawn Noodle House",
     ingredientList: [
