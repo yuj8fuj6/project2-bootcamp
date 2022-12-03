@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
 import { Header, NavBar } from "../components";
 import { Button } from "../components";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
-const UserProfile = ({ userDetails }) => {
-  console.log(userDetails);
+const UserProfile = () => {
+  const user = useContext(UserContext);
+  console.log(user);
   const [profilePhoto, setProfilePhoto] = useState();
-  const [editMode, setEditMode] = useState(userDetails);
+  const [editMode, setEditMode] = useState(false);
+  const [userDetails, setUserDetails] = useState(user);
 
   const handleProfilePhoto = (event) => {
     const urlDisplay = URL.createObjectURL(event.target.files[0]);
@@ -13,6 +19,25 @@ const UserProfile = ({ userDetails }) => {
       display: urlDisplay,
       file: event.target.files[0],
     });
+  };
+
+  const handleUserInput = (event) => {
+    setUserDetails({ ...userDetails, [event.target.name]: event.target.value });
+  };
+
+  const onClickEditMode = (event) => {
+    event.preventDefault();
+    setEditMode(!editMode);
+  };
+
+  const navigate = useNavigate();
+
+  const signOutUser = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -23,8 +48,12 @@ const UserProfile = ({ userDetails }) => {
       </div>
       <div>UserProfile</div>
       <div>
+        <Button type="button" onClick={signOutUser}>
+          Sign-Out
+        </Button>
         <form>
-          Profile Picture
+          <p>Profile Picture</p>
+
           {profilePhoto ? (
             <div className="container w-3/4 max-w-none">
               <img
@@ -72,80 +101,189 @@ const UserProfile = ({ userDetails }) => {
               </g>
             </svg>
           )}
-          <label>
-            <p className="border border-purple bg-purple text-white w-28 p-2 rounded-3xl m-2">
-              Upload Photo
-            </p>
-            <input
-              type="file"
-              className="hidden"
-              onChange={handleProfilePhoto}
-            />
-          </label>
-          <label>
-            <p>First Name</p>
-            <input
-              className="border border-black rounded-lg"
-              placeholder={userDetails.firstName}
-            />
-          </label>
-          <label>
-            <p>Last Name</p>
-            <input
-              className="border border-black rounded-lg"
-              placeholder={userDetails.lastName}
-            />
-          </label>
-          <label>
-            <p>Contact Email</p>
-            <input
-              className="border border-black rounded-lg"
-              placeholder={userDetails.contactEmail}
-            />
-          </label>
-          {userDetails.userType === "hawker" && (
+
+          {editMode ? (
             <>
               <label>
-                <p>Stall Name</p>
+                <p className="border border-purple bg-purple text-white w-28 p-2 rounded-3xl m-2">
+                  Upload Photo
+                </p>
                 <input
-                  className="border border-black rounded-lg"
-                  placeholder={userDetails.stallName}
+                  type="file"
+                  className="hidden"
+                  onChange={handleProfilePhoto}
                 />
               </label>
               <label>
-                <p>Stall Location</p>
+                <p>First Name</p>
                 <input
                   className="border border-black rounded-lg"
-                  placeHolder={userDetails.stallAddress}
+                  placeholder={user.firstName}
+                  name="firstName"
+                  value={user.firstName}
+                  onChange={handleUserInput}
+                />
+              </label>
+              <label>
+                <p>Last Name</p>
+                <input
+                  className="border border-black rounded-lg"
+                  placeholder={user.lastName}
+                  name="lastName"
+                  value={user.lastName}
+                  onChange={handleUserInput}
+                />
+              </label>
+              <label>
+                <p>Contact Email</p>
+                <input
+                  className="border border-black rounded-lg"
+                  placeholder={user.contactEmail}
+                  name="contactEmail"
+                  value={user.contactEmail}
+                  onChange={handleUserInput}
+                />
+              </label>
+              {user.userType === "hawker" && (
+                <>
+                  <label>
+                    <p>Stall Name</p>
+                    <input
+                      className="border border-black rounded-lg"
+                      placeholder={user.stallName}
+                      name="stallName"
+                      value={user.stallName}
+                      onChange={handleUserInput}
+                    />
+                  </label>
+                  <label>
+                    <p>Stall Location</p>
+                    <input
+                      className="border border-black rounded-lg"
+                      placeHolder={user.stallAddress}
+                      name="stallAddress"
+                      value={user.stallAdress}
+                      onChange={handleUserInput}
+                    />
+                  </label>
+                </>
+              )}
+              <label>
+                <p>Username</p>
+                <input
+                  className="border border-black rounded-lg"
+                  placeholder={user.username}
+                  name="username"
+                  value={user.username}
+                  onChange={handleUserInput}
+                />
+              </label>
+              <label>
+                <p>Password</p>
+                <input
+                  type="password"
+                  className="border border-black rounded-lg mb-2"
+                  placeholder="*******"
+                  name="password"
+                  onChange={handleUserInput}
+                />
+              </label>
+              <p className="m-2"></p>
+            </>
+          ) : (
+            <>
+              <label>
+                <p>First Name</p>
+                <input
+                  className="border border-black rounded-lg"
+                  placeholder={user.firstName}
+                  name="firstName"
+                  readOnly
+                />
+              </label>
+              <label>
+                <p>Last Name</p>
+                <input
+                  className="border border-black rounded-lg"
+                  placeholder={user.lastName}
+                  name="lastName"
+                  readOnly
+                />
+              </label>
+              <label>
+                <p>Contact Email</p>
+                <input
+                  className="border border-black rounded-lg"
+                  placeholder={user.contactEmail}
+                  name="contactEmail"
+                  readOnly
+                />
+              </label>
+              {user.userType === "hawker" && (
+                <>
+                  <label>
+                    <p>Stall Name</p>
+                    <input
+                      className="border border-black rounded-lg"
+                      placeholder={user.stallName}
+                      name="stallName"
+                      readOnly
+                    />
+                  </label>
+                  <label>
+                    <p>Stall Location</p>
+                    <input
+                      className="border border-black rounded-lg"
+                      placeHolder={user.stallAddress}
+                      name="stallAddress"
+                      readOnly
+                    />
+                  </label>
+                </>
+              )}
+              <label>
+                <p>Username</p>
+                <input
+                  className="border border-black rounded-lg"
+                  placeholder={user.username}
+                  name="username"
+                  readOnly
+                />
+              </label>
+              <label>
+                <p>Password</p>
+                <input
+                  type="password"
+                  className="border border-black rounded-lg mb-2"
+                  placeholder="*******"
+                  name="password"
+                  readOnly
                 />
               </label>
             </>
           )}
-          <label>
-            <p>Username</p>
-            <input
-              className="border border-black rounded-lg"
-              placeholder={userDetails.username}
-            />
-          </label>
-          <label>
-            <p>Password</p>
-            <input
-              type="password"
-              className="border border-black rounded-lg mb-2"
-              placeholder="*******"
-            />
-          </label>
           <p className="m-2">
-            <Button>Update Details</Button>
+            {editMode ? (
+              <Button type="button">Update Details</Button>
+            ) : (
+              <Button type="button" onClick={onClickEditMode}>
+                Edit Details
+              </Button>
+            )}
           </p>
         </form>
-        <p className="m-2">
-          <Button>Create New Stall</Button>
-        </p>
-        <p className="m-2">
-          <Button>Edit Existing Stall</Button>
-        </p>
+        {userDetails.userType === "hawker" && (
+          <>
+            <p className="m-2">
+              <Button type="button" onClick={() => navigate("/createDish")}>
+                Create New Stall
+              </Button>
+            </p>
+            <p className="m-2">
+              <Button type="button">Edit Existing Stall</Button>
+            </p>
+          </>
+        )}
       </div>
     </div>
   );
