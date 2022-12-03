@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Header, NavBar } from "../components";
 import { Button } from "../components";
 
-const UserProfile = () => {
+const UserProfile = ({ userDetails }) => {
+  console.log(userDetails);
   const [profilePhoto, setProfilePhoto] = useState();
+  const [editMode, setEditMode] = useState(userDetails);
 
   const handleProfilePhoto = (event) => {
     const urlDisplay = URL.createObjectURL(event.target.files[0]);
@@ -82,33 +84,56 @@ const UserProfile = () => {
           </label>
           <label>
             <p>First Name</p>
-            <input className="border border-black rounded-lg" />
+            <input
+              className="border border-black rounded-lg"
+              placeholder={userDetails.firstName}
+            />
           </label>
           <label>
             <p>Last Name</p>
-            <input className="border border-black rounded-lg" />
+            <input
+              className="border border-black rounded-lg"
+              placeholder={userDetails.lastName}
+            />
           </label>
           <label>
-            <p>Contact Number</p>
-            <input className="border border-black rounded-lg" />
+            <p>Contact Email</p>
+            <input
+              className="border border-black rounded-lg"
+              placeholder={userDetails.contactEmail}
+            />
           </label>
-          <label>
-            <p>Stall Name</p>
-            <input className="border border-black rounded-lg" />
-          </label>
-          <label>
-            <p>Stall Location</p>
-            <input className="border border-black rounded-lg" />
-          </label>
+          {userDetails.userType === "hawker" && (
+            <>
+              <label>
+                <p>Stall Name</p>
+                <input
+                  className="border border-black rounded-lg"
+                  placeholder={userDetails.stallName}
+                />
+              </label>
+              <label>
+                <p>Stall Location</p>
+                <input
+                  className="border border-black rounded-lg"
+                  placeHolder={userDetails.stallAddress}
+                />
+              </label>
+            </>
+          )}
           <label>
             <p>Username</p>
-            <input className="border border-black rounded-lg" />
+            <input
+              className="border border-black rounded-lg"
+              placeholder={userDetails.username}
+            />
           </label>
           <label>
             <p>Password</p>
             <input
               type="password"
               className="border border-black rounded-lg mb-2"
+              placeholder="*******"
             />
           </label>
           <p className="m-2">
