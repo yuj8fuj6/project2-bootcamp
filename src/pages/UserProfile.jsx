@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { Header, NavBar } from "../components";
 import { Button } from "../components";
-import { signOut } from "firebase/auth";
+import { signOut, updateProfile } from "firebase/auth";
 import { auth } from "../firebase";
 
 const UserProfile = () => {
   const user = useContext(UserContext);
-  console.log(user);
   const [profilePhoto, setProfilePhoto] = useState();
   const [editMode, setEditMode] = useState(false);
-  const [userDetails, setUserDetails] = useState(user);
+  const [userInfo, setUserInfo] = useState({ ...user });
+  console.log(userInfo);
 
   const handleProfilePhoto = (event) => {
     const urlDisplay = URL.createObjectURL(event.target.files[0]);
@@ -22,12 +22,18 @@ const UserProfile = () => {
   };
 
   const handleUserInput = (event) => {
-    setUserDetails({ ...userDetails, [event.target.name]: event.target.value });
+    console.log(userInfo);
+    setUserInfo({
+      ...userInfo,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const onClickEditMode = (event) => {
     event.preventDefault();
-    setEditMode(!editMode);
+    const newLocal = !editMode;
+    setEditMode(newLocal);
+    console.log(userInfo, user);
   };
 
   const navigate = useNavigate();
@@ -38,6 +44,15 @@ const UserProfile = () => {
         navigate("/");
       })
       .catch((error) => console.log(error));
+  };
+
+  const updateUserProfile = (event) => {
+    event.preventDefault();
+    console.log("updating user profile");
+    console.log(userInfo);
+    console.log(user);
+
+    setEditMode(false);
   };
 
   return (
@@ -118,9 +133,8 @@ const UserProfile = () => {
                 <p>First Name</p>
                 <input
                   className="border border-black rounded-lg"
-                  placeholder={user.firstName}
                   name="firstName"
-                  value={user.firstName}
+                  value={userInfo.firstName}
                   onChange={handleUserInput}
                 />
               </label>
@@ -128,9 +142,9 @@ const UserProfile = () => {
                 <p>Last Name</p>
                 <input
                   className="border border-black rounded-lg"
-                  placeholder={user.lastName}
                   name="lastName"
-                  value={user.lastName}
+                  placeholder={userInfo.lastName}
+                  value={userInfo.lastName}
                   onChange={handleUserInput}
                 />
               </label>
@@ -138,43 +152,18 @@ const UserProfile = () => {
                 <p>Contact Email</p>
                 <input
                   className="border border-black rounded-lg"
-                  placeholder={user.contactEmail}
                   name="contactEmail"
-                  value={user.contactEmail}
+                  value={userInfo.contactEmail}
                   onChange={handleUserInput}
                 />
               </label>
-              {user.userType === "hawker" && (
-                <>
-                  <label>
-                    <p>Stall Name</p>
-                    <input
-                      className="border border-black rounded-lg"
-                      placeholder={user.stallName}
-                      name="stallName"
-                      value={user.stallName}
-                      onChange={handleUserInput}
-                    />
-                  </label>
-                  <label>
-                    <p>Stall Location</p>
-                    <input
-                      className="border border-black rounded-lg"
-                      placeHolder={user.stallAddress}
-                      name="stallAddress"
-                      value={user.stallAdress}
-                      onChange={handleUserInput}
-                    />
-                  </label>
-                </>
-              )}
+
               <label>
                 <p>Username</p>
                 <input
                   className="border border-black rounded-lg"
-                  placeholder={user.username}
                   name="username"
-                  value={user.username}
+                  value={userInfo.username}
                   onChange={handleUserInput}
                 />
               </label>
@@ -197,17 +186,14 @@ const UserProfile = () => {
                 <input
                   className="border border-black rounded-lg"
                   placeholder={user.firstName}
-                  name="firstName"
-                  readOnly
                 />
               </label>
+
               <label>
                 <p>Last Name</p>
                 <input
                   className="border border-black rounded-lg"
                   placeholder={user.lastName}
-                  name="lastName"
-                  readOnly
                 />
               </label>
               <label>
@@ -215,56 +201,32 @@ const UserProfile = () => {
                 <input
                   className="border border-black rounded-lg"
                   placeholder={user.contactEmail}
-                  name="contactEmail"
-                  readOnly
                 />
               </label>
-              {user.userType === "hawker" && (
-                <>
-                  <label>
-                    <p>Stall Name</p>
-                    <input
-                      className="border border-black rounded-lg"
-                      placeholder={user.stallName}
-                      name="stallName"
-                      readOnly
-                    />
-                  </label>
-                  <label>
-                    <p>Stall Location</p>
-                    <input
-                      className="border border-black rounded-lg"
-                      placeHolder={user.stallAddress}
-                      name="stallAddress"
-                      readOnly
-                    />
-                  </label>
-                </>
-              )}
+
               <label>
                 <p>Username</p>
                 <input
                   className="border border-black rounded-lg"
                   placeholder={user.username}
-                  name="username"
-                  readOnly
                 />
               </label>
+
               <label>
                 <p>Password</p>
                 <input
                   type="password"
                   className="border border-black rounded-lg mb-2"
                   placeholder="*******"
-                  name="password"
-                  readOnly
                 />
               </label>
             </>
           )}
           <p className="m-2">
             {editMode ? (
-              <Button type="button">Update Details</Button>
+              <Button type="button" onClick={updateUserProfile}>
+                Update Details
+              </Button>
             ) : (
               <Button type="button" onClick={onClickEditMode}>
                 Edit Details
@@ -272,7 +234,7 @@ const UserProfile = () => {
             )}
           </p>
         </form>
-        {userDetails.userType === "hawker" && (
+        {userInfo.userType === "hawker" && (
           <>
             <p className="m-2">
               <Button type="button" onClick={() => navigate("/createDish")}>
