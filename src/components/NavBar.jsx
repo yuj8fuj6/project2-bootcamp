@@ -13,7 +13,7 @@ const NavBar = () => {
         <BsSearch />
         <div className="text-xxs">Search</div>
       </Link>
-      <Link to="/profile">
+      <Link to="/login">
         <BsPersonCircle />
         <div className="text-xxs">Log In</div>
       </Link>

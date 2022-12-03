@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext, useCallback } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import {
@@ -29,6 +29,7 @@ function App() {
   const [user, setUser] = useState("");
   const [dishData, setDishData] = useState([]);
   const [hawkerData, setHawkerData] = useState([]);
+  const [userDetails, setUserDetails] = useState(null);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -40,18 +41,45 @@ function App() {
     });
   }, []);
 
-  const userDetails = [];
-  const db = getDatabase();
-  const currentUser = query(
-    databaseRef(db, "users"),
-    orderByChild("username"),
-    equalTo(`${user.displayName}`),
-  );
-  get(currentUser).then((snapshot) => {
-    userDetails.push(snapshot.val());
-  });
+  const fetchUserDetails = useCallback(() => {
+    //   console.log(user)
+    //   const db = getDatabase();
+    //   const currentUser = query(
+    //     databaseRef(db, "users/"),
+    //     orderByChild("contactEmail"),
+    //     equalTo(`${user.email}`),
+    //   );
+    //   get(currentUser).then((snapshot) => {
+    //     console.log(snapshot.val());
+    //     if (snapshot.exists()) {
+    //       console.log(snapshot.val())
+    //       const [user] = Object.values(snapshot.val());
+    //       console.log(user);
+    //       setUserDetails(user);
+    //     }
+    //   });
+    // },[user]);
 
-  console.log(userDetails);
+    //   useEffect(() => {
+    //     fetchUserDetails();
+    //   }, [user, fetchUserDetails]);
+
+    console.log(user);
+    const db = getDatabase();
+    const currentUser = query(databaseRef(db, `users/${user.uid}`));
+    get(currentUser).then((snapshot) => {
+      console.log(snapshot.val());
+      if (snapshot.exists()) {
+        setUserDetails(snapshot.val());
+      }
+    });
+  }, [user]);
+  
+  useEffect(() => {
+    fetchUserDetails();
+  }, [user, fetchUserDetails]);
+
+  console.log(userDetails.contactEmail);
 
   const DISHES_FOLDER_NAME = "dishes";
 
