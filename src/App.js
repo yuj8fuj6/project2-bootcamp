@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import {
@@ -24,6 +24,8 @@ import {
   orderByChild,
 } from "firebase/database";
 import Login from "./pages/Login";
+
+export const UserContext = React.createContext();
 
 function App() {
   const [user, setUser] = useState("");
@@ -68,18 +70,17 @@ function App() {
     const db = getDatabase();
     const currentUser = query(databaseRef(db, `users/${user.uid}`));
     get(currentUser).then((snapshot) => {
-      console.log(snapshot.val());
       if (snapshot.exists()) {
         setUserDetails(snapshot.val());
       }
     });
   }, [user]);
-  
+
   useEffect(() => {
     fetchUserDetails();
   }, [user, fetchUserDetails]);
 
-  console.log(userDetails.contactEmail);
+  // console.log(userDetails);
 
   const DISHES_FOLDER_NAME = "dishes";
 
@@ -118,23 +119,25 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter basename={window.location.pathname || ""}>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/registration" element={<Registration />} />
-          <Route path="/profile" element={<UserProfile />} />
-          <Route path="/dish" element={<Dish dishData={dishData} />} />
-          <Route
-            path="/stall"
-            element={<Stall hawkerData={hawkerData} dishData={dishData} />}
-          />
-          <Route path="/order" element={<Order dishData={dishData} />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/createDish" element={<CreateDish />} />
-          <Route path="/createStall" element={<CreateStall />} />
-        </Routes>
-      </BrowserRouter>
+      <UserContext.Provider value={userDetails}>
+        <BrowserRouter basename={window.location.pathname || ""}>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/registration" element={<Registration />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/dish" element={<Dish dishData={dishData} />} />
+            <Route
+              path="/stall"
+              element={<Stall hawkerData={hawkerData} dishData={dishData} />}
+            />
+            <Route path="/order" element={<Order dishData={dishData} />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/createDish" element={<CreateDish />} />
+            <Route path="/createStall" element={<CreateStall />} />
+          </Routes>
+        </BrowserRouter>
+      </UserContext.Provider>
     </div>
   );
 }
