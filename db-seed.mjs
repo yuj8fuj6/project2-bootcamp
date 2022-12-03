@@ -32,8 +32,8 @@ const userSampleData = [
     lastName: "How",
     userType: "hawker",
     contactEmail: "email2@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "uncertaincatfish",
@@ -42,8 +42,8 @@ const userSampleData = [
     lastName: "Poon",
     userType: "user",
     contactEmail: "email3@email.com",
-    karmaPoints: "66",
-    reviewsDone: "79",
+    karmaPoints: 66,
+    reviewsDone: 79,
   },
   {
     username: "ashamedcashews",
@@ -52,8 +52,8 @@ const userSampleData = [
     lastName: "Yeo",
     userType: "hawker",
     contactEmail: "email4@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "delirioussamphire",
@@ -62,8 +62,8 @@ const userSampleData = [
     lastName: "Law",
     userType: "user",
     contactEmail: "email5@email.com",
-    karmaPoints: "24",
-    reviewsDone: "87",
+    karmaPoints: 24,
+    reviewsDone: 87,
   },
   {
     username: "resignedtacos",
@@ -72,8 +72,8 @@ const userSampleData = [
     lastName: "Tin",
     userType: "hawker",
     contactEmail: "email6@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "mildalfalfa",
@@ -82,8 +82,8 @@ const userSampleData = [
     lastName: "Goh",
     userType: "user",
     contactEmail: "email7@email.com",
-    karmaPoints: "10",
-    reviewsDone: "34",
+    karmaPoints: 10,
+    reviewsDone: 34,
   },
   {
     username: "needfulflapjack",
@@ -92,8 +92,8 @@ const userSampleData = [
     lastName: "Shen",
     userType: "hawker",
     contactEmail: "email8@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "selfishdough",
@@ -102,8 +102,8 @@ const userSampleData = [
     lastName: "Bin Mohammad Syaril",
     userType: "user",
     contactEmail: "email9@email.com",
-    karmaPoints: "78",
-    reviewsDone: "61",
+    karmaPoints: 78,
+    reviewsDone: 61,
   },
   {
     username: "enragedsausages",
@@ -112,8 +112,8 @@ const userSampleData = [
     lastName: "Bin Muhamad Noor",
     userType: "hawker",
     contactEmail: "email10@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "interestshortcake",
@@ -122,8 +122,8 @@ const userSampleData = [
     lastName: "Binte Noh Yacob",
     userType: "user",
     contactEmail: "email11@email.com",
-    karmaPoints: "14",
-    reviewsDone: "54",
+    karmaPoints: 14,
+    reviewsDone: 54,
   },
   {
     username: "crushedcauliflower",
@@ -132,8 +132,8 @@ const userSampleData = [
     lastName: "d/o M. Prabu",
     userType: "hawker",
     contactEmail: "email12@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "loyalblueberries",
@@ -142,8 +142,8 @@ const userSampleData = [
     lastName: "s/o A. Sathasivam",
     userType: "user",
     contactEmail: "email51@email.com",
-    karmaPoints: "4",
-    reviewsDone: "74",
+    karmaPoints: 4,
+    reviewsDone: 74,
   },
   {
     username: "homesickrice",
@@ -152,8 +152,8 @@ const userSampleData = [
     lastName: "d/o J. Muthu",
     userType: "hawker",
     contactEmail: "email13@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "distractedtapioca",
@@ -162,8 +162,8 @@ const userSampleData = [
     lastName: "s/o A. Mohan",
     userType: "user",
     contactEmail: "email14@email.com",
-    karmaPoints: "68",
-    reviewsDone: "43",
+    karmaPoints: 68,
+    reviewsDone: 43,
   },
   {
     username: "lazypolenta",
@@ -172,8 +172,8 @@ const userSampleData = [
     lastName: "Binte Hairul Anuar",
     userType: "hawker",
     contactEmail: "email15@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "outragedbattenburg",
@@ -182,8 +182,8 @@ const userSampleData = [
     lastName: "Hong",
     userType: "user",
     contactEmail: "email16@email.com",
-    karmaPoints: "47",
-    reviewsDone: "17",
+    karmaPoints: 47,
+    reviewsDone: 17,
   },
   {
     username: "terrifieddoughnut",
@@ -192,8 +192,8 @@ const userSampleData = [
     lastName: "Lam",
     userType: "hawker",
     contactEmail: "email17@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "vengefulromaine",
@@ -202,8 +202,8 @@ const userSampleData = [
     lastName: "Su",
     userType: "user",
     contactEmail: "email18@email.com",
-    karmaPoints: "97",
-    reviewsDone: "8",
+    karmaPoints: 97,
+    reviewsDone: 8,
   },
   {
     username: "perturbedcrab",
@@ -212,8 +212,8 @@ const userSampleData = [
     lastName: "toodle",
     userType: "hawker",
     contactEmail: "email19@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "mourningpinto",
@@ -222,8 +222,8 @@ const userSampleData = [
     lastName: "overs",
     userType: "user",
     contactEmail: "email20@email.com",
-    karmaPoints: "59",
-    reviewsDone: "45",
+    karmaPoints: 59,
+    reviewsDone: 45,
   },
   {
     username: "acceptingcupcake",
@@ -232,8 +232,8 @@ const userSampleData = [
     lastName: "reuben",
     userType: "hawker",
     contactEmail: "email21@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
 ];
 
@@ -273,7 +273,7 @@ const userSeeding = function () {
 
         const userKeysRef = databaseRef(
           database,
-          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ","),
+          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ",")
         );
         // const userKeysListRef = push(userKeysRef);
 
@@ -583,13 +583,13 @@ const hawkerAndDishSeeding = async function () {
     await get(child(dbRef, `${USERKEYS_DATABASE}/${stallEmailRef}`)).then(
       (snapshot) => {
         userID = snapshot.val();
-      },
+      }
     );
 
     userHawkerKeys[userID] = {};
 
     await getDownloadURL(
-      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`),
+      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`)
     )
       .then((url) => {
         stall.stallFrontPhotoURL = url;
@@ -634,7 +634,7 @@ const hawkerAndDishSeeding = async function () {
     for (let m = 0; m < dish.photos.length; m++) {
       let dishPhoto = dish.photos[m];
       await getDownloadURL(
-        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`),
+        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`)
       )
         .then((url) => {
           dish.photoURLs.push(url);
@@ -664,7 +664,7 @@ const hawkerAndDishSeeding = async function () {
 
   const hawkerDishKeysRef = databaseRef(
     database,
-    HAWKER_DISH_RELATION_DATABASE,
+    HAWKER_DISH_RELATION_DATABASE
   );
   set(hawkerDishKeysRef, hawkerDishKeys);
   console.log("end of uploads, ctrl+c to exit");
@@ -672,5 +672,5 @@ const hawkerAndDishSeeding = async function () {
 
 //function calls
 //please run userSeeding() first, then run hawkerAndDishSeeding(), to do so comment out the function you are not running before executing this file.
-userSeeding();
+// userSeeding();
 hawkerAndDishSeeding();
