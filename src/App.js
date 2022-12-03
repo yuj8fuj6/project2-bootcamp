@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext, useCallback } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import {
@@ -14,13 +14,22 @@ import {
 } from "./pages";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, database } from "./firebase";
-import { onChildAdded, ref as databaseRef } from "firebase/database";
+import {
+  onChildAdded,
+  ref as databaseRef,
+  getDatabase,
+  query,
+  equalTo,
+  get,
+  orderByChild,
+} from "firebase/database";
 import Login from "./pages/Login";
 
 function App() {
   const [user, setUser] = useState("");
   const [dishData, setDishData] = useState([]);
   const [hawkerData, setHawkerData] = useState([]);
+  const [userDetails, setUserDetails] = useState(null);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -31,6 +40,46 @@ function App() {
       }
     });
   }, []);
+
+  const fetchUserDetails = useCallback(() => {
+    //   console.log(user)
+    //   const db = getDatabase();
+    //   const currentUser = query(
+    //     databaseRef(db, "users/"),
+    //     orderByChild("contactEmail"),
+    //     equalTo(`${user.email}`),
+    //   );
+    //   get(currentUser).then((snapshot) => {
+    //     console.log(snapshot.val());
+    //     if (snapshot.exists()) {
+    //       console.log(snapshot.val())
+    //       const [user] = Object.values(snapshot.val());
+    //       console.log(user);
+    //       setUserDetails(user);
+    //     }
+    //   });
+    // },[user]);
+
+    //   useEffect(() => {
+    //     fetchUserDetails();
+    //   }, [user, fetchUserDetails]);
+
+    console.log(user);
+    const db = getDatabase();
+    const currentUser = query(databaseRef(db, `users/${user.uid}`));
+    get(currentUser).then((snapshot) => {
+      console.log(snapshot.val());
+      if (snapshot.exists()) {
+        setUserDetails(snapshot.val());
+      }
+    });
+  }, [user]);
+  
+  useEffect(() => {
+    fetchUserDetails();
+  }, [user, fetchUserDetails]);
+
+  console.log(userDetails.contactEmail);
 
   const DISHES_FOLDER_NAME = "dishes";
 
@@ -80,7 +129,7 @@ function App() {
             path="/stall"
             element={<Stall hawkerData={hawkerData} dishData={dishData} />}
           />
-          <Route path="/order" element={<Order dishData={dishData}/>} />
+          <Route path="/order" element={<Order dishData={dishData} />} />
           <Route path="/search" element={<Search />} />
           <Route path="/createDish" element={<CreateDish />} />
           <Route path="/createStall" element={<CreateStall />} />

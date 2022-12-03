@@ -85,7 +85,7 @@ const Stall = (props) => {
           </p>
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1">
-          <StallDishCards dishData={props.dishData}/>
+          <StallDishCards dishData={props.dishData} />
         </div>
       </div>
     </div>
