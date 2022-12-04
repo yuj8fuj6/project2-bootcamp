@@ -4,7 +4,6 @@ import { BsTelephone, BsSearch, BsPersonCircle } from "react-icons/bs";
 import { UserContext } from "../App";
 
 const NavBar = () => {
-
   const userDetails = useContext(UserContext);
 
   return (

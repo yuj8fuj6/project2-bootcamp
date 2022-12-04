@@ -17,7 +17,16 @@ import {
 } from "firebase/auth";
 
 //please enter firebaseConfig here
-const firebaseConfig = {};
+const firebaseConfig = {
+  apiKey: "AIzaSyCr0oUerRzxuQIGAqB77n-uVDWv4IK5dbQ",
+  authDomain: "yumee---project-2.firebaseapp.com",
+  databaseURL:
+    "https://yumee---project-2-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "yumee---project-2",
+  storageBucket: "yumee---project-2.appspot.com",
+  messagingSenderId: "706496837595",
+  appId: "1:706496837595:web:9c2d8dd180fba27f1719fe",
+};
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -278,7 +287,7 @@ const userSeeding = function () {
 
         const userKeysRef = databaseRef(
           database,
-          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ",")
+          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ","),
         );
         // const userKeysListRef = push(userKeysRef);
 
@@ -576,13 +585,13 @@ const hawkerAndDishSeeding = async function () {
     await get(child(dbRef, `${USERKEYS_DATABASE}/${stallEmailRef}`)).then(
       (snapshot) => {
         userID = snapshot.val();
-      }
+      },
     );
 
     userHawkerKeys[userID] = {};
 
     await getDownloadURL(
-      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`)
+      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`),
     )
       .then((url) => {
         stall.stallFrontPhotoURL = url;
@@ -627,7 +636,7 @@ const hawkerAndDishSeeding = async function () {
     for (let m = 0; m < dish.photos.length; m++) {
       let dishPhoto = dish.photos[m];
       await getDownloadURL(
-        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`)
+        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`),
       )
         .then((url) => {
           dish.photoURLs.push(url);
@@ -657,7 +666,7 @@ const hawkerAndDishSeeding = async function () {
 
   const hawkerDishKeysRef = databaseRef(
     database,
-    HAWKER_DISH_RELATION_DATABASE
+    HAWKER_DISH_RELATION_DATABASE,
   );
   set(hawkerDishKeysRef, hawkerDishKeys);
   console.log("end of uploads, ctrl+c to exit");
