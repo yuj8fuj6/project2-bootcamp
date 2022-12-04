@@ -18,14 +18,6 @@ import {
 
 //please enter firebaseConfig here
 const firebaseConfig = {
-  apiKey: "AIzaSyCr0oUerRzxuQIGAqB77n-uVDWv4IK5dbQ",
-  authDomain: "yumee---project-2.firebaseapp.com",
-  databaseURL:
-    "https://yumee---project-2-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "yumee---project-2",
-  storageBucket: "yumee---project-2.appspot.com",
-  messagingSenderId: "706496837595",
-  appId: "1:706496837595:web:9c2d8dd180fba27f1719fe",
 };
 
 // // Initialize Firebase
