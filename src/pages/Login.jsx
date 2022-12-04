@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Header, NavBar } from "../components";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components";
 
 const Login = () => {
@@ -66,6 +66,13 @@ const Login = () => {
           </label>
           <Button type="submit">Log In</Button>
         </div>
+        <p>
+          Click{" "}
+          <Link to="/registration" className="underline">
+            here
+          </Link>{" "}
+          to register for a new account.
+        </p>
       </form>
     </div>
   );
