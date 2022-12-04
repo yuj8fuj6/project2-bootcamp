@@ -66,7 +66,7 @@ const CreateDish = (user) => {
         <h1 className="text-left underline text-orange m-1 text-2xl">
           Create Dish
         </h1>
-        <form className="container mx-1 text-left">
+        <form className="container mx-1 text-left" onSubmit={onDishSubmit}>
           <label className="text-purple">
             Dish Name:
             <input

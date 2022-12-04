@@ -10,7 +10,11 @@ import {
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 
 //please enter firebaseConfig here
 const firebaseConfig = {};
@@ -32,8 +36,8 @@ const userSampleData = [
     lastName: "How",
     userType: "hawker",
     contactEmail: "email2@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "uncertaincatfish",
@@ -42,8 +46,8 @@ const userSampleData = [
     lastName: "Poon",
     userType: "user",
     contactEmail: "email3@email.com",
-    karmaPoints: "66",
-    reviewsDone: "79",
+    karmaPoints: 66,
+    reviewsDone: 79,
   },
   {
     username: "ashamedcashews",
@@ -52,8 +56,8 @@ const userSampleData = [
     lastName: "Yeo",
     userType: "hawker",
     contactEmail: "email4@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "delirioussamphire",
@@ -62,8 +66,8 @@ const userSampleData = [
     lastName: "Law",
     userType: "user",
     contactEmail: "email5@email.com",
-    karmaPoints: "24",
-    reviewsDone: "87",
+    karmaPoints: 24,
+    reviewsDone: 87,
   },
   {
     username: "resignedtacos",
@@ -72,8 +76,8 @@ const userSampleData = [
     lastName: "Tin",
     userType: "hawker",
     contactEmail: "email6@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "mildalfalfa",
@@ -82,8 +86,8 @@ const userSampleData = [
     lastName: "Goh",
     userType: "user",
     contactEmail: "email7@email.com",
-    karmaPoints: "10",
-    reviewsDone: "34",
+    karmaPoints: 10,
+    reviewsDone: 34,
   },
   {
     username: "needfulflapjack",
@@ -92,8 +96,8 @@ const userSampleData = [
     lastName: "Shen",
     userType: "hawker",
     contactEmail: "email8@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "selfishdough",
@@ -102,8 +106,8 @@ const userSampleData = [
     lastName: "Bin Mohammad Syaril",
     userType: "user",
     contactEmail: "email9@email.com",
-    karmaPoints: "78",
-    reviewsDone: "61",
+    karmaPoints: 78,
+    reviewsDone: 61,
   },
   {
     username: "enragedsausages",
@@ -112,8 +116,8 @@ const userSampleData = [
     lastName: "Bin Muhamad Noor",
     userType: "hawker",
     contactEmail: "email10@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "interestshortcake",
@@ -122,8 +126,8 @@ const userSampleData = [
     lastName: "Binte Noh Yacob",
     userType: "user",
     contactEmail: "email11@email.com",
-    karmaPoints: "14",
-    reviewsDone: "54",
+    karmaPoints: 14,
+    reviewsDone: 54,
   },
   {
     username: "crushedcauliflower",
@@ -132,8 +136,8 @@ const userSampleData = [
     lastName: "d/o M. Prabu",
     userType: "hawker",
     contactEmail: "email12@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "loyalblueberries",
@@ -142,8 +146,8 @@ const userSampleData = [
     lastName: "s/o A. Sathasivam",
     userType: "user",
     contactEmail: "email51@email.com",
-    karmaPoints: "4",
-    reviewsDone: "74",
+    karmaPoints: 4,
+    reviewsDone: 74,
   },
   {
     username: "homesickrice",
@@ -152,8 +156,8 @@ const userSampleData = [
     lastName: "d/o J. Muthu",
     userType: "hawker",
     contactEmail: "email13@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "distractedtapioca",
@@ -162,8 +166,8 @@ const userSampleData = [
     lastName: "s/o A. Mohan",
     userType: "user",
     contactEmail: "email14@email.com",
-    karmaPoints: "68",
-    reviewsDone: "43",
+    karmaPoints: 68,
+    reviewsDone: 43,
   },
   {
     username: "lazypolenta",
@@ -172,8 +176,8 @@ const userSampleData = [
     lastName: "Binte Hairul Anuar",
     userType: "hawker",
     contactEmail: "email15@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "outragedbattenburg",
@@ -182,8 +186,8 @@ const userSampleData = [
     lastName: "Hong",
     userType: "user",
     contactEmail: "email16@email.com",
-    karmaPoints: "47",
-    reviewsDone: "17",
+    karmaPoints: 47,
+    reviewsDone: 17,
   },
   {
     username: "terrifieddoughnut",
@@ -192,8 +196,8 @@ const userSampleData = [
     lastName: "Lam",
     userType: "hawker",
     contactEmail: "email17@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "vengefulromaine",
@@ -202,8 +206,8 @@ const userSampleData = [
     lastName: "Su",
     userType: "user",
     contactEmail: "email18@email.com",
-    karmaPoints: "97",
-    reviewsDone: "8",
+    karmaPoints: 97,
+    reviewsDone: 8,
   },
   {
     username: "perturbedcrab",
@@ -212,8 +216,8 @@ const userSampleData = [
     lastName: "toodle",
     userType: "hawker",
     contactEmail: "email19@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
   {
     username: "mourningpinto",
@@ -222,8 +226,8 @@ const userSampleData = [
     lastName: "overs",
     userType: "user",
     contactEmail: "email20@email.com",
-    karmaPoints: "59",
-    reviewsDone: "45",
+    karmaPoints: 59,
+    reviewsDone: 45,
   },
   {
     username: "acceptingcupcake",
@@ -232,8 +236,8 @@ const userSampleData = [
     lastName: "reuben",
     userType: "hawker",
     contactEmail: "email21@email.com",
-    karmaPoints: "null",
-    reviewsDone: "null",
+    karmaPoints: null,
+    reviewsDone: null,
   },
 ];
 
@@ -257,6 +261,7 @@ const userSeeding = function () {
     await createUserWithEmailAndPassword(auth, contactEmail, password)
       .then(async (response) => {
         console.log(`created user in authentication`);
+        updateProfile(auth.currentUser, { displayName: username });
         const uid = response.user.uid;
         const userRef = {
           username,
@@ -273,7 +278,7 @@ const userSeeding = function () {
 
         const userKeysRef = databaseRef(
           database,
-          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ","),
+          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ",")
         );
         // const userKeysListRef = push(userKeysRef);
 
@@ -286,7 +291,7 @@ const userSeeding = function () {
     i += 1;
     if (i === userSampleData.length) {
       clearInterval(interval);
-      console.log("all user data added");
+      console.log("all user data added, ctrl+c to exit");
     }
   }, 2000);
 };
@@ -408,7 +413,6 @@ const stallsSampleData = [
 //Dishes Sample Data
 const dishes = [
   {
-    dishID: 1,
     dishName: "Curry Puff",
     stallName: "Rolina Traditional Hainanese Curry Puffs",
     ingredientList: ["Potatoes", "Flour", "Chicken", "Curry", "Egg"],
@@ -419,7 +423,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 2,
     dishName: "Prawn Fried Rice",
     stallName: "Ding Gua Gua Fried Rice",
     ingredientList: ["Rice", "Eggs", "Scallions", "Prawns"],
@@ -434,7 +437,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 3,
     dishName: "Egg Fried Rice",
     stallName: "Ding Gua Gua Fried Rice",
     ingredientList: ["Rice", "Eggs", "Scallions"],
@@ -445,7 +447,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 4,
     dishName: "Cendol",
     stallName: "Cendol Geylang Serai",
     ingredientList: ["Gula Melaka", "Flour", "Milk"],
@@ -456,7 +457,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 5,
     dishName: "Seafood Minced Meat Noodles",
     stallName: "Minced Pork Bros",
     ingredientList: [
@@ -473,7 +473,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 6,
     dishName: "Modern Pork Noodles",
     stallName: "Minced Pork Bros",
     ingredientList: ["Egg Noodles", "Minced Meat", "Pork Slices", "Vinegar"],
@@ -484,7 +483,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 7,
     dishName: "Fish Soup",
     stallName: "First Street Teochew Fish Soup",
     ingredientList: ["Fish", "Ginger", "Scallions", "Prawns"],
@@ -495,7 +493,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 8,
     dishName: "Minced Meat Noodles",
     stallName: "Ah Gong Minced Pork Noodles",
     ingredientList: ["Pork", "Beancurd Skin", "Noodles", "Lard"],
@@ -506,7 +503,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 9,
     dishName: "Curry Set",
     stallName: "Midas",
     ingredientList: ["Curry paste", "Curry Leaf", "Potatoes", "Chicken"],
@@ -517,7 +513,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 10,
     dishName: "Prata",
     stallName: "Midas",
     ingredientList: ["Flour"],
@@ -528,7 +523,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 11,
     dishName: "Prawn Noodles",
     stallName: "Beach Road Prawn Noodle House",
     ingredientList: ["Yellow Noodles", "Prawns", "Scallions"],
@@ -539,7 +533,6 @@ const dishes = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    dishID: 12,
     dishName: "Ngoh Hiang Platter",
     stallName: "Beach Road Prawn Noodle House",
     ingredientList: [
@@ -583,13 +576,13 @@ const hawkerAndDishSeeding = async function () {
     await get(child(dbRef, `${USERKEYS_DATABASE}/${stallEmailRef}`)).then(
       (snapshot) => {
         userID = snapshot.val();
-      },
+      }
     );
 
     userHawkerKeys[userID] = {};
 
     await getDownloadURL(
-      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`),
+      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`)
     )
       .then((url) => {
         stall.stallFrontPhotoURL = url;
@@ -634,7 +627,7 @@ const hawkerAndDishSeeding = async function () {
     for (let m = 0; m < dish.photos.length; m++) {
       let dishPhoto = dish.photos[m];
       await getDownloadURL(
-        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`),
+        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`)
       )
         .then((url) => {
           dish.photoURLs.push(url);
@@ -664,7 +657,7 @@ const hawkerAndDishSeeding = async function () {
 
   const hawkerDishKeysRef = databaseRef(
     database,
-    HAWKER_DISH_RELATION_DATABASE,
+    HAWKER_DISH_RELATION_DATABASE
   );
   set(hawkerDishKeysRef, hawkerDishKeys);
   console.log("end of uploads, ctrl+c to exit");
@@ -672,5 +665,5 @@ const hawkerAndDishSeeding = async function () {
 
 //function calls
 //please run userSeeding() first, then run hawkerAndDishSeeding(), to do so comment out the function you are not running before executing this file.
-userSeeding();
+// userSeeding();
 hawkerAndDishSeeding();
