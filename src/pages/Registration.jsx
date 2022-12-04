@@ -4,8 +4,10 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { push, ref as databaseRef, set } from "firebase/database";
 import { Header, NavBar } from "../components";
 import Button from "../components/Button";
+import { Link, useNavigate } from "react-router-dom";
 
-const USER_PROFILES_DATABASE = "users";
+const USER_PROFILES_DATABASE = "users/";
+const USER_EMAIL = "userkeys/";
 
 const Registration = () => {
   const defaultForm = {
@@ -14,15 +16,13 @@ const Registration = () => {
     contactEmail: "",
     username: "",
     password: "",
-    stallName: "",
   };
 
   const [registrationDetails, setRegistrationDetails] = useState(defaultForm);
   const [displayedForm, setDisplayedForm] = useState("user");
-  const [errorCode, setErrorCode] = useState("");
+  const [errorCode, setErrorCode] = useState();
 
   const handleFormInputs = (event) => {
-    console.log(registrationDetails);
     setRegistrationDetails({
       ...registrationDetails,
       [event.target.name]: event.target.value,
@@ -32,6 +32,8 @@ const Registration = () => {
   const handleSelect = (event) => {
     setDisplayedForm(event.target.value);
   };
+
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -46,20 +48,31 @@ const Registration = () => {
 
         updateProfile(auth.currentUser, {
           displayName: registrationDetails.username,
-        }).catch((error) => {
-          console.log(error);
         });
 
-        const usersListRef = databaseRef(database, USER_PROFILES_DATABASE);
-        const newUserRef = push(usersListRef);
+        const usersListRef = databaseRef(
+          database,
+          USER_PROFILES_DATABASE + user.uid
+        );
 
-        set(newUserRef, {
-          ...registrationDetails,
+        const emailUIDListRef = databaseRef(
+          database,
+          USER_EMAIL + registrationDetails.contactEmail.replace(".", ",")
+        );
+
+        set(usersListRef, {
+          username: registrationDetails.username,
+          firstName: registrationDetails.firstName,
+          lastName: registrationDetails.lastName,
+          contactEmail: registrationDetails.contactEmail,
           date: Date(),
           userType: displayedForm,
         });
 
-        setRegistrationDetails(defaultForm);
+        set(emailUIDListRef, user.uid);
+      })
+      .then(() => {
+        navigate("/");
       })
       .catch((error) => {
         setErrorCode({ code: error.code, message: error.message });
@@ -73,6 +86,7 @@ const Registration = () => {
         <Header />
         <NavBar />
       </div>
+      {errorCode && <p>{errorCode.message}</p>}
       <div className="inline-block relative w-64">
         <label className="block text-gray-700 text-sm font-bold mb-2">
           Choose Account Type
@@ -122,18 +136,6 @@ const Registration = () => {
               type="text"
             />
           </label>
-          {displayedForm === "hawker" && (
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Stall Name
-              <input
-                onChange={handleFormInputs}
-                value={registrationDetails.stallName}
-                name="stallName"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="text"
-              />
-            </label>
-          )}
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Contact Email
             <input
@@ -164,7 +166,13 @@ const Registration = () => {
           </label>
           <div className="md:w-2/3">
             <Button type="submit">Sign Up</Button>
-            <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"></button>
+            <p>
+              Click{" "}
+              <Link to="/login" className="underline">
+                here
+              </Link>{" "}
+              to log in instead.
+            </p>
           </div>
         </div>
       </form>
