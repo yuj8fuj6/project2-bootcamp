@@ -17,8 +17,7 @@ import {
 } from "firebase/auth";
 
 //please enter firebaseConfig here
-const firebaseConfig = {
-};
+const firebaseConfig = {};
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
