@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Header, NavBar } from "../components";
 import { Button } from "../components";
 import { storage, database } from "../firebase";
@@ -9,12 +9,14 @@ import {
 } from "firebase/storage";
 import { ref as databaseRef, set, push } from "firebase/database";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
 
 const HAWKER_PHOTOS_FOLDER = "hawkerphotos";
 const HAWKER_DATABASE = "hawkers";
 const USER_HAWKERS_DATABASE = "user-hawkers/";
 
-const CreateStall = ({ user }) => {
+const CreateStall = () => {
+  const user = useContext(UserContext);
   const emptyStallDetails = {
     stallName: "",
     stallAddress: "",

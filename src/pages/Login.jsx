@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { HeaderLogin } from "../components";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components";
 
 const Login = () => {
@@ -69,7 +69,10 @@ const Login = () => {
         <div className="text-purple">
           If you do not have an existing account,
           <br />
-          <Link to="/registration" className="text-orange font-semibold hover:text-purple">
+          <Link
+            to="/registration"
+            className="text-orange font-semibold hover:text-purple"
+          >
             Sign Up Here
           </Link>
         </div>
