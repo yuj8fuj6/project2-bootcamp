@@ -20,7 +20,7 @@ const FormFeedback = (props) => {
     <div className="text-left text-white text-xl font-bold">
       <p>Contact Us</p>
       <p className="text-sm mt-2">Contact us at abcde@gmail.com</p>
-      <p className="text-sm mt-2">to find out more about our platform</p>
+      <p className="text-sm mt-2">to find out more about our platform !</p>
       <p className="mt-5">Feedback Form</p>
       <form className="grid grid-cols-1 space-y-2">
         <input

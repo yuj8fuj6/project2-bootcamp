@@ -39,7 +39,7 @@ const Landing = () => {
         <DishCards />
       </div>
       <div className="bg-orange">
-        <div className="p-5">
+        <div className="p-5" id="feedback">
           <FormFeedback />
         </div>
       </div>

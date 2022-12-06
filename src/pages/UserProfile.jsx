@@ -3,8 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { Header, NavBar } from "../components";
 import { Button } from "../components";
-import { signOut, updateProfile } from "firebase/auth";
-import { auth } from "../firebase";
+import { signOut, updateProfile, updatedEmail, updatePassword } from "firebase/auth";
+import { auth, database } from "../firebase";
+import {
+  ref as databaseRef,
+  getDatabase,
+  update, 
+} from "firebase/database";
 
 const UserProfile = () => {
   const user = useContext(UserContext);
@@ -50,11 +55,17 @@ const UserProfile = () => {
 
   // Uploading of user photo not included yet.
 
+  const db = getDatabase(); 
+
   const updateUserProfile = (event) => {
     event.preventDefault();
     console.log("updating user profile");
     console.log(userInfo);
     console.log(user);
+
+    update(databaseRef(db, `users/${user.uid}`), {
+    
+    })
 
     setEditMode(false);
   };
@@ -197,11 +208,11 @@ const UserProfile = () => {
             <>
               <label>
                 <p className="mt-5 text-left ml-16">First Name</p>
+              </label>
                 <input
                   className="border border-neutral-300 w-3/4 rounded-lg mt-2"
                   placeholder={user.firstName}
                 />
-              </label>
               <label>
                 <p className="mt-5 text-left ml-16">Last Name</p>
                 <input
