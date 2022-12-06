@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import {
-  CreateDish,
   CreateStall,
   Dish,
   Landing,
@@ -24,6 +23,7 @@ import {
   orderByChild,
 } from "firebase/database";
 import Login from "./pages/Login";
+import CreateDish from "./pages/CreateDish";
 
 export const UserContext = React.createContext();
 
@@ -42,6 +42,8 @@ function App() {
       }
     });
   }, []);
+
+  console.log(user.uid);
 
   const fetchUserDetails = useCallback(() => {
     //   console.log(user)
@@ -71,7 +73,7 @@ function App() {
     const currentUser = query(databaseRef(db, `users/${user.uid}`));
     get(currentUser).then((snapshot) => {
       if (snapshot.exists()) {
-        setUserDetails(snapshot.val());
+        setUserDetails({ ...snapshot.val(), uid: user.uid });
       }
     });
   }, [user]);
@@ -122,7 +124,8 @@ function App() {
       <UserContext.Provider value={userDetails}>
         <BrowserRouter basename={window.location.pathname || ""}>
           <Routes>
-            <Route path="/" element={<Landing />} />
+            {/* <Route path="/" element={<Landing />} /> */}
+            <Route path="/" element={<CreateDish />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registration" element={<Registration />} />
             <Route path="/profile" element={<UserProfile />} />
@@ -133,8 +136,14 @@ function App() {
             />
             <Route path="/order" element={<Order dishData={dishData} />} />
             <Route path="/search" element={<Search />} />
-            <Route path="/createDish" element={<CreateDish />} />
-            <Route path="/createStall" element={<CreateStall />} />
+            <Route
+              path="/createDish"
+              element={<CreateDish userUID={user.uid} />}
+            />
+            <Route
+              path="/createStall"
+              element={<CreateStall userUID={user.uid} />}
+            />
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>
