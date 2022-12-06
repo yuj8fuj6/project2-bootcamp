@@ -3,13 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { Header, NavBar } from "../components";
 import { Button } from "../components";
-import { signOut, updateProfile, updatedEmail, updatePassword } from "firebase/auth";
-import { auth, database } from "../firebase";
 import {
-  ref as databaseRef,
-  getDatabase,
-  update, 
-} from "firebase/database";
+  signOut,
+  getAuth,
+  updateProfile,
+  updateEmail,
+  updatePassword,
+} from "firebase/auth";
+import { auth, database } from "../firebase";
+import { ref as databaseRef, getDatabase, update } from "firebase/database";
 
 const UserProfile = () => {
   const user = useContext(UserContext);
@@ -55,17 +57,39 @@ const UserProfile = () => {
 
   // Uploading of user photo not included yet.
 
-  const db = getDatabase(); 
+  const db = getDatabase();
+  const authDetails = getAuth();
 
   const updateUserProfile = (event) => {
     event.preventDefault();
-    console.log("updating user profile");
-    console.log(userInfo);
-    console.log(user);
 
     update(databaseRef(db, `users/${user.uid}`), {
-    
+      contactEmail: userInfo.contactEmail,
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
+      password: userInfo.password,
+      username: userInfo.username,
     })
+      .then(() => {
+        alert("Your profile has been updated successfully.");
+      })
+      .catch((error) => {
+        alert("There was an error in the update - " + error);
+      });
+
+    updateEmail(authDetails.currentUser, `${userInfo.contactEmail}`)
+      .then(() => console.log("Email updated!"))
+      .catch((error) => {
+        console.log(error);
+        alert("There was an error in authentication - " + error);
+      });
+
+    updatePassword(authDetails.currentUser, `${userInfo.password}`)
+      .then(() => console.log("Password updated!"))
+      .catch((error) => {
+        console.log(error);
+        alert("There was an error in authentication -" + error);
+      });
 
     setEditMode(false);
   };
@@ -159,7 +183,7 @@ const UserProfile = () => {
               <label>
                 <p className="mt-5 text-left ml-16">First Name</p>
                 <input
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2"
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
                   name="firstName"
                   value={userInfo.firstName}
                   onChange={handleUserInput}
@@ -168,7 +192,7 @@ const UserProfile = () => {
               <label>
                 <p className="mt-5 text-left ml-16">Last Name</p>
                 <input
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2"
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
                   name="lastName"
                   placeholder={userInfo.lastName}
                   value={userInfo.lastName}
@@ -178,7 +202,7 @@ const UserProfile = () => {
               <label>
                 <p className="mt-5 text-left ml-16">Contact Email</p>
                 <input
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2"
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
                   name="contactEmail"
                   value={userInfo.contactEmail}
                   onChange={handleUserInput}
@@ -187,7 +211,7 @@ const UserProfile = () => {
               <label>
                 <p className="mt-5 text-left ml-16">Username</p>
                 <input
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2"
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
                   name="username"
                   value={userInfo.username}
                   onChange={handleUserInput}
@@ -197,10 +221,11 @@ const UserProfile = () => {
                 <p className="mt-5 text-left ml-16">Password</p>
                 <input
                   type="password"
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 mb-5"
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 mb-5 indent-3"
                   placeholder="*******"
                   name="password"
                   onChange={handleUserInput}
+                  minlength="6"
                 />
               </label>
             </>
@@ -209,28 +234,28 @@ const UserProfile = () => {
               <label>
                 <p className="mt-5 text-left ml-16">First Name</p>
               </label>
-                <input
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2"
-                  placeholder={user.firstName}
-                />
+              <input
+                className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
+                placeholder={user.firstName}
+              />
               <label>
                 <p className="mt-5 text-left ml-16">Last Name</p>
                 <input
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2"
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
                   placeholder={user.lastName}
                 />
               </label>
               <label>
                 <p className="mt-5 text-left ml-16">Contact Email</p>
                 <input
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2"
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
                   placeholder={user.contactEmail}
                 />
               </label>
               <label>
                 <p className="mt-5 text-left ml-16">Username</p>
                 <input
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2"
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
                   placeholder={user.username}
                 />
               </label>
@@ -238,8 +263,9 @@ const UserProfile = () => {
                 <p className="mt-5 text-left ml-16">Password</p>
                 <input
                   type="password"
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 mb-5"
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 mb-5 indent-3"
                   placeholder="*******"
+                  minlength="6"
                 />
               </label>
             </>
