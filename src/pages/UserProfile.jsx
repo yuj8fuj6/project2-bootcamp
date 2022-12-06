@@ -78,12 +78,12 @@ const UserProfile = () => {
       </div>
       <div className="w-screen  mt-5">
         <div className="flex justify-around w-screen space-x-20">
-          {userInfo.userType == "user" && (
+          {userInfo.userType === "user" && (
             <div className="text-xl text-orange font-bold drop-shadow-xl">
               User Profile
             </div>
           )}
-          {userInfo.userType == "hawker" && (
+          {userInfo.userType === "hawker" && (
             <div className="text-xl text-orange font-bold drop-shadow-xl">
               Hawker Profile
             </div>
@@ -266,7 +266,7 @@ const UserProfile = () => {
         {userInfo.userType === "hawker" && (
           <>
             <p className="m-2 mt-5">
-              <Button type="button" onClick={() => navigate("/createDish")}>
+              <Button type="button" onClick={() => navigate("/createStall")}>
                 Create New Stall
               </Button>
             </p>
