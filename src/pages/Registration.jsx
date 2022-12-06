@@ -22,8 +22,6 @@ const Registration = () => {
   const [displayedForm, setDisplayedForm] = useState("user");
   const [errorCode, setErrorCode] = useState();
 
-  let navigate = useNavigate();
-
   const handleFormInputs = (event) => {
     setRegistrationDetails({
       ...registrationDetails,
