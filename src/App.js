@@ -82,7 +82,7 @@ function App() {
     fetchUserDetails();
   }, [user, fetchUserDetails]);
 
-  // console.log(userDetails);
+  console.log(userDetails);
 
   const DISHES_FOLDER_NAME = "dishes";
 

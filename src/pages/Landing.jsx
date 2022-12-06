@@ -11,7 +11,7 @@ import { UserContext } from "../App";
 
 const Landing = () => {
   const userDetails = useContext(UserContext);
-  // console.log(userDetails);
+  console.log(userDetails);
   // Data Structure 
   // contactEmail, firstName, karmaPoints, lastName, reviewsDone, userType, username
 

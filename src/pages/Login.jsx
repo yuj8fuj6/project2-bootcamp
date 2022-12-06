@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Header, NavBar } from "../components";
+import { HeaderLogin } from "../components";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
@@ -33,47 +33,50 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <div className="flex justify-around flex-wrap w-screen p-4">
-        <Header />
-        <NavBar />
-      </div>
-      <div>Login</div>
-      <form
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        onSubmit={handleSubmit}
-      >
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Email
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="text"
-              name="email"
-              value={loginDetails.email}
-              onChange={handleUserInput}
-            />
-          </label>
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Password
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="password"
-              name="password"
-              value={loginDetails.password}
-              onChange={handleUserInput}
-            />
-          </label>
-          <Button type="submit">Log In</Button>
+    <div className="flex items-center justify-center h-screen bg-orange">
+      <div className="bg-white w-84 h-4/6 grid grid-cols-1 rounded-xl shadow-xl p-4 space-y-2">
+        <div className="flex justify-around flex-wrap p-4">
+          <HeaderLogin />
         </div>
-        <p>
-          Click{" "}
-          <Link to="/registration" className="underline">
-            here
-          </Link>{" "}
-          to register for a new account.
-        </p>
-      </form>
+        <div className="text-purple drop-shadow-lg font-extrabold text-3xl">
+          Login
+        </div>
+        <form className="bg-white rounded px-8 pt-6" onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-purple text-sm font-bold mb-8 text-left">
+              Email
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text"
+                name="email"
+                value={loginDetails.email}
+                onChange={handleUserInput}
+              />
+            </label>
+            <label className="block text-purple text-sm font-bold mb-8 text-left">
+              Password
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="password"
+                name="password"
+                value={loginDetails.password}
+                onChange={handleUserInput}
+              />
+            </label>
+            <Button type="submit">Log In</Button>
+          </div>
+        </form>
+        <div className="text-purple">
+          If you do not have an existing account,
+          <br />
+          <Link
+            to="/registration"
+            className="text-orange font-semibold hover:text-purple"
+          >
+            Sign Up Here
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
