@@ -11,6 +11,7 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
+import { BsHandThumbsUp, BsChatLeftText, BsSun } from "react-icons/bs";
 
 const USER_PHOTO_FOLDER = "userphotos";
 
@@ -197,7 +198,7 @@ const UserProfile = (props) => {
         <Header />
         <NavBar />
       </div>
-      <div className="w-screen  mt-5">
+      <div className="w-screen mt-5 mb-10">
         <div className="flex justify-around w-screen space-x-20">
           {userInfo.userType === "user" && (
             <div className="text-xl text-orange font-bold drop-shadow-xl">
@@ -291,6 +292,25 @@ const UserProfile = (props) => {
             </>
           ) : (
             <>
+              {user.userType === "user" && (
+                <div className="flex flex-wrap justify-center space-x-3 mt-5 text-orange">
+                  <div className="text-3xl font-semibold">
+                    <BsHandThumbsUp />
+                    <div className="text-xs">Likes Made</div>
+                  </div>
+                  <div>{user.likesDone}</div>
+                  <div className="text-3xl font-semibold">
+                    <BsChatLeftText />
+                    <div className="text-xs">Reviews Made</div>
+                  </div>
+                  <div>{user.reviewsDone}</div>
+                  <div className="text-3xl font-semibold">
+                    <BsSun />
+                    <div className="text-xs">Karma Points</div>
+                  </div>
+                  <div>{user.karmaPoints}</div>
+                </div>
+              )}
               <label>
                 <p className="mt-5 text-left ml-16">First Name</p>
               </label>
