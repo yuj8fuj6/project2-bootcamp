@@ -12,7 +12,7 @@ const NavBar = () => {
         <BsTelephone />
         <div className="text-xxs">Contact</div>
       </Link>
-      <Link to="/registration">
+      <Link to="/search">
         <BsSearch />
         <div className="text-xxs">Search</div>
       </Link>

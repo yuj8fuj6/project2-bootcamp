@@ -124,8 +124,8 @@ function App() {
       <UserContext.Provider value={userDetails}>
         <BrowserRouter basename={window.location.pathname || ""}>
           <Routes>
-            {/* <Route path="/" element={<Landing />} /> */}
-            <Route path="/" element={<CreateDish />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/Landing" element={<CreateDish />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registration" element={<Registration />} />
             <Route path="/profile" element={<UserProfile />} />

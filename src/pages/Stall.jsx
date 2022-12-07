@@ -14,6 +14,7 @@ const Stall = (props) => {
     <img
       src={hawkerSelected.val.stallFrontPhotoURL}
       className="p-4 rounded-3xl drop-shadow-xl"
+      alt = ""
     />
   );
 
@@ -27,6 +28,7 @@ const Stall = (props) => {
     <img
       src={hawkerSelected.val.stallFrontPhotoURL}
       className="w-1/3 m-2 rounded-lg"
+      alt=""
     />
   );
 
