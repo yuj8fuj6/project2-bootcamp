@@ -21,6 +21,7 @@ import {
   equalTo,
   get,
   orderByChild,
+  onValue,
 } from "firebase/database";
 import Login from "./pages/Login";
 import CreateDish from "./pages/CreateDish";
@@ -71,12 +72,14 @@ function App() {
     console.log(user);
     const db = getDatabase();
     const currentUser = query(databaseRef(db, `users/${user.uid}`));
-    get(currentUser).then((snapshot) => {
+    onValue(currentUser, (snapshot) => {
       if (snapshot.exists()) {
         setUserDetails({ ...snapshot.val(), uid: user.uid });
       }
     });
   }, [user]);
+
+  const clearUserDetails = () => setUserDetails(null);
 
   useEffect(() => {
     fetchUserDetails();
@@ -122,13 +125,16 @@ function App() {
   return (
     <div className="App">
       <UserContext.Provider value={userDetails}>
-        <BrowserRouter basename={window.location.pathname || ""}>
+        <BrowserRouter>
           <Routes>
-            {/* <Route path="/" element={<Landing />} /> */}
-            <Route path="/" element={<CreateDish />} />
+            <Route path="/" element={<Landing />} />
+            {/* <Route path="/" element={<CreateDish />} /> */}
             <Route path="/login" element={<Login />} />
             <Route path="/registration" element={<Registration />} />
-            <Route path="/profile" element={<UserProfile />} />
+            <Route
+              path="/profile"
+              element={<UserProfile clearUserDetails={clearUserDetails} />}
+            />
             <Route path="/dish" element={<Dish dishData={dishData} />} />
             <Route
               path="/stall"
@@ -144,6 +150,7 @@ function App() {
               path="/createStall"
               element={<CreateStall userUID={user.uid} />}
             />
+            <Route path="*" element={<Landing />} />
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>

@@ -41,7 +41,7 @@ const Registration = () => {
     createUserWithEmailAndPassword(
       auth,
       registrationDetails.contactEmail,
-      registrationDetails.password
+      registrationDetails.password,
     )
       .then((userCredential) => {
         const user = userCredential.user;
@@ -53,12 +53,12 @@ const Registration = () => {
 
         const usersListRef = databaseRef(
           database,
-          USER_PROFILES_DATABASE + user.uid
+          USER_PROFILES_DATABASE + user.uid,
         );
 
         const emailUIDListRef = databaseRef(
           database,
-          USER_EMAIL + registrationDetails.contactEmail.replace(".", ",")
+          USER_EMAIL + registrationDetails.contactEmail.replace(".", ","),
         );
 
         set(usersListRef, {
