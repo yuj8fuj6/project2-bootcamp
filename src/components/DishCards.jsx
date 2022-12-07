@@ -37,7 +37,7 @@ const DishCards = () => {
     <>
       <div className="flex justify-evenly flex-wrap sm:flex-1 overflow-auto h-[32rem]">
         {posts.map((items, key) => (
-          <Link to="/dish">
+          <Link to="dish">
             <div
               className="w-full rounded-lg shadow-md lg:max-w-sm hover:bg-orange/90 hover:opacity-75"
               key={key}
