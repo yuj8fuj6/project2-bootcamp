@@ -63,6 +63,7 @@ const Registration = () => {
 
         set(usersListRef, {
           username: registrationDetails.username,
+          password: registrationDetails.password,
           firstName: registrationDetails.firstName,
           lastName: registrationDetails.lastName,
           contactEmail: registrationDetails.contactEmail,
@@ -70,6 +71,7 @@ const Registration = () => {
           userType: displayedForm,
           karmaPoints: 0,
           reviewsDone: 0,
+          likesDone: 0,
         });
 
         set(emailUIDListRef, user.uid);
@@ -185,8 +187,8 @@ const Registration = () => {
             <div className="md:w-2/3 mt-10 text-center">
               <Button type="submit">Sign Up</Button>
               {/* <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"></button> */}
-              <div className="text-purple">
-                If you have an existing account
+              <div className="text-purple mt-5">
+                If you have an existing account,
                 <br />
                 <Link
                   to="/login"

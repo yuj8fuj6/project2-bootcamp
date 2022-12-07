@@ -28,7 +28,7 @@ const Login = () => {
       .catch((error) => {
         console.log(error);
         alert(
-          "Login failed! Please check if your email address and password is correct.",
+          "Login failed! Please check if your email address and password are correct.",
         );
       });
   };
