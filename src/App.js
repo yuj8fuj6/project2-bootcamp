@@ -27,6 +27,8 @@ import Login from "./pages/Login";
 import CreateDish from "./pages/CreateDish";
 import { DishContextProvider } from "./contexts/DishContext";
 import { HawkerContextProvider } from "./contexts/HawkerContext";
+import EditStall from "./pages/EditStall";
+import EditDish from "./pages/EditDish";
 
 export const UserContext = React.createContext();
 
@@ -95,7 +97,6 @@ function App() {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Landing />} />
-                {/* <Route path="/" element={<CreateDish />} /> */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/registration" element={<Registration />} />
                 <Route
@@ -115,6 +116,8 @@ function App() {
                   element={<CreateStall userUID={user.uid} />}
                 />
                 <Route path="*" element={<Landing />} />
+                <Route path="/editStall" element={<EditStall />} />
+                <Route path="/editDish" element={<EditDish />} />
               </Routes>
             </BrowserRouter>
           </DishContextProvider>

@@ -1,128 +1,60 @@
 import React, { useState, useContext } from "react";
 import { Header, NavBar } from "../components";
 import { Button } from "../components";
-import { storage, database } from "../firebase";
-import {
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL,
-} from "firebase/storage";
-import { ref as databaseRef, set, push, update } from "firebase/database";
-import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getDatabase, update, ref as databaseRef } from "firebase/database";
 
 const HAWKER_PHOTOS_FOLDER = "hawkerphotos";
 const HAWKER_DATABASE = "hawkers";
 const USER_HAWKERS_DATABASE = "user-hawkers/";
 
-const CreateStall = () => {
+const EditStall = () => {
   const user = useContext(UserContext);
-  const emptyStallDetails = {
-    stallName: "",
-    stallAddress: "",
-    foodCenterName: "",
-    openingHours: "",
-    openingDays: "",
-    stallStory: "",
-  };
+  const { state } = useLocation();
+  console.log(state);
+  console.log(user);
 
-  const [stallDetails, setStallDetails] = useState(emptyStallDetails);
-  const [stallFrontPhoto, setStallFrontPhoto] = useState();
-  const [otherStallPhotos, setOtherStallPhotos] = useState([]);
-  const [stallFrontImg, setStallFrontImg] = useState();
-  const [otherStallImgs, setOtherStallImgs] = useState([]);
+  const currentStallDetails = state;
+  const [editStallDetails, setEditStallDetails] = useState(currentStallDetails);
+  let {
+    foodCenterName,
+    openingDays,
+    openingHours,
+    otherStallPhotosURL,
+    stallAddress,
+    stallFrontPhotoURL,
+    stallStory,
+    startingYear,
+    stallName,
+  } = editStallDetails;
 
-  const handleStallFrontPhoto = (event) => {
-    setStallFrontImg(URL.createObjectURL(event.target.files[0]));
-    setStallFrontPhoto(event.target.files[0]);
-  };
-
-  const handleOtherStallPhotos = (event) => {
-    setOtherStallImgs((prevPhotos) => [
-      URL.createObjectURL(event.target.files[0]),
-      ...prevPhotos,
-    ]);
-    setOtherStallPhotos((prevPhotos) => [...prevPhotos, event.target.files[0]]);
-  };
-
-  const handleStallInputs = (event) => {
-    setStallDetails({
-      ...stallDetails,
+  const handleStallDetailsInput = (event) => {
+    setEditStallDetails({
+      ...editStallDetails,
       [event.target.name]: event.target.value,
     });
   };
 
-  let navigate = useNavigate();
+  console.log(editStallDetails);
 
-  const submitStallDetails = async function (event) {
+  const db = getDatabase();
+  const navigate = useNavigate();
+
+  const handleEditSubmit = (event) => {
     event.preventDefault();
-    const stallFrontPhotoRef = storageRef(
-      storage,
-      `${HAWKER_PHOTOS_FOLDER}/${stallFrontPhoto.name}`
-    );
 
-    const uploadPhotoPromises = [];
-    const otherStallPhotosURLArr = [];
-    let stallFrontURL = "";
+    const newStallData = editStallDetails;
 
-    for (let i = 0; i < otherStallPhotos.length; i++) {
-      const otherStallPhotosRef = storageRef(
-        storage,
-        `${HAWKER_PHOTOS_FOLDER}/${otherStallPhotos[i].name}`
-      );
+    const updates = {};
+    updates[`hawkers/${state.stallKey}/`] = newStallData;
+    updates[`user-hawkers/${user.uid}/${state.stallKey}`] =
+      newStallData.stallName;
 
-      uploadPhotoPromises.push(
-        await uploadBytes(otherStallPhotosRef, otherStallPhotos[i])
-          .then(() => {
-            getDownloadURL(otherStallPhotosRef).then((url) => {
-              otherStallPhotosURLArr.push(url);
-            });
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-      );
-    }
-
-    uploadPhotoPromises.push(
-      await uploadBytes(stallFrontPhotoRef, stallFrontPhoto).then(() =>
-        getDownloadURL(stallFrontPhotoRef).then((url) => {
-          stallFrontURL = url;
-        })
-      )
-    );
-
-    try {
-      await Promise.all(uploadPhotoPromises).then(() => {
-        const newStall = {
-          ...stallDetails,
-          userKey: user.uid,
-          userEmail: user.contactEmail,
-          ownerName: `${user.firstName} ${user.lastName}`,
-          stallFrontPhotoURL: stallFrontURL,
-          otherStallPhotosURL: otherStallPhotosURLArr,
-        };
-        const hawkersListRef = databaseRef(database, HAWKER_DATABASE);
-        const newHawkerRef = push(hawkersListRef);
-        const newHawkerRefKey = newHawkerRef.key;
-        set(newHawkerRef, newStall);
-
-        const userHawkerKeys = databaseRef(
-          database,
-          USER_HAWKERS_DATABASE + user.uid
-        );
-        const newHawkerEntry = { [newHawkerRefKey]: newStall.stallName };
-        update(userHawkerKeys, newHawkerEntry);
-        console.log("end");
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      navigate("/profile");
-    }
+    update(databaseRef(db), updates);
+    navigate("/profile");
   };
 
-  if (!user) return <div>LOADING...</div>;
   return (
     <div>
       <div className="flex justify-around flex-wrap w-screen p-4">
@@ -130,27 +62,24 @@ const CreateStall = () => {
         <NavBar />
       </div>
       <div>
-        <form
-          className="container mx-1 text-left"
-          onSubmit={submitStallDetails}
-        >
+        <form className="container mx-1 text-left" onSubmit={handleEditSubmit}>
           <label>
             Stall Name:
             <input
               name="stallName"
+              value={stallName}
               className="border border-black rounded-lg"
-              onChange={handleStallInputs}
-              value={stallDetails.stallName}
+              onChange={handleStallDetailsInput}
             />
           </label>
           <p>Stall Front Image:</p>
           <div className="container mx-auto flex flex-wrap">
             <div className="flex flex-auto items-center justify-center w-f">
               <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                {stallFrontImg ? (
+                {stallFrontPhotoURL ? (
                   <div className="container overflow-hidden flex flex-col items-center justify-center">
                     <img
-                      src={stallFrontImg}
+                      src={editStallDetails.stallFrontPhotoURL}
                       alt="storefront preview"
                       className="object-contain"
                     />
@@ -182,11 +111,7 @@ const CreateStall = () => {
                   </div>
                 )}
 
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={handleStallFrontPhoto}
-                />
+                <input type="file" className="hidden" />
               </label>
             </div>
           </div>
@@ -194,7 +119,7 @@ const CreateStall = () => {
             <div className="container border rounded m-1 w-1/2">
               <p>Other Stall Images:</p>
               <div className="grid grid-cols-3">
-                {otherStallImgs.map((imgs) => (
+                {otherStallPhotosURL.map((imgs) => (
                   <img src={imgs} alt="stall" />
                 ))}
                 <div className="flex flex-auto items-center justify-center w-30">
@@ -204,11 +129,7 @@ const CreateStall = () => {
                         <span className="font-semibold">Click to upload</span>
                       </p>
                     </div>
-                    <input
-                      type="file"
-                      className="hidden"
-                      onChange={handleOtherStallPhotos}
-                    />
+                    <input type="file" className="hidden" />
                   </label>
                 </div>
               </div>
@@ -223,7 +144,8 @@ const CreateStall = () => {
                   <input
                     className="border border-black rounded-lg w-full max-w-xs"
                     name="foodCenterName"
-                    onChange={handleStallInputs}
+                    value={foodCenterName}
+                    onChange={handleStallDetailsInput}
                   />
                 </label>
               </p>
@@ -233,7 +155,8 @@ const CreateStall = () => {
                   <input
                     className="border border-black rounded-lg w-full max-w-xs"
                     name="stallAddress"
-                    onChange={handleStallInputs}
+                    value={stallAddress}
+                    onChange={handleStallDetailsInput}
                   />
                 </label>
               </p>
@@ -245,7 +168,8 @@ const CreateStall = () => {
                   <input
                     className="border border-black rounded-lg w-full max-w-xs"
                     name="openingDays"
-                    onChange={handleStallInputs}
+                    value={openingDays}
+                    onChange={handleStallDetailsInput}
                   />
                 </label>
               </p>
@@ -255,7 +179,8 @@ const CreateStall = () => {
                   <input
                     className="border border-black rounded-lg w-full max-w-xs"
                     name="openingHours"
-                    onChange={handleStallInputs}
+                    value={openingHours}
+                    onChange={handleStallDetailsInput}
                   />
                 </label>
               </p>
@@ -267,7 +192,8 @@ const CreateStall = () => {
               <input
                 className="border border-black rounded-lg w-full max-w-xs"
                 name="startingYear"
-                onChange={handleStallInputs}
+                value={startingYear}
+                onChange={handleStallDetailsInput}
               />
             </label>
             <label>
@@ -275,16 +201,17 @@ const CreateStall = () => {
               <textarea
                 className="border border-black rounded-lg w-full"
                 type="text"
+                value={stallStory}
                 name="stallStory"
-                onChange={handleStallInputs}
+                onChange={handleStallDetailsInput}
               />
             </label>
           </div>
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Edit Stall</Button>
         </form>
       </div>
     </div>
   );
 };
 
-export default CreateStall;
+export default EditStall;

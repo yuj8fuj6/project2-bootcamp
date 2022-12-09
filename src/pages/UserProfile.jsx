@@ -12,6 +12,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { BsHandThumbsUp, BsChatLeftText, BsSun } from "react-icons/bs";
+import StallList from "../components/StallList";
 
 const USER_PHOTO_FOLDER = "userphotos";
 
@@ -123,10 +124,6 @@ const UserProfile = (props) => {
       .catch((error) => console.log(error));
   };
 
-  // May need to do something to the database as logging out happens faster than DOM update.
-
-  // Uploading of user photo not included yet.
-
   const db = getDatabase();
   const authDetails = getAuth();
 
@@ -171,7 +168,7 @@ const UserProfile = (props) => {
 
     const profilePhotoRef = storageRef(
       storage,
-      `${USER_PHOTO_FOLDER}/${profilePhoto.file.name}`,
+      `${USER_PHOTO_FOLDER}/${profilePhoto.file.name}`
     );
 
     uploadBytes(profilePhotoRef, profilePhoto.file)
@@ -182,7 +179,7 @@ const UserProfile = (props) => {
           update(databaseRef(db, `users/${user.uid}`), {
             profilePhoto: profilePhotoURL,
           });
-        }),
+        })
       )
       .catch((error) => {
         console.log(error);
@@ -376,9 +373,7 @@ const UserProfile = (props) => {
                 Create New Stall
               </Button>
             </p>
-            <p className="m-2 mt-5 mb-10">
-              <Button type="button">Edit Existing Stall</Button>
-            </p>
+            <StallList />
           </>
         )}
       </div>
