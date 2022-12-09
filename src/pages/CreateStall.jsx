@@ -99,7 +99,7 @@ const CreateStall = () => {
           userKey: user.uid,
           userEmail: user.contactEmail,
           ownerName: `${user.firstName} ${user.lastName}`,
-          stallFrontURL: stallFrontURL,
+          stallFrontPhotoURL: stallFrontURL,
           otherStallPhotosURL: otherStallPhotosURLArr,
         };
         const hawkersListRef = databaseRef(database, HAWKER_DATABASE);
