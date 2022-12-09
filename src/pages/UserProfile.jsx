@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { Header, NavBar } from "../components";
