@@ -12,7 +12,7 @@ const StallCarousel = () => {
 
   const stallData = useContext(HawkerContext);
 
-  console.log(stallData);
+  // console.log(stallData);
   const movePrev = () => {
     if (currentIndex > 0) {
       setCurrentIndex((prevState) => prevState - 1);
@@ -69,7 +69,7 @@ const StallCarousel = () => {
   };
 
   const stallSelect = randomizeStall(stallData).slice(0, 5);
-  console.log(stallSelect);
+  // console.log(stallSelect);
 
   useEffect(() => {
     if (stallData) {
@@ -78,7 +78,7 @@ const StallCarousel = () => {
     }
   }, [stallData]);
 
-  console.log(randomStall);
+  // console.log(randomStall);
 
   return (
     <div className="w-full">
