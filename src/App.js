@@ -25,6 +25,8 @@ import {
 } from "firebase/database";
 import Login from "./pages/Login";
 import CreateDish from "./pages/CreateDish";
+import EditStall from "./pages/EditStall";
+import EditDish from "./pages/EditDish";
 
 export const UserContext = React.createContext();
 
@@ -44,7 +46,7 @@ function App() {
     });
   }, []);
 
-  console.log(user.uid);
+  // console.log(user.uid);
 
   const fetchUserDetails = useCallback(() => {
     //   console.log(user)
@@ -85,7 +87,7 @@ function App() {
     fetchUserDetails();
   }, [user, fetchUserDetails]);
 
-  console.log(userDetails);
+  // console.log(userDetails);
 
   const DISHES_FOLDER_NAME = "dishes";
 
@@ -128,7 +130,6 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
-            {/* <Route path="/" element={<CreateDish />} /> */}
             <Route path="/login" element={<Login />} />
             <Route path="/registration" element={<Registration />} />
             <Route
@@ -142,15 +143,11 @@ function App() {
             />
             <Route path="/order" element={<Order dishData={dishData} />} />
             <Route path="/search" element={<Search />} />
-            <Route
-              path="/createDish"
-              element={<CreateDish userUID={user.uid} />}
-            />
-            <Route
-              path="/createStall"
-              element={<CreateStall userUID={user.uid} />}
-            />
+            <Route path="/createDish" element={<CreateDish />} />
+            <Route path="/createStall" element={<CreateStall />} />
             <Route path="*" element={<Landing />} />
+            <Route path="/editStall" element={<EditStall />} />
+            <Route path="/editDish" element={<EditDish />} />
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>
