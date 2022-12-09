@@ -7,7 +7,7 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
-import { ref as databaseRef, set, push } from "firebase/database";
+import { ref as databaseRef, set, push, update } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 
@@ -96,7 +96,9 @@ const CreateStall = () => {
       await Promise.all(uploadPhotoPromises).then(() => {
         const newStall = {
           ...stallDetails,
-          [user.uid]: true,
+          userKey: user.uid,
+          userEmail: user.contactEmail,
+          ownerName: `${user.firstName} ${user.lastName}`,
           stallFrontURL: stallFrontURL,
           otherStallPhotosURL: otherStallPhotosURLArr,
         };
@@ -109,15 +111,18 @@ const CreateStall = () => {
           database,
           USER_HAWKERS_DATABASE + user.uid
         );
-        const newHawkerEntry = { [newHawkerRefKey]: true };
-        set(userHawkerKeys, newHawkerEntry);
+        const newHawkerEntry = { [newHawkerRefKey]: newStall.stallName };
+        update(userHawkerKeys, newHawkerEntry);
         console.log("end");
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      navigate("/profile");
     }
   };
 
+  if (!user) return <div>LOADING...</div>;
   return (
     <div>
       <div className="flex justify-around flex-wrap w-screen p-4">
@@ -257,6 +262,14 @@ const CreateStall = () => {
             </div>
           </div>
           <div className="container p-3 border border-grey rounded-lg">
+            <label>
+              <p>Year Started</p>
+              <input
+                className="border border-black rounded-lg w-full max-w-xs"
+                name="startingYear"
+                onChange={handleStallInputs}
+              />
+            </label>
             <label>
               <p>Our Story</p>
               <textarea
