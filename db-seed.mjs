@@ -310,6 +310,8 @@ const stallsSampleData = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     stallMenu: [1],
     stallFrontPhoto: "rolina-curry-puff-storefront.jpg",
+    startingYear: 2019,
+    ownerName: "Eliza Sobia Binte Hairul Anuar",
   },
   {
     userEmail: "email4@email.com",
@@ -322,6 +324,8 @@ const stallsSampleData = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna fringilla urna porttitor rhoncus dolor purus non. Lacinia at quis risus sed vulputate odio ut.",
     stallMenu: [2, 3],
     stallFrontPhoto: "ding-gua-gua-fried-rice-ambience.jpg",
+    startingYear: 2020,
+    ownerName: "Wen Ming Law",
   },
   {
     userEmail: "email10@email.com",
@@ -334,6 +338,8 @@ const stallsSampleData = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     stallMenu: [4],
     stallFrontPhoto: "cendol-geylang-serai-storefront.jpg",
+    startingYear: 2015,
+    ownerName: "Ridwan Zaidi Bin Muhamad Noor",
   },
   {
     userEmail: "email2@email.com",
@@ -346,6 +352,8 @@ const stallsSampleData = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget arcu dictum varius duis at consectetur. Magna fermentum iaculis eu non diam phasellus vestibulum lorem sed. Elementum tempus egestas sed sed risus pretium quam vulputate dignissim.",
     stallMenu: [5, 6],
     stallFrontPhoto: "minced-pork-bros-storefront.jpg",
+    startingYear: 2007,
+    ownerName: "Yi Min How",
   },
   {
     userEmail: "email6@email.com",
@@ -358,6 +366,8 @@ const stallsSampleData = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget arcu dictum varius duis at consectetur. Magna fermentum iaculis eu non diam phasellus vestibulum lorem sed. Elementum tempus egestas sed sed risus pretium quam vulputate dignissim.",
     stallMenu: [11, 12],
     stallFrontPhoto: "beach-road-prawn-noodle-house-storefront.jpg",
+    startingYear: 2001,
+    ownerName: "Xin Ling Tin",
   },
   {
     userEmail: "email8@email.com",
@@ -370,6 +380,8 @@ const stallsSampleData = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget velit aliquet sagittis id.",
     stallMenu: [7],
     stallFrontPhoto: "first-street-teochew-fish-soup-storefront.jpg",
+    startingYear: 2014,
+    ownerName: "Min Hui Shen",
   },
   {
     userEmail: "email17@email.com",
@@ -383,6 +395,8 @@ const stallsSampleData = [
     stallMenu: [8],
     stallFrontPhoto:
       "ah-gong-minced-pork-noodle-storefront-with-owner-elin.jpg",
+    startingYear: 2018,
+    ownerName: "De Kang Lam",
   },
   {
     userEmail: "email12@email.com",
@@ -395,6 +409,8 @@ const stallsSampleData = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lacus sed viverra tellus in hac. Libero id faucibus nisl tincidunt eget nullam non nisi est.",
     stallMenu: [9, 10],
     stallFrontPhoto: "midas-curry-storefront.jpg",
+    startingYear: 2019,
+    ownerName: "Hema Kumari d/o M. Prabu",
   },
   {
     userEmail: "email21@email.com",
@@ -407,6 +423,8 @@ const stallsSampleData = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Venenatis lectus magna fringilla urna porttitor.",
     stallMenu: [],
     stallFrontPhoto: "Balestier-Road-Hoover-Rojak-storefront.jpg",
+    startingYear: 2016,
+    ownerName: "Reuben Hortense",
   },
 ];
 
@@ -596,6 +614,8 @@ const hawkerAndDishSeeding = async function () {
           stallStory: stall.stallStory,
           userKey: userID,
           userEmail: stall.userEmail,
+          ownerName: stall.ownerName,
+          startingYear: stall.startingYear,
         };
         const stallsListRef = databaseRef(database, HAWKER_DATABASE);
         const newStallsRef = push(stallsListRef);
