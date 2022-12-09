@@ -14,8 +14,8 @@ import {
   getDatabase,
   child,
   update,
+  onValue,
 } from "firebase/database";
-import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 
 const DISH_PHOTOS_FOLDER = "dishphotos/";
@@ -39,8 +39,34 @@ const CreateDish = () => {
   const [hawkerUID, setHawkerUID] = useState();
   const [hawkerError, setHawkerError] = useState();
   const [stallName, setStallName] = useState();
+  const [errorMsg, setErrorMsg] = useState();
+  const [loadingMsg, setLoadingMsg] = useState();
 
   console.log(dishDetails);
+  console.log(dishMainImg);
+  console.log(dishOtherImgs);
+
+  const fetchHawkerUID = useCallback(() => {
+    console.log(user);
+    const dbRef = databaseRef(getDatabase());
+    get(child(dbRef, `user-hawkers/${user.uid}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot);
+          setHawkerUID(Object.keys(snapshot.val())[0]);
+        } else {
+          setHawkerError("Create a stall before adding a dish");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [user]);
+
+  useEffect(() => {
+    fetchHawkerUID();
+  }, [user, fetchHawkerUID]);
+  console.log(hawkerUID);
 
   const handleDishInputs = (event) => {
     setDishDetails({
@@ -77,96 +103,79 @@ const CreateDish = () => {
     ]);
   };
 
-  // const fetchHawkerUID = () => {
-  //   console.log(user);
-  //   const dbRef = getDatabase();
-  //   get(child(dbRef, `user-hawkers/${user.uid}`))
-  //     .then((snapshot) => {
-  //       if (snapshot.exists()) {
-  //         console.log(snapshot);
-  //         setHawkerUID(snapshot.val());
-  //       } else {
-  //         setHawkerError("Create a stall before adding a dish");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
+  const onDishSubmit = async (event) => {
+    event.preventDefault();
 
-  // useEffect(() => {
-  //   fetchHawkerUID();
-  // }, [user, fetchHawkerUID]);
+    const dishMainImgRef = storageRef(
+      storage,
+      `dishphotos/${dishMainImg.file.name}`
+    );
+    let stallFrontImgURL = "";
+    let dishOtherImgURLs = [];
 
-  const onDishSubmit = (event) => {
-    event.preventdefault();
+    const uploadDishMainPhoto = uploadBytes(dishMainImgRef, dishMainImg.file)
+      .then(() =>
+        getDownloadURL(dishMainImgRef).then((url) => {
+          stallFrontImgURL = url;
+          console.log(stallFrontImgURL);
+        })
+      )
+      .catch((error) => setErrorMsg(error));
 
-    const dbRef = getDatabase();
-    get(child(dbRef, `user-hawkers/${user.uid}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          console.log(`hawkername fetch: ${snapshot}`);
-          setHawkerUID(snapshot.val());
-        } else {
-          setHawkerError("Create a stall before adding a dish");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
-    get(child(dbRef, `hawkers/${hawkerUID}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log(`stallname fetch: ${snapshot}`);
-        setStallName(snapshot.val().stallName);
-      }
-    });
-
-    const otherDishURLArr = [];
-    let dishMainPhotoURL = "";
+    const uploadPhotoPromises = [uploadDishMainPhoto];
 
     for (let i = 0; i < dishOtherImgs.length; i++) {
-      const otherDishPhotosRef = storageRef(
+      const dishOtherImgsRef = storageRef(
         storage,
         `dishphotos/${dishOtherImgs[i].file.name}`
       );
 
-      uploadBytes(otherDishPhotosRef, dishOtherImgs[i].file)
-        .then(() => {
-          getDownloadURL(otherDishPhotosRef).then((url) => {
-            otherDishURLArr.push(url);
-          });
-        })
-        .catch((error) => console.log(error));
+      uploadPhotoPromises.push(
+        uploadBytes(dishOtherImgsRef, dishOtherImgs[i].file)
+          .then(() => {
+            getDownloadURL(dishOtherImgsRef).then((url) => {
+              dishOtherImgURLs.push(url);
+              console.log(dishOtherImgURLs);
+            });
+          })
+          .catch((error) => setErrorMsg(error))
+      );
     }
 
-    const dishMainPhotoRef = storageRef(storage, `dishphotos/${dishMainImg}`);
-    uploadBytes(dishMainPhotoRef)
-      .then((url) => {
-        dishMainPhotoURL = url;
-      })
-      .catch((error) => console.log(error));
+    setLoadingMsg("Loading dish information...");
 
-    const newDish = {
-      ...dishDetails,
-      photoURLs: [dishMainPhotoURL, ...otherDishURLArr],
-      stallName: stallName,
-      [hawkerUID]: true,
-    };
+    try {
+      await Promise.all(uploadPhotoPromises).then(() => {
+        const newDish = {
+          ...dishDetails,
+          [hawkerUID]: true,
+          photoURLs: [stallFrontImgURL, ...dishOtherImgURLs],
+          userKey: user.uid,
+        };
+        const dishListRef = databaseRef(database, DISH_DATABASE);
+        const newDishRef = push(dishListRef);
+        const newDishRefKey = newDishRef.key;
+        set(newDishRef, newDish);
 
-    const dishesListRef = databaseRef(database, "dishes/");
-    const newDishRef = push(dishesListRef);
-    const newDishRefKey = newDishRef.key;
-    const hawkerDishListRef = databaseRef(
-      database,
-      `hawker-dishes/${hawkerUID}`
-    );
-    const newHawkerDishEntry = { [newDishRefKey]: true };
-    set(newDishRef, newDish);
-    update(hawkerDishListRef, newHawkerDishEntry);
+        const dbRef = databaseRef(database, `hawker-dishes/${hawkerUID}`);
+        const newHawkerDishEntry = { [newDishRefKey]: true };
+        update(dbRef, newHawkerDishEntry).then(() => {
+          console.log("updated");
+        });
+        console.log("exit");
+        setLoadingMsg();
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (!user) return <div>Loading...</div>;
+  if (!hawkerUID)
+    return (
+      <div>Please create a stall profile first before creating a dish.</div>
+    );
+  if (loadingMsg) return <div>{loadingMsg}</div>;
   return (
     <div>
       <div className="flex justify-around flex-wrap w-screen p-4">

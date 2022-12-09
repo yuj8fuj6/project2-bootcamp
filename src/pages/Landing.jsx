@@ -8,9 +8,11 @@ import {
   FormFeedback,
 } from "../components";
 import { UserContext } from "../App";
+import { HawkerContext } from "../contexts/HawkerContext";
 
 const Landing = () => {
   const userDetails = useContext(UserContext);
+
   console.log(userDetails);
   // Data Structure 
   // contactEmail, firstName, karmaPoints, lastName, reviewsDone, userType, username
@@ -39,7 +41,7 @@ const Landing = () => {
         <DishCards />
       </div>
       <div className="bg-orange">
-        <div className="p-5">
+        <div className="p-5" id="feedback">
           <FormFeedback />
         </div>
       </div>

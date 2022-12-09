@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Header, NavBar, Button, FormOrder, FormReview } from "../components";
 import {
   BsHandThumbsUp,
@@ -6,10 +6,11 @@ import {
   BsHandThumbsUpFill,
 } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { DishContext } from "../contexts/DishContext";
 
-const Dish = (props) => {
-  const dishData = props.dishData;
-  // console.log(dishData);
+const Dish = () => {
+  const dishData = useContext(DishContext);
+  console.log(dishData);
 
   //Filter Function to be added here.
   const dishSelected = dishData[0];

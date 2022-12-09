@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import {
@@ -21,16 +21,17 @@ import {
   equalTo,
   get,
   orderByChild,
+  onValue,
 } from "firebase/database";
 import Login from "./pages/Login";
 import CreateDish from "./pages/CreateDish";
+import { DishContextProvider } from "./contexts/DishContext";
+import { HawkerContextProvider } from "./contexts/HawkerContext";
 
 export const UserContext = React.createContext();
 
 function App() {
   const [user, setUser] = useState("");
-  const [dishData, setDishData] = useState([]);
-  const [hawkerData, setHawkerData] = useState([]);
   const [userDetails, setUserDetails] = useState(null);
 
   useEffect(() => {
@@ -43,7 +44,7 @@ function App() {
     });
   }, []);
 
-  console.log(user.uid);
+  // console.log(user.uid);
 
   const fetchUserDetails = useCallback(() => {
     //   console.log(user)
@@ -71,12 +72,14 @@ function App() {
     console.log(user);
     const db = getDatabase();
     const currentUser = query(databaseRef(db, `users/${user.uid}`));
-    get(currentUser).then((snapshot) => {
+    onValue(currentUser, (snapshot) => {
       if (snapshot.exists()) {
         setUserDetails({ ...snapshot.val(), uid: user.uid });
       }
     });
   }, [user]);
+
+  const clearUserDetails = () => setUserDetails(null);
 
   useEffect(() => {
     fetchUserDetails();
@@ -84,68 +87,38 @@ function App() {
 
   console.log(userDetails);
 
-  const DISHES_FOLDER_NAME = "dishes";
-
-  const dishDataRef = databaseRef(database, DISHES_FOLDER_NAME);
-
-  useEffect(() => {
-    const dish = [];
-    onChildAdded(dishDataRef, (data) => {
-      dish.push({ key: data.key, val: data.val() });
-      setDishData([...dish]);
-    });
-
-    onChildAdded(hawkerDataRef, (data) => {
-      setHawkerData((prevHawkerData) => [
-        ...prevHawkerData,
-        { key: data.key, ...data.val() },
-      ]);
-    });
-  }, []);
-
-  // console.log(dishData);
-
-  const HAWKERS_FOLDER_NAME = "hawkers";
-
-  const hawkerDataRef = databaseRef(database, HAWKERS_FOLDER_NAME);
-
-  useEffect(() => {
-    const hawker = [];
-    onChildAdded(hawkerDataRef, (data) => {
-      hawker.push({ key: data.key, val: data.val() });
-      setHawkerData([...hawker]);
-    });
-  }, []);
-
-  // console.log(hawkerData);
-
   return (
     <div className="App">
       <UserContext.Provider value={userDetails}>
-        <BrowserRouter basename={window.location.pathname || ""}>
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/Landing" element={<CreateDish />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/registration" element={<Registration />} />
-            <Route path="/profile" element={<UserProfile />} />
-            <Route path="/dish" element={<Dish dishData={dishData} />} />
-            <Route
-              path="/stall"
-              element={<Stall hawkerData={hawkerData} dishData={dishData} />}
-            />
-            <Route path="/order" element={<Order dishData={dishData} />} />
-            <Route path="/search" element={<Search />} />
-            <Route
-              path="/createDish"
-              element={<CreateDish userUID={user.uid} />}
-            />
-            <Route
-              path="/createStall"
-              element={<CreateStall userUID={user.uid} />}
-            />
-          </Routes>
-        </BrowserRouter>
+        <HawkerContextProvider>
+          <DishContextProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Landing />} />
+                {/* <Route path="/" element={<CreateDish />} /> */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/registration" element={<Registration />} />
+                <Route
+                  path="/profile"
+                  element={<UserProfile clearUserDetails={clearUserDetails} />}
+                />
+                <Route path="/dish" element={<Dish />} />
+                <Route path="/stall" element={<Stall />} />
+                <Route path="/order" element={<Order />} />
+                <Route path="/search" element={<Search />} />
+                <Route
+                  path="/createDish"
+                  element={<CreateDish userUID={user.uid} />}
+                />
+                <Route
+                  path="/createStall"
+                  element={<CreateStall userUID={user.uid} />}
+                />
+                <Route path="*" element={<Landing />} />
+              </Routes>
+            </BrowserRouter>
+          </DishContextProvider>
+        </HawkerContextProvider>
       </UserContext.Provider>
     </div>
   );

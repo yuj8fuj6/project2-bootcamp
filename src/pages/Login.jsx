@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HeaderLogin } from "../components";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components";
 
 const Login = () => {
+  const [user, setUser] = useState(null);
   const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
 
   const handleUserInput = (event) => {
@@ -22,15 +23,21 @@ const Login = () => {
 
     signInWithEmailAndPassword(auth, loginDetails.email, loginDetails.password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
+        setUser(userCredential.user);
       })
       .catch((error) => {
         console.log(error);
+        alert(
+          "Login failed! Please check if your email address and password are correct.",
+        );
       });
-
-    navigate("/");
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
 
   return (
     <div className="flex items-center justify-center h-screen bg-orange">

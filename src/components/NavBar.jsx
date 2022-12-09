@@ -2,17 +2,18 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { BsTelephone, BsSearch, BsPersonCircle } from "react-icons/bs";
 import { UserContext } from "../App";
+import { HashLink } from "react-router-hash-link";
 
 const NavBar = () => {
   const userDetails = useContext(UserContext);
 
   return (
     <div className="text-orange flex justify-evenly w-5/12 text-nav place-items-center">
-      <Link to="/login">
+      <HashLink smooth to="#feedback">
         <BsTelephone />
         <div className="text-xxs">Contact</div>
-      </Link>
-      <Link to="/search">
+      </HashLink>
+      <Link to="/registration">
         <BsSearch />
         <div className="text-xxs">Search</div>
       </Link>
