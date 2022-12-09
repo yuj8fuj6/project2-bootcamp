@@ -17,12 +17,12 @@ const FormFeedback = (props) => {
   };
 
   return (
-    <div className="text-left text-white text-xl font-bold">
+    <div className=" text-white text-xl font-bold flex flex-col justify-center">
       <p>Contact Us</p>
       <p className="text-sm mt-2">Contact us at abcde@gmail.com</p>
       <p className="text-sm mt-2">to find out more about our platform !</p>
       <p className="mt-5">Feedback Form</p>
-      <form className="grid grid-cols-1 space-y-2">
+      <form className="flex flex-col justify-center px-10 space-y-2 lg:px-96">
         <input
           className="border-solid border-2 rounded text-sm"
           type="name"
