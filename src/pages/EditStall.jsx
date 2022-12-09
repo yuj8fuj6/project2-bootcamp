@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Header, NavBar } from "../components";
 import { Button } from "../components";
 import { UserContext } from "../App";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getDatabase, update, ref as databaseRef } from "firebase/database";
 
 const HAWKER_PHOTOS_FOLDER = "hawkerphotos";
@@ -39,6 +39,7 @@ const EditStall = () => {
   console.log(editStallDetails);
 
   const db = getDatabase();
+  const navigate = useNavigate();
 
   const handleEditSubmit = (event) => {
     event.preventDefault();
@@ -51,6 +52,7 @@ const EditStall = () => {
       newStallData.stallName;
 
     update(databaseRef(db), updates);
+    navigate("/profile");
   };
 
   return (
