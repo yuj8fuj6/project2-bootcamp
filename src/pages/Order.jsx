@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Header, NavBar, Button } from "../components";
+import { DishContext } from "../contexts/DishContext";
 
 const Order = (props) => {
   // Need data from DB for order made, and order history.
 
-  const dishData = props.dishData;
+  const dishData = useContext(DishContext);
 
   const dishSelected = dishData[0];
 
