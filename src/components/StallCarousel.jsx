@@ -4,7 +4,7 @@ import { Button } from ".";
 import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
 import { HawkerContext } from "../contexts/HawkerContext";
 
-const StallCarousel = (props) => {
+const StallCarousel = () => {
   const maxScrollWidth = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const carousel = useRef(null);
@@ -13,7 +13,6 @@ const StallCarousel = (props) => {
   const stallData = useContext(HawkerContext);
 
   console.log(stallData);
-
   const movePrev = () => {
     if (currentIndex > 0) {
       setCurrentIndex((prevState) => prevState - 1);
@@ -69,63 +68,17 @@ const StallCarousel = (props) => {
     return array;
   };
 
+  const stallSelect = randomizeStall(stallData).slice(0, 5);
+  console.log(stallSelect);
+
   useEffect(() => {
-    const stallSelect = randomizeStall(stallData).slice(0, 5);
-    setRandomStall(stallSelect);
-    console.log(randomStall);
+    if (stallData) {
+      setRandomStall(stallSelect);
+      // console.log(randomStall);
+    }
   }, [stallData]);
 
-  let stallSelection;
-
-  if (randomStall) {
-    stallSelection = randomStall.map((stall) => (
-      <div className="carousel-item text-center relative h-72 w-full snap-start">
-        <div className="h-full w-full aspect-4/3 block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0">
-          <img
-            src={stall.val.stallFrontPhotoURL}
-            alt="Hawker"
-            className="w-full aspect-4/3"
-          />
-        </div>
-        <div className="h-full w-full aspect-4/3 block absolute top-0 left-0 transition-opacity duration-300 opacity-0 hover:opacity-100 bg-main-bg/75 z-10">
-          <div className="text-purple py-1 px-8 mx-auto text-xxs text-left">
-            <h1 className="text-3xl font-bold">{stall.val.stallName}</h1>
-            <h2 className="text-xl font-semibold">
-              {stall.val.foodCenterName}
-            </h2>
-            <div className="font-semibold">
-              <p>
-                Opening Hrs: {stall.val.openingDays}, {stall.val.openingHours}
-              </p>
-              <p>Owner: Mr. Tan and Family </p>
-              {/* Need Owner name in seeded data and form */}
-              <p>Started in 1980</p>
-              {/* Need starting year for stall */}
-            </div>
-            <p>
-              <span className="font-semibold">From the Owner: </span>“
-              {stall.val.stallStory}”
-            </p>
-            <div className="flex flex-wrap justify-start space-x-12 mt-0.5">
-              <div className="text-2xl font-semibold">
-                <BsHandThumbsUp />
-                <div className="text-xxs">Total Likes</div>
-                {/* Need passing of data for total likes */}
-              </div>
-              <div className="text-2xl font-semibold">
-                <BsChatLeftText />
-                <div className="text-xxs">Total Reviews</div>
-                {/* Need passing of ata for total reviews */}
-              </div>
-            </div>
-          </div>
-          <Link to="/stall" value={stall.val.userKey}>
-            <Button>Visit Stall!</Button>
-          </Link>
-        </div>
-      </div>
-    ));
-  }
+  console.log(randomStall);
 
   return (
     <div className="w-full">
@@ -178,7 +131,60 @@ const StallCarousel = (props) => {
           ref={carousel}
           className="carousel-container relative flex gap-1 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
         >
-          {stallData && stallSelection}
+          {randomStall &&
+            randomStall.map((stall) => {
+              return (
+                <div className="carousel-item text-center relative h-72 w-full snap-start">
+                  <div className="h-full w-full aspect-4/3 block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0">
+                    <img
+                      src={stall.val.stallFrontPhotoURL}
+                      alt="Hawker"
+                      className="w-full aspect-4/3"
+                    />
+                  </div>
+                  {console.log("Hello")}
+                  <div className="h-full w-full aspect-4/3 block absolute top-0 left-0 transition-opacity duration-300 opacity-0 hover:opacity-100 bg-main-bg/75 z-10">
+                    <div className="text-purple py-1 px-8 mx-auto text-xxs text-left">
+                      <h1 className="text-3xl font-bold">
+                        {stall.val.stallName}
+                      </h1>
+                      <h2 className="text-xl font-semibold">
+                        {stall.val.foodCenterName}
+                      </h2>
+                      <div className="font-semibold">
+                        <p>
+                          Opening Hrs: {stall.val.openingDays},{" "}
+                          {stall.val.openingHours}
+                        </p>
+                        <p>Owner: Mr. Tan and Family </p>
+                        {/* Need Owner name in seeded data and form */}
+                        <p>Started in 1980</p>
+                        {/* Need starting year for stall */}
+                      </div>
+                      <p>
+                        <span className="font-semibold">From the Owner: </span>“
+                        {stall.val.stallStory}”
+                      </p>
+                      <div className="flex flex-wrap justify-start space-x-12 mt-0.5">
+                        <div className="text-2xl font-semibold">
+                          <BsHandThumbsUp />
+                          <div className="text-xxs">Total Likes</div>
+                          {/* Need passing of data for total likes */}
+                        </div>
+                        <div className="text-2xl font-semibold">
+                          <BsChatLeftText />
+                          <div className="text-xxs">Total Reviews</div>
+                          {/* Need passing of data for total reviews */}
+                        </div>
+                      </div>
+                    </div>
+                    <Link to="/stall" value={stall.val.userKey}>
+                      <Button>Visit Stall!</Button>
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>
