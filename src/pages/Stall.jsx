@@ -1,10 +1,13 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Header, NavBar, StallDishCards } from "../components";
 import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
+import { DishContext } from "../contexts/DishContext";
 
 const Stall = (props) => {
   const hawkerData = props.hawkerData;
   // console.log(hawkerData);
+
+  const dishData = useContext(DishContext)
 
   // Filter Function to be added here.
   const hawkerSelected = hawkerData[0];
@@ -85,7 +88,7 @@ const Stall = (props) => {
           </p>
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1">
-          <StallDishCards dishData={props.dishData} />
+          <StallDishCards dishData={dishData} />
         </div>
       </div>
     </div>
