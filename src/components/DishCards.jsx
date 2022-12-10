@@ -7,50 +7,43 @@ import {
   getDatabase,
   query,
   orderByChild,
-  onValue,
+  onChildAdded,
+  onChildChanged,
 } from "firebase/database";
 
 const DishCards = () => {
-  const [dishes, setDishes] = useState();
-  const [dishDetails, setDishDetails] = useState(null);
+  const [dishes, setDishes] = useState([]);
   const [filter, setFilter] = useState([]);
   const [filterState, setFilterState] = useState(false);
 
-  const fetchDishDetails = useCallback(() => {
-    const db = getDatabase();
-    const dishData = query(databaseRef(db, `dishes`), orderByChild(`dishName`));
-    onValue(dishData, (snapshot) => {
-      // console.log(snapshot.val());
-      if (snapshot.exists()) {
-        // console.log(snapshot.val());
-        const [...dishes] = Object.values(snapshot.val());
-        setDishDetails(dishes);
-      }
-    });
-  }, [dishes]);
-
   useEffect(() => {
-    fetchDishDetails();
-  }, [dishes]);
+    const db = getDatabase();
+    const dishArr = [];
+    const dishData = query(databaseRef(db, `dishes`), orderByChild(`dishName`));
+    onChildAdded(dishData, (snapshot) => {
+      const currentDish = snapshot.val();
+      dishArr.push(currentDish);
+      setDishes(dishArr);
+    });
+  }, []);
 
-  // console.log(dishDetails);
+  console.log(dishes);
 
   const handleSearchChange = (e) => {
     if (!e.target.value) {
-      setFilter(dishDetails);
+      setFilter(dishes);
     }
-    const resultsArray = dishDetails.filter(
+    const resultsArray = dishes.filter(
       (dish) =>
         dish.dishName.toLowerCase().includes(e.target.value) ||
         dish.stallName.toLowerCase().includes(e.target.value),
     );
     setFilter([...resultsArray]);
-    console.log(filter);
+    setFilterState(true);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFilterState(true);
   };
 
   return (
@@ -83,9 +76,9 @@ const DishCards = () => {
         </form>
       </div>
       <div className="flex justify-evenly flex-wrap sm:flex-1 overflow-auto h-[32rem]">
-        {dishDetails &&
+        {dishes &&
           !filterState &&
-          dishDetails.map((item) => (
+          dishes.map((item) => (
             <Link to="dish">
               <div className="w-full rounded-lg shadow-md lg:max-w-sm hover:bg-orange/90 hover:opacity-75">
                 <img
@@ -118,7 +111,7 @@ const DishCards = () => {
               </div>{" "}
             </Link>
           ))}
-        {dishDetails &&
+        {dishes &&
           filterState &&
           filter.map((item) => (
             <Link to="dish">

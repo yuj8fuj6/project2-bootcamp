@@ -142,7 +142,6 @@ const StallCarousel = () => {
                       className="w-full aspect-4/3"
                     />
                   </div>
-                  {console.log("Hello")}
                   <div className="h-full w-full aspect-4/3 block absolute top-0 left-0 transition-opacity duration-300 opacity-0 hover:opacity-100 bg-main-bg/75 z-10">
                     <div className="text-purple py-1 px-8 mx-auto text-xxs text-left">
                       <h1 className="text-3xl font-bold">
@@ -156,9 +155,9 @@ const StallCarousel = () => {
                           Opening Hrs: {stall.val.openingDays},{" "}
                           {stall.val.openingHours}
                         </p>
-                        <p>Owner: Mr. Tan and Family </p>
+                        <p>Owner: {stall.val.ownerName} </p>
                         {/* Need Owner name in seeded data and form */}
-                        <p>Started in 1980</p>
+                        <p>Started in {stall.val.startingYear}</p>
                         {/* Need starting year for stall */}
                       </div>
                       <p>
