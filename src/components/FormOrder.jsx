@@ -7,24 +7,21 @@ const FormOrder = (props) => {
   // console.log(user);
   const dish = props.dish;
   // console.log(dish);
-  const stall = props.stall;
-  // console.log(stall);
 
   const dishPrice = 4.5;
-  const dishName = "Curry Puff";
 
   const [order, setOrder] = useState({
-    name: dishName,
     qty: 0,
     option: "",
     time: "",
     cost: 0,
   });
-  const [fullOrder, setFullOrder] = useState([]);
+  const [fullOrder, setFullOrder] = useState({});
   const [checked, setChecked] = useState({
     takeaway: false,
     consume: false,
   });
+  const [loadOrder, setLoadOrder] = useState(false);
 
   const totalCost = order.qty * dishPrice;
 
@@ -40,18 +37,29 @@ const FormOrder = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setFullOrder([...fullOrder, order]);
-    // Need to push dishID in this order.
+    setFullOrder({
+      ...order,
+      dishName: dish.dishName,
+      image: dish.photoURLs[0],
+      stallName: dish.stallName,
+      dishID: dish.currentDishKey,
+      user: user.firstName, 
+    });
+
+    setLoadOrder(true);
+
     setOrder({});
-    navigate("/order");
   };
+
+  useEffect(() => {
+    if(loadOrder)navigate("/order", { state: fullOrder });
+  }, [loadOrder]);
 
   const changeOption = (e) => {
     setChecked({ [e.target.value]: true });
   };
 
   // console.log(order);
-  // console.log(fullOrder);
 
   return (
     <div className="text-left text-purple text-lg font-bold border-2 rounded-xl shadow-lg p-2 mt-2">
@@ -104,7 +112,7 @@ const FormOrder = (props) => {
           </div>
         </fieldset>
         <label className="text-lg mt-4">
-          Time of Pick-Up (Only for Today):{" "}
+          Time of Pick-Up (Only for Today):
         </label>
         <input
           className="bg-neutral-200 rounded-xl text-lg ml-3 indent-3 w-1/2"
@@ -117,10 +125,10 @@ const FormOrder = (props) => {
         ></input>
       </form>
       <div className="border-t-1 w-11/12 border-purple mt-4 pt-4">
-        Total:{" "}
+        Total:
         <span className="bg-neutral-200 rounded-full px-5 py-1">
           {order.cost ? order.cost : 0.0}
-        </span>{" "}
+        </span>
         SGD
       </div>
       <div className="text-sm mt-4 ">
