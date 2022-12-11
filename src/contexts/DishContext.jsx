@@ -1,22 +1,29 @@
 import React, { createContext, useState, useEffect } from "react";
-import { ref as databaseRef, onChildAdded } from "firebase/database";
-import { database } from "../firebase";
+import {
+  ref as databaseRef,
+  getDatabase,
+  query,
+  orderByChild,
+  onChildAdded,
+} from "firebase/database";
 
 export const DishContext = createContext();
 
 export const DishContextProvider = (props) => {
   const [dishData, setDishData] = useState([]);
-
-  const DISHES_FOLDER_NAME = `dishes`;
-
-  const dishDataRef = databaseRef(database, DISHES_FOLDER_NAME);
-  const dishArray = [];
+ 
   useEffect(() => {
-    onChildAdded(dishDataRef, (data) => {
-      dishArray.push({ key: data.key, val: data.val() });
-      setDishData([...dishArray]);
-    });
-  }, []);
+   const db = getDatabase();
+   const dishArr = [];
+   const dishData = query(databaseRef(db, `dishes`), orderByChild(`dishName`));
+   onChildAdded(dishData, (snapshot) => {
+    //  console.log(snapshot.key)
+     const currentDish = snapshot.val();
+     const currentDishKey = snapshot.key; 
+     dishArr.push({...currentDish, currentDishKey});
+     setDishData(dishArr);
+   });
+ }, []);
 
   console.log(dishData);
 

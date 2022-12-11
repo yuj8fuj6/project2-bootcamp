@@ -12,15 +12,11 @@ import {
   UserProfile,
 } from "./pages";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, database } from "./firebase";
+import { auth } from "./firebase";
 import {
-  onChildAdded,
   ref as databaseRef,
   getDatabase,
   query,
-  equalTo,
-  get,
-  orderByChild,
   onValue,
 } from "firebase/database";
 import Login from "./pages/Login";
@@ -28,7 +24,7 @@ import CreateDish from "./pages/CreateDish";
 import { DishContextProvider } from "./contexts/DishContext";
 import { HawkerContextProvider } from "./contexts/HawkerContext";
 import EditStall from "./pages/EditStall";
-import EditDish from "./pages/EditDish";
+// import EditDish from "./pages/EditDish";
 
 export const UserContext = React.createContext();
 
@@ -117,7 +113,7 @@ function App() {
                 />
                 <Route path="*" element={<Landing />} />
                 <Route path="/editStall" element={<EditStall />} />
-                <Route path="/editDish" element={<EditDish />} />
+                {/* <Route path="/editDish" element={<EditDish />} /> */}
               </Routes>
             </BrowserRouter>
           </DishContextProvider>
