@@ -1,56 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { useCallback } from "react";
+import React, { useState, useContext } from "react";
 import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import {
-  ref as databaseRef,
-  getDatabase,
-  query,
-  orderByChild,
-  onValue,
-} from "firebase/database";
+import { DishContext } from "../contexts/DishContext";
 
 const DishCards = () => {
-  const [dishes, setDishes] = useState();
-  const [dishDetails, setDishDetails] = useState(null);
   const [filter, setFilter] = useState([]);
   const [filterState, setFilterState] = useState(false);
 
-  const fetchDishDetails = useCallback(() => {
-    const db = getDatabase();
-    const dishData = query(databaseRef(db, `dishes`), orderByChild(`dishName`));
-    onValue(dishData, (snapshot) => {
-      // console.log(snapshot.val());
-      if (snapshot.exists()) {
-        // console.log(snapshot.val());
-        const [...dishes] = Object.values(snapshot.val());
-        setDishDetails(dishes);
-      }
-    });
-  }, [dishes]);
+  const dishes = useContext(DishContext);
 
-  useEffect(() => {
-    fetchDishDetails();
-  }, [dishes]);
-
-  // console.log(dishDetails);
+  // console.log(dishes);
 
   const handleSearchChange = (e) => {
     if (!e.target.value) {
-      setFilter(dishDetails);
+      setFilter(dishes);
     }
-    const resultsArray = dishDetails.filter(
+    const resultsArray = dishes.filter(
       (dish) =>
         dish.dishName.toLowerCase().includes(e.target.value) ||
         dish.stallName.toLowerCase().includes(e.target.value),
     );
     setFilter([...resultsArray]);
-    console.log(filter);
+    setFilterState(true);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFilterState(true);
   };
 
   return (
@@ -83,10 +58,10 @@ const DishCards = () => {
         </form>
       </div>
       <div className="flex justify-evenly flex-wrap sm:flex-1 overflow-auto h-[32rem]">
-        {dishDetails &&
+        {dishes &&
           !filterState &&
-          dishDetails.map((item) => (
-            <Link to="dish">
+          dishes.map((item) => (
+            <Link to="dish" state={item}>
               <div className="w-full rounded-lg shadow-md lg:max-w-sm hover:bg-orange/90 hover:opacity-75">
                 <img
                   className="object-cover w-full h-72 p-2 rounded-2xl drop-shadow-xl"
@@ -105,23 +80,25 @@ const DishCards = () => {
                     {/* To place last review here */}
                   </p>
                 </div>
-                <div className="flex flex-wrap justify-start space-x-12 mx-5">
-                  <div className="text-3xl font-semibold text-purple">
+                <div className="flex flex-wrap justify-start space-x-12 mx-5 text-purple">
+                  <div className="text-3xl font-semibold">
                     <BsHandThumbsUp />
                     <div className="text-xxs">Total Likes</div>
                   </div>
-                  <div className="text-3xl font-semibold text-purple">
+                  <div className="text-2xl font-semibold">200</div>
+                  <div className="text-3xl font-semibold">
                     <BsChatLeftText />
                     <div className="text-xxs">Total Reviews</div>
                   </div>
+                  <div className="text-2xl font-semibold">200</div>
                 </div>
               </div>{" "}
             </Link>
           ))}
-        {dishDetails &&
+        {dishes &&
           filterState &&
           filter.map((item) => (
-            <Link to="dish">
+            <Link to="dish" state={item}>
               {/* Link to add to each dish using ID */}
               <div className="w-full rounded-lg shadow-md lg:max-w-sm hover:bg-orange/90 hover:opacity-75">
                 <img
@@ -141,15 +118,17 @@ const DishCards = () => {
                     {/* To place last review here */}
                   </p>
                 </div>
-                <div className="flex flex-wrap justify-start space-x-12 mx-5">
-                  <div className="text-3xl font-semibold text-purple">
+                <div className="flex flex-wrap justify-start space-x-12 mx-5 text-purple">
+                  <div className="text-3xl font-semibold">
                     <BsHandThumbsUp />
                     <div className="text-xxs">Total Likes</div>
                   </div>
-                  <div className="text-3xl font-semibold text-purple">
+                  <div className="text-2xl font-semibold">200</div>
+                  <div className="text-3xl font-semibold">
                     <BsChatLeftText />
                     <div className="text-xxs">Total Reviews</div>
                   </div>
+                  <div className="text-2xl font-semibold">200</div>
                 </div>
               </div>{" "}
             </Link>

@@ -1,21 +1,23 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { Header, NavBar, StallDishCards } from "../components";
 import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
 import { DishContext } from "../contexts/DishContext";
+import { useLocation, Link } from "react-router-dom";
 
-const Stall = (props) => {
-  const hawkerData = props.hawkerData;
-  // console.log(hawkerData);
+const Stall = () => {
+  const location = useLocation();
+  const hawkerData = location.state;
 
-  const dishData = useContext(DishContext)
+  const dishData = useContext(DishContext);
 
-  // Filter Function to be added here.
-  const hawkerSelected = hawkerData[0];
+  const dishFiltered = dishData.filter(
+    (dish) => dish.hawkerKey === hawkerData.currentHawkerKey,
+  );
 
   // Stall Front Photo
   const stallFrontPhoto = (
     <img
-      src={hawkerSelected.val.stallFrontPhotoURL}
+      src={hawkerData.stallFrontPhotoURL}
       className="p-4 rounded-3xl drop-shadow-xl"
     />
   );
@@ -27,10 +29,7 @@ const Stall = (props) => {
 
   // To delete once array of other stall photos
   const otherStallPhotos = (
-    <img
-      src={hawkerSelected.val.stallFrontPhotoURL}
-      className="w-1/3 m-2 rounded-lg"
-    />
+    <img src={hawkerData.stallFrontPhotoURL} className="w-1/3 m-2 rounded-lg" />
   );
 
   return (
@@ -42,7 +41,7 @@ const Stall = (props) => {
       <div className="flex justify-evenly flex-wrap w-screen">
         <div className="text-left w-1/2 pl-4">
           <p className="text-orange text-xl font-semibold drop-shadow-lg">
-            {hawkerSelected.val.stallName}
+            {hawkerData.stallName}
           </p>
         </div>
         <div className="flex flex-wrap justify-center space-x-1 mt-0.5 text-purple w-1/2">
@@ -70,25 +69,22 @@ const Stall = (props) => {
             <p className="text-xs lg:text-sm font-bold underline mt-2">
               Location
             </p>
-            <p className="text-xs lg:text-sm mt-2">
-              {hawkerSelected.val.stallAddress}
-            </p>
+            <p className="text-xs lg:text-sm mt-2">{hawkerData.stallAddress}</p>
             <p className="text-xs lg:text-sm font-bold underline mt-2">
               Opening Hours
             </p>
-            <p className="text-xs lg:text-sm mt-2">
-              {hawkerSelected.val.openingHours}
-            </p>
+            <p className="text-xs lg:text-sm mt-2">{hawkerData.openingHours}</p>
           </div>
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1">
-          <p className="text-xl font-semibold drop-shadow-lg">Our Story</p>
-          <p className="text-xs lg:text-sm mt-2">
-            {hawkerSelected.val.stallStory}
-          </p>
+          <div className="shadow-xl border-1 rounded-2xl p-3 mt-1 mb-1">
+            <p className="text-xl font-semibold drop-shadow-lg">Our Story</p>
+            <p className="text-xs lg:text-sm mt-2">{hawkerData.stallStory}</p>
+          </div>
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1">
-          <StallDishCards dishData={dishData} />
+          <p className="text-xl font-semibold drop-shadow-lg">Our Offerings</p>
+          <StallDishCards dishFiltered={dishFiltered} />
         </div>
       </div>
     </div>
