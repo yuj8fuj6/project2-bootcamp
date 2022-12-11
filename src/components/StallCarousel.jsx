@@ -6,12 +6,7 @@ import { HawkerContext } from "../contexts/HawkerContext";
 import { Carousel } from "antd";
 
 const contentStyle = {
-  // height: "30vh",
   fontFamily: "Sansita",
-  // color: "#fff",
-  // lineHeight: "160px",
-  // textAlign: "center",
-  // background: "#364d79",
 };
 
 const StallCarousel = () => {
@@ -34,16 +29,12 @@ const StallCarousel = () => {
   };
 
   const stallSelect = randomizeStall(stallData).slice(0, 5);
-  // console.log(stallSelect);
 
   useEffect(() => {
     if (stallData) {
       setRandomStall(stallSelect);
-      // console.log(randomStall);
     }
   }, [stallData]);
-
-  console.log(randomStall);
 
   return (
     <div className="w-full">
@@ -51,7 +42,6 @@ const StallCarousel = () => {
         {randomStall &&
           randomStall.map((stall) => (
             <div>
-              {console.log(stall)}
               <h3 style={contentStyle}>
                 <div className="text-center relative h-full w-full lg:h-1/2 snap-start">
                   <div className="h-full w-full block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0">

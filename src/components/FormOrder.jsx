@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "../components";
-import { useNavigate } from "react-router-dom"
+import { ButtonDisabled } from "../components";
+import { useNavigate } from "react-router-dom";
 
 const FormOrder = (props) => {
-  //Dish ID
+  const user = props.user;
+  // console.log(user);
+  const dish = props.dish;
+  // console.log(dish);
+  const stall = props.stall;
+  // console.log(stall);
 
-  // const dishData = props.dishData;
-
-  // const dishSelected = dishData[0];
-
-  // To delete after passing props/ context
   const dishPrice = 4.5;
   const dishName = "Curry Puff";
 
@@ -28,7 +28,7 @@ const FormOrder = (props) => {
 
   const totalCost = order.qty * dishPrice;
 
-  let navigate = useNavigate(); 
+  let navigate = useNavigate();
 
   useEffect(() => {
     setOrder({ ...order, cost: totalCost });
@@ -39,10 +39,11 @@ const FormOrder = (props) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+
     setFullOrder([...fullOrder, order]);
-    // Need to push dishID in this order. 
+    // Need to push dishID in this order.
     setOrder({});
-    navigate("/order"); 
+    navigate("/order");
   };
 
   const changeOption = (e) => {
@@ -126,7 +127,9 @@ const FormOrder = (props) => {
         If you have confirmed the above, please proceed to order:
       </div>
       <div className="flex justify-center m-3">
-        <Button onClick={handleSubmit}>Order</Button>
+        <ButtonDisabled onClick={handleSubmit} user={user}>
+          Order
+        </ButtonDisabled>
       </div>
     </div>
   );

@@ -1,17 +1,14 @@
 import React, { useState } from "react";
-import { Button } from "../components";
+import { ButtonDisabled } from "../components";
 import { BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
 
 const FormReview = (props) => {
-  //Dish ID
-
-  // Conditional rendering needed based on past order history of user
-
-  // const dishData = props.dishData;
-
-  // const dishSelected = dishData[0];
-
-  // To delete after passing props/ context
+  const user = props.user;
+  console.log(user);
+  const dish = props.dish;
+  console.log(dish);
+  const stall = props.stall;
+  console.log(stall);
 
   const [review, setReview] = useState({
     likeCount: 1,
@@ -31,6 +28,7 @@ const FormReview = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     setFinalReview([...finalReview, review]);
     setReview({ likeCount: 1, review: "" });
   };
@@ -65,7 +63,9 @@ const FormReview = (props) => {
         ></input>
       </form>
       <div className="flex justify-center m-3">
-        <Button onClick={handleSubmit}>Submit</Button>
+        <ButtonDisabled onClick={handleSubmit} user={user}>
+          Submit
+        </ButtonDisabled>
       </div>
     </div>
   );
