@@ -8,3 +8,4 @@ export { default as FormFeedback } from "./FormFeedback";
 export { default as FormOrder } from "./FormOrder";
 export { default as FormReview } from "./FormReview";
 export { default as StallDishCards } from "./StallDishCards"; 
+export { default as ButtonDisabled } from "./ButtonDisabled"

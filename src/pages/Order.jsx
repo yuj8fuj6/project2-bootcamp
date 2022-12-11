@@ -1,53 +1,32 @@
-import React, {useContext} from "react";
+import React, { useEffect } from "react";
 import { Header, NavBar, Button } from "../components";
-import { DishContext } from "../contexts/DishContext";
+import { useLocation } from "react-router-dom";
 
-const Order = (props) => {
-  // Need data from DB for order made, and order history.
+const Order = () => {
+  const location = useLocation();
+  const order = location.state;
 
-  const dishData = useContext(DishContext);
+  const { dishID, dishName, option, qty, cost, time, image, stallName, user } =
+    order;
 
-  const dishSelected = dishData[0];
+  const hawkerPhoneNumber = 6590719168;
+  // To be dynamically programmed once hawker phone number is passed
 
-  // Dummy data needs to be deleted later.
-  const order = [
-    {
-      orderID: 1,
-      dish: dishSelected.val.dishName,
-      option: "Takeaway",
-      qty: 2,
-      cost: 9,
-      time: "14:00",
-      image: dishSelected.val.photoURLs[0],
-      stallName: dishSelected.val.stallName,
-    },
-    {
-      orderID: 2,
-      dish: dishSelected.val.dishName,
-      option: "Takeaway",
-      qty: 2,
-      cost: 9,
-      time: "14:00",
-      image: dishSelected.val.photoURLs[0],
-      stallName: dishSelected.val.stallName,
-    },
-    {
-      orderID: 1,
-      dish: dishSelected.val.dishName,
-      option: "Takeaway",
-      qty: 2,
-      cost: 9,
-      time: "14:00",
-      image: dishSelected.val.photoURLs[0],
-      stallName: dishSelected.val.stallName,
-    },
-  ];
+  useEffect(() => {
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+      return "";
+    };
 
-  let totalCost = 0;
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
+  }, []);
 
-  for (let i = 0; i < order.length; i++) {
-    totalCost += order[i].cost;
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    window.location.href = `https://wa.me/${hawkerPhoneNumber}?text=${user}%20has%20ordered%20${qty}%20nos.%20of%20${dishName}!%20Mode%20of%20Pick-up%20will%20be%20${option}.%20Expected%20time%20of%20Pick-up%20today%20-%20${time}.%20The%20payment%20of%20SGD%20${cost}%20will%20be%20made%20via%20PayNow%20before%20the%20pick-up.`;
+  };
 
   return (
     <div>
@@ -60,29 +39,38 @@ const Order = (props) => {
           Order Summary
         </p>
       </div>
+      <div className="text-left w-1/2 pl-7 mt-2">
+        <p className="text-orange text-lg font-semibold drop-shadow-lg">
+          Orderer: <span className="text-purple">{user}</span>
+        </p>
+      </div>
       <div className="mt-5 text-purple">
-        {order.map((item) => (
-          <div className="shadow-xl border-1 rounded-2xl p-3 mt-3 mb-1 m-4 flex flex-wrap space-y-2">
-            <img src={item.image} className="rounded-xl w-1/3 m-2" />
-            <div className="grid grid-cols-1 text-left">
-              <p className="text-xs font-normal">{item.stallName}</p>
-              <div className="flex flex-wrap justify-around">
-                <p className="text-xl font-semibold">{item.qty} x </p>
-                <p className="text-xs font-semibold">{item.dish}</p>
-                <p className="text-xs font-normal">{item.option}</p>
-                <p className="text-xs font-semibold">SGD $ {item.cost}</p>
-              </div>
+        <div className="shadow-xl border-1 rounded-2xl p-3 mt-3 mb-1 m-4 flex flex-wrap space-y-2">
+          <img src={image} className="rounded-xl w-1/3 m-2" />
+          <div className="grid grid-cols-1 text-left">
+            <p className="text-xs font-normal">{stallName}</p>
+            <div className="flex flex-wrap justify-around space-x-4">
+              <p className="text-xl font-semibold">{qty} x </p>
+              <p className="text-xs font-semibold">{dishName}</p>
+              <p className="text-xs font-normal">{option}</p>
+              <p className="text-xs font-semibold">SGD $ {cost}</p>
             </div>
           </div>
-        ))}
+        </div>
       </div>
       <div className="shadow-xl border-1 rounded-2xl p-3 mt-3 mb-1 m-4 grid grid-col-1 text-purple">
         <div className="flex flex-wrap justify-around">
           <p className="text-lg font-semibold">Order Total</p>
-          <p className="text-lg font-semibold">SGD $ {totalCost}</p>
+          <p className="text-lg font-semibold">SGD $ {cost}</p>
+        </div>
+        <div className="border-t-1 border-purple mt-5">
+          <p className="text-left text-sm">
+            Expected Time of Pick-Up Today:
+            <span className="font-semibold"> {time}</span>
+          </p>
         </div>
         <div className="mt-4">
-          <Button>Checkout</Button>
+          <Button onClick={handleSubmit}>Checkout</Button>
         </div>
         <div className="mt-4 text-xs text-left">
           <p>NOTE: </p>

@@ -7,17 +7,18 @@ import {
 } from "react-icons/bs";
 import { useLocation, Link } from "react-router-dom";
 import { HawkerContext } from "../contexts/HawkerContext";
+import { UserContext } from "../App";
 
 const Dish = () => {
   const location = useLocation();
   const dish = location.state;
-
+  const user = useContext(UserContext);
   const stall = useContext(HawkerContext);
 
   const stallFiltered = stall
     .filter((stall) => stall.currentHawkerKey === dish.hawkerKey)
     .pop();
-  console.log(stallFiltered);
+  // console.log(stallFiltered);
 
   //Try to make image modal popup.
   const dishPhotos = dish.photoURLs.map((photoURL) => (
@@ -174,12 +175,12 @@ const Dish = () => {
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
           <p className="text-xl font-semibold drop-shadow-lg">Order</p>
-          <FormOrder />
+          <FormOrder user={user} dish={dish} stall={stallFiltered} />
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
           <p className="text-xl font-semibold drop-shadow-lg">Add A Review</p>
           {/* Need conditional rendering after checking whether past history - user has ordered this dish */}
-          <FormReview />
+          <FormReview user={user} dish={dish} stall={stallFiltered} />
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
           <p className="text-xl font-semibold drop-shadow-lg mb-4">Reviews</p>
