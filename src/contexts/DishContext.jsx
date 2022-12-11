@@ -17,9 +17,10 @@ export const DishContextProvider = (props) => {
    const dishArr = [];
    const dishData = query(databaseRef(db, `dishes`), orderByChild(`dishName`));
    onChildAdded(dishData, (snapshot) => {
-     // console.log(snapshot.val())
+    //  console.log(snapshot.key)
      const currentDish = snapshot.val();
-     dishArr.push(currentDish);
+     const currentDishKey = snapshot.key; 
+     dishArr.push({...currentDish, currentDishKey});
      setDishData(dishArr);
    });
  }, []);

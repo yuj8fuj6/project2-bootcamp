@@ -8,17 +8,16 @@ import {
 import { useLocation, Link } from "react-router-dom";
 import { HawkerContext } from "../contexts/HawkerContext";
 
-
 const Dish = () => {
   const location = useLocation();
   const dish = location.state;
 
-  const stall = useContext(HawkerContext); 
-  console.log(stall[0].key)
+  const stall = useContext(HawkerContext);
 
-  const stallFiltered = stall.filter((stall) => stall.key === dish.hawkerKey)
-  console.log(stallFiltered)
-  console.log(dish.userKey)
+  const stallFiltered = stall
+    .filter((stall) => stall.currentHawkerKey === dish.hawkerKey)
+    .pop();
+  console.log(stallFiltered);
 
   //Try to make image modal popup.
   const dishPhotos = dish.photoURLs.map((photoURL) => (

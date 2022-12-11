@@ -43,7 +43,7 @@ const StallCarousel = () => {
     }
   }, [stallData]);
 
-  // console.log(randomStall);
+  console.log(randomStall);
 
   return (
     <div className="w-full">
@@ -51,6 +51,7 @@ const StallCarousel = () => {
         {randomStall &&
           randomStall.map((stall) => (
             <div>
+              {console.log(stall)}
               <h3 style={contentStyle}>
                 <div className="text-center relative h-full w-full lg:h-1/2 snap-start">
                   <div className="h-full w-full block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0">
@@ -61,10 +62,14 @@ const StallCarousel = () => {
                     />
                   </div>
                   <div className="h-full w-full aspect-4/3 block absolute top-0 left-0 transition-opacity duration-300 opacity-0 hover:opacity-100 bg-main-bg/75 z-10">
-                    <div className="text-purple py-1 px-8 mx-auto text-xxs text-left">
-                      <h1 className="text-2xl font-bold">{stall.stallName}</h1>
-                      <h2 className="font-semibold">{stall.foodCenterName}</h2>
-                      <div className="font-semibold">
+                    <div className="text-purple py-1 px-8 mx-auto text-xxs text-left lg:space-y-10">
+                      <h1 className="text-2xl font-bold lg:text-5xl">
+                        {stall.stallName}
+                      </h1>
+                      <h2 className="font-semibold lg:text-3xl">
+                        {stall.foodCenterName}
+                      </h2>
+                      <div className="font-semibold lg:text-2xl">
                         <p>
                           Opening Hrs: {stall.peningDays}, {stall.openingHours}
                         </p>
@@ -72,9 +77,11 @@ const StallCarousel = () => {
 
                         <p>Started in {stall.startingYear}</p>
                       </div>
-                      <p>
-                        <span className="font-semibold">From the Owner: </span>“
-                        {stall.stallStory}”
+                      <p className="lg:text-2xl">
+                        <span className="font-semibold lg:text-2xl">
+                          From the Owner:{" "}
+                        </span>
+                        “{stall.stallStory}”
                       </p>
                       <div className="flex flex-wrap justify-start space-x-5 mt-0.5">
                         <div className="text-2xl font-semibold">
@@ -89,7 +96,7 @@ const StallCarousel = () => {
                         <div className="text-2xl font-semibold">200</div>
                       </div>
                     </div>
-                    <Link to="/stall" value={stall.userKey}>
+                    <Link to="/stall" state={stall}>
                       <Button>Visit Stall!</Button>
                     </Link>
                   </div>

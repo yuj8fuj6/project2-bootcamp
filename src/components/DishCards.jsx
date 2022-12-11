@@ -1,30 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import {
-  ref as databaseRef,
-  getDatabase,
-  query,
-  orderByChild,
-  onChildAdded,
-} from "firebase/database";
+import { DishContext } from "../contexts/DishContext";
 
 const DishCards = () => {
-  const [dishes, setDishes] = useState([]);
   const [filter, setFilter] = useState([]);
   const [filterState, setFilterState] = useState(false);
 
-  useEffect(() => {
-    const db = getDatabase();
-    const dishArr = [];
-    const dishData = query(databaseRef(db, `dishes`), orderByChild(`dishName`));
-    onChildAdded(dishData, (snapshot) => {
-      // console.log(snapshot.val())
-      const currentDish = snapshot.val();
-      dishArr.push(currentDish);
-      setDishes(dishArr);
-    });
-  }, []);
+  const dishes = useContext(DishContext);
 
   // console.log(dishes);
 
@@ -97,15 +80,17 @@ const DishCards = () => {
                     {/* To place last review here */}
                   </p>
                 </div>
-                <div className="flex flex-wrap justify-start space-x-12 mx-5">
-                  <div className="text-3xl font-semibold text-purple">
+                <div className="flex flex-wrap justify-start space-x-12 mx-5 text-purple">
+                  <div className="text-3xl font-semibold">
                     <BsHandThumbsUp />
                     <div className="text-xxs">Total Likes</div>
                   </div>
-                  <div className="text-3xl font-semibold text-purple">
+                  <div className="text-2xl font-semibold">200</div>
+                  <div className="text-3xl font-semibold">
                     <BsChatLeftText />
                     <div className="text-xxs">Total Reviews</div>
                   </div>
+                  <div className="text-2xl font-semibold">200</div>
                 </div>
               </div>{" "}
             </Link>
@@ -133,15 +118,17 @@ const DishCards = () => {
                     {/* To place last review here */}
                   </p>
                 </div>
-                <div className="flex flex-wrap justify-start space-x-12 mx-5">
-                  <div className="text-3xl font-semibold text-purple">
+                <div className="flex flex-wrap justify-start space-x-12 mx-5 text-purple">
+                  <div className="text-3xl font-semibold">
                     <BsHandThumbsUp />
                     <div className="text-xxs">Total Likes</div>
                   </div>
-                  <div className="text-3xl font-semibold text-purple">
+                  <div className="text-2xl font-semibold">200</div>
+                  <div className="text-3xl font-semibold">
                     <BsChatLeftText />
                     <div className="text-xxs">Total Reviews</div>
                   </div>
+                  <div className="text-2xl font-semibold">200</div>
                 </div>
               </div>{" "}
             </Link>

@@ -12,22 +12,23 @@ export const HawkerContext = createContext();
 export const HawkerContextProvider = (props) => {
   const [hawkerData, setHawkerData] = useState([]);
 
-   useEffect(() => {
-     const db = getDatabase();
-     const hawkerArr = [];
-     const hawkerData = query(
-       databaseRef(db, `hawkers`),
-       orderByChild(`stallName`),
-     );
-     onChildAdded(hawkerData, (snapshot) => {
-       // console.log(snapshot.val())
-       const currentDish = snapshot.val();
-       hawkerArr.push(currentDish);
-       setHawkerData(hawkerArr);
-     });
-   }, []);
+  useEffect(() => {
+    const db = getDatabase();
+    const hawkerArr = [];
+    const hawkerData = query(
+      databaseRef(db, `hawkers`),
+      orderByChild(`stallName`),
+    );
+    onChildAdded(hawkerData, (snapshot) => {
+      // console.log(snapshot.val())
+      const currentHawker = snapshot.val();
+      const currentHawkerKey = snapshot.key;
+      hawkerArr.push({ ...currentHawker, currentHawkerKey });
+      setHawkerData(hawkerArr);
+    });
+  }, []);
 
-  console.log(hawkerData)
+  console.log(hawkerData);
 
   return (
     <HawkerContext.Provider value={hawkerData}>
