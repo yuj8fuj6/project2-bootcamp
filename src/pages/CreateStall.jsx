@@ -31,6 +31,7 @@ const CreateStall = () => {
   const [otherStallPhotos, setOtherStallPhotos] = useState([]);
   const [stallFrontImg, setStallFrontImg] = useState();
   const [otherStallImgs, setOtherStallImgs] = useState([]);
+  const [wordCount, setWordCount] = useState(0);
 
   const handleStallFrontPhoto = (event) => {
     setStallFrontImg(URL.createObjectURL(event.target.files[0]));
@@ -46,6 +47,23 @@ const CreateStall = () => {
   };
 
   const handleStallInputs = (event) => {
+    if (event.target.name === "startingYear") {
+      setStallDetails({
+        ...stallDetails,
+        [event.target.name]: Number(event.target.value),
+      });
+    }
+
+    if (event.target.name === "stallStory") {
+      const userInput = event.target.value;
+      const charCount = userInput.length;
+      setWordCount(charCount);
+      setStallDetails({
+        ...stallDetails,
+        [event.target.name]: event.target.value,
+      });
+    }
+
     setStallDetails({
       ...stallDetails,
       [event.target.name]: event.target.value,
@@ -101,6 +119,7 @@ const CreateStall = () => {
           ownerName: `${user.firstName} ${user.lastName}`,
           stallFrontPhotoURL: stallFrontURL,
           otherStallPhotosURL: otherStallPhotosURLArr,
+          contactNumber: user.contactNumber,
         };
         const hawkersListRef = databaseRef(database, HAWKER_DATABASE);
         const newHawkerRef = push(hawkersListRef);
@@ -113,10 +132,9 @@ const CreateStall = () => {
         );
         const newHawkerEntry = { [newHawkerRefKey]: newStall.stallName };
         update(userHawkerKeys, newHawkerEntry);
-        console.log("end");
       });
     } catch (error) {
-      console.log(error);
+      alert("There was an error - " + error);
     } finally {
       navigate("/profile");
     }
@@ -277,7 +295,11 @@ const CreateStall = () => {
                 type="text"
                 name="stallStory"
                 onChange={handleStallInputs}
+                maxLength={200}
               />
+              <p className="text-xxs text-gray-700">
+                Letter Count: {wordCount}/200
+              </p>
             </label>
           </div>
           <Button type="submit">Submit</Button>
