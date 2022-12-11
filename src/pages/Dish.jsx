@@ -22,7 +22,7 @@ const Dish = () => {
 
   //Try to make image modal popup.
   const dishPhotos = dish.photoURLs.map((photoURL) => (
-    <img src={photoURL} className="w-1/3 m-2 rounded-lg" />
+    <img src={photoURL} className="w-1/3 m-1 rounded-lg" />
   ));
 
   const dishIngredients = dish.ingredientList.map((item) => (
@@ -154,7 +154,9 @@ const Dish = () => {
           <p className="text-purple text-xl font-semibold drop-shadow-lg">
             Photos
           </p>
+          <div className="flex flex-wrap">
           {dishPhotos}
+          </div>
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1">
           <p className="text-xl font-semibold drop-shadow-lg">Description</p>
