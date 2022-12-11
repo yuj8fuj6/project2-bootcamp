@@ -13,6 +13,7 @@ import {
 } from "firebase/storage";
 import { BsHandThumbsUp, BsChatLeftText, BsSun } from "react-icons/bs";
 import StallList from "../components/StallList";
+import { OrderCards } from "../components";
 
 const USER_PHOTO_FOLDER = "userphotos";
 
@@ -21,7 +22,7 @@ const UserProfile = (props) => {
   const [profilePhoto, setProfilePhoto] = useState();
   const [editMode, setEditMode] = useState(false);
   const [userInfo, setUserInfo] = useState({ ...user });
-  console.log(userInfo);
+  // console.log(userInfo);
 
   const handleProfilePhoto = (event) => {
     const urlDisplay = URL.createObjectURL(event.target.files[0]);
@@ -99,7 +100,7 @@ const UserProfile = (props) => {
   }, [user.profilePhoto]);
 
   const handleUserInput = (event) => {
-    console.log(userInfo);
+    // console.log(userInfo);
     setUserInfo({
       ...userInfo,
       [event.target.name]: event.target.value,
@@ -110,7 +111,7 @@ const UserProfile = (props) => {
     event.preventDefault();
     const newLocal = !editMode;
     setEditMode(newLocal);
-    console.log(userInfo, user);
+    // console.log(userInfo, user);
   };
 
   const navigate = useNavigate();
@@ -169,7 +170,7 @@ const UserProfile = (props) => {
 
     const profilePhotoRef = storageRef(
       storage,
-      `${USER_PHOTO_FOLDER}/${profilePhoto.file.name}`
+      `${USER_PHOTO_FOLDER}/${profilePhoto.file.name}`,
     );
 
     uploadBytes(profilePhotoRef, profilePhoto.file)
@@ -180,7 +181,7 @@ const UserProfile = (props) => {
           update(databaseRef(db, `users/${user.uid}`), {
             profilePhoto: profilePhotoURL,
           });
-        })
+        }),
       )
       .catch((error) => {
         console.log(error);
@@ -189,6 +190,17 @@ const UserProfile = (props) => {
 
     alert("Profile photo has been successfully uploaded!");
   };
+
+  useEffect(() => {
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+      return "";
+    };
+
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
+  }, []);
 
   return (
     <div>
@@ -393,6 +405,11 @@ const UserProfile = (props) => {
               </Button>
             </p>
             <StallList />
+          </>
+        )}
+        {userInfo.userType === "user" && (
+          <>
+            <OrderCards />
           </>
         )}
       </div>

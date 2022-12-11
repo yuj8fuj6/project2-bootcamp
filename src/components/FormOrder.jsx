@@ -43,6 +43,7 @@ const FormOrder = (props) => {
       stallName: dish.stallName,
       dishID: dish.currentDishKey,
       user: user.firstName,
+      userID: user.uid, 
       userPhone: user.contactNumber,
       hawkerPhone: stall.contactNumber, 
     });
