@@ -1,13 +1,15 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { Header, NavBar, StallDishCards } from "../components";
 import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
 import { DishContext } from "../contexts/DishContext";
+import { useLocation, Link } from "react-router-dom";
 
-const Stall = (props) => {
-  const hawkerData = props.hawkerData;
+const Stall = () => {
+  const location = useLocation();
+  const hawkerData = location.state;
   // console.log(hawkerData);
 
-  const dishData = useContext(DishContext)
+  const dishData = useContext(DishContext);
 
   // Filter Function to be added here.
   const hawkerSelected = hawkerData[0];

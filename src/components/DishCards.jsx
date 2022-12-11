@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useCallback } from "react";
 import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import {
@@ -8,7 +7,6 @@ import {
   query,
   orderByChild,
   onChildAdded,
-  onChildChanged,
 } from "firebase/database";
 
 const DishCards = () => {
@@ -21,13 +19,14 @@ const DishCards = () => {
     const dishArr = [];
     const dishData = query(databaseRef(db, `dishes`), orderByChild(`dishName`));
     onChildAdded(dishData, (snapshot) => {
+      // console.log(snapshot.val())
       const currentDish = snapshot.val();
       dishArr.push(currentDish);
       setDishes(dishArr);
     });
   }, []);
 
-  console.log(dishes);
+  // console.log(dishes);
 
   const handleSearchChange = (e) => {
     if (!e.target.value) {
@@ -79,7 +78,7 @@ const DishCards = () => {
         {dishes &&
           !filterState &&
           dishes.map((item) => (
-            <Link to="dish">
+            <Link to="dish" state={item}>
               <div className="w-full rounded-lg shadow-md lg:max-w-sm hover:bg-orange/90 hover:opacity-75">
                 <img
                   className="object-cover w-full h-72 p-2 rounded-2xl drop-shadow-xl"
@@ -114,7 +113,7 @@ const DishCards = () => {
         {dishes &&
           filterState &&
           filter.map((item) => (
-            <Link to="dish">
+            <Link to="dish" state={item}>
               {/* Link to add to each dish using ID */}
               <div className="w-full rounded-lg shadow-md lg:max-w-sm hover:bg-orange/90 hover:opacity-75">
                 <img

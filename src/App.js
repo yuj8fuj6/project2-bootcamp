@@ -12,15 +12,11 @@ import {
   UserProfile,
 } from "./pages";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, database } from "./firebase";
+import { auth } from "./firebase";
 import {
-  onChildAdded,
   ref as databaseRef,
   getDatabase,
   query,
-  equalTo,
-  get,
-  orderByChild,
   onValue,
 } from "firebase/database";
 import Login from "./pages/Login";

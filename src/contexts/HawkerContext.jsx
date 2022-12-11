@@ -1,23 +1,31 @@
 import React, { createContext, useState, useEffect } from "react";
-import { ref as databaseRef, onChildAdded } from "firebase/database";
-import { database } from "../firebase";
+import {
+  ref as databaseRef,
+  getDatabase,
+  query,
+  orderByChild,
+  onChildAdded,
+} from "firebase/database";
 
 export const HawkerContext = createContext();
 
 export const HawkerContextProvider = (props) => {
   const [hawkerData, setHawkerData] = useState([]);
 
-  const HAWKERS_FOLDER_NAME = `hawkers`;
-
-  const hawkerDataRef = databaseRef(database, HAWKERS_FOLDER_NAME);
-  const hawkerArray = [];
-
-  useEffect(() => {
-    onChildAdded(hawkerDataRef, (data) => {
-      hawkerArray.push({ key: data.key, val: data.val() });
-      setHawkerData([...hawkerArray]);
-    });
-  }, []);
+   useEffect(() => {
+     const db = getDatabase();
+     const hawkerArr = [];
+     const hawkerData = query(
+       databaseRef(db, `hawkers`),
+       orderByChild(`stallName`),
+     );
+     onChildAdded(hawkerData, (snapshot) => {
+       // console.log(snapshot.val())
+       const currentDish = snapshot.val();
+       hawkerArr.push(currentDish);
+       setHawkerData(hawkerArr);
+     });
+   }, []);
 
   console.log(hawkerData)
 
