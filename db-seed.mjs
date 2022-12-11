@@ -38,7 +38,7 @@ const userSampleData = [
     contactEmail: "email2@email.com",
     karmaPoints: null,
     reviewsDone: null,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "uncertaincatfish",
@@ -49,7 +49,7 @@ const userSampleData = [
     contactEmail: "email3@email.com",
     karmaPoints: 66,
     reviewsDone: 79,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "ashamedcashews",
@@ -60,7 +60,7 @@ const userSampleData = [
     contactEmail: "email4@email.com",
     karmaPoints: null,
     reviewsDone: null,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "delirioussamphire",
@@ -71,7 +71,7 @@ const userSampleData = [
     contactEmail: "email5@email.com",
     karmaPoints: 24,
     reviewsDone: 87,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "resignedtacos",
@@ -82,7 +82,7 @@ const userSampleData = [
     contactEmail: "email6@email.com",
     karmaPoints: null,
     reviewsDone: null,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "mildalfalfa",
@@ -93,7 +93,7 @@ const userSampleData = [
     contactEmail: "email7@email.com",
     karmaPoints: 10,
     reviewsDone: 34,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "needfulflapjack",
@@ -104,7 +104,7 @@ const userSampleData = [
     contactEmail: "email8@email.com",
     karmaPoints: null,
     reviewsDone: null,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "selfishdough",
@@ -115,7 +115,7 @@ const userSampleData = [
     contactEmail: "email9@email.com",
     karmaPoints: 78,
     reviewsDone: 61,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "enragedsausages",
@@ -126,7 +126,7 @@ const userSampleData = [
     contactEmail: "email10@email.com",
     karmaPoints: null,
     reviewsDone: null,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "interestshortcake",
@@ -137,7 +137,7 @@ const userSampleData = [
     contactEmail: "email11@email.com",
     karmaPoints: 14,
     reviewsDone: 54,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "crushedcauliflower",
@@ -148,7 +148,7 @@ const userSampleData = [
     contactEmail: "email12@email.com",
     karmaPoints: null,
     reviewsDone: null,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "loyalblueberries",
@@ -159,7 +159,7 @@ const userSampleData = [
     contactEmail: "email51@email.com",
     karmaPoints: 4,
     reviewsDone: 74,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "homesickrice",
@@ -170,7 +170,7 @@ const userSampleData = [
     contactEmail: "email13@email.com",
     karmaPoints: null,
     reviewsDone: null,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "distractedtapioca",
@@ -181,7 +181,7 @@ const userSampleData = [
     contactEmail: "email14@email.com",
     karmaPoints: 68,
     reviewsDone: 43,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "lazypolenta",
@@ -192,7 +192,7 @@ const userSampleData = [
     contactEmail: "email15@email.com",
     karmaPoints: null,
     reviewsDone: null,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "outragedbattenburg",
@@ -203,7 +203,7 @@ const userSampleData = [
     contactEmail: "email16@email.com",
     karmaPoints: 47,
     reviewsDone: 17,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "terrifieddoughnut",
@@ -214,7 +214,7 @@ const userSampleData = [
     contactEmail: "email17@email.com",
     karmaPoints: null,
     reviewsDone: null,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "vengefulromaine",
@@ -225,7 +225,7 @@ const userSampleData = [
     contactEmail: "email18@email.com",
     karmaPoints: 97,
     reviewsDone: 8,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "perturbedcrab",
@@ -236,7 +236,7 @@ const userSampleData = [
     contactEmail: "email19@email.com",
     karmaPoints: null,
     reviewsDone: null,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "mourningpinto",
@@ -247,7 +247,7 @@ const userSampleData = [
     contactEmail: "email20@email.com",
     karmaPoints: 59,
     reviewsDone: 45,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     username: "acceptingcupcake",
@@ -258,7 +258,7 @@ const userSampleData = [
     contactEmail: "email21@email.com",
     karmaPoints: null,
     reviewsDone: null,
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
 ];
 
@@ -335,7 +335,7 @@ const stallsSampleData = [
     stallFrontPhoto: "rolina-curry-puff-storefront.jpg",
     startingYear: 2019,
     ownerName: "Eliza Sobia Binte Hairul Anuar",
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     userEmail: "email4@email.com",
@@ -350,7 +350,7 @@ const stallsSampleData = [
     stallFrontPhoto: "ding-gua-gua-fried-rice-ambience.jpg",
     startingYear: 2020,
     ownerName: "Wen Ming Law",
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     userEmail: "email10@email.com",
@@ -365,7 +365,7 @@ const stallsSampleData = [
     stallFrontPhoto: "cendol-geylang-serai-storefront.jpg",
     startingYear: 2015,
     ownerName: "Ridwan Zaidi Bin Muhamad Noor",
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     userEmail: "email2@email.com",
@@ -380,7 +380,7 @@ const stallsSampleData = [
     stallFrontPhoto: "minced-pork-bros-storefront.jpg",
     startingYear: 2007,
     ownerName: "Yi Min How",
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     userEmail: "email6@email.com",
@@ -395,7 +395,7 @@ const stallsSampleData = [
     stallFrontPhoto: "beach-road-prawn-noodle-house-storefront.jpg",
     startingYear: 2001,
     ownerName: "Xin Ling Tin",
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     userEmail: "email8@email.com",
@@ -410,7 +410,7 @@ const stallsSampleData = [
     stallFrontPhoto: "first-street-teochew-fish-soup-storefront.jpg",
     startingYear: 2014,
     ownerName: "Min Hui Shen",
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     userEmail: "email17@email.com",
@@ -426,7 +426,7 @@ const stallsSampleData = [
       "ah-gong-minced-pork-noodle-storefront-with-owner-elin.jpg",
     startingYear: 2018,
     ownerName: "De Kang Lam",
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     userEmail: "email12@email.com",
@@ -441,7 +441,7 @@ const stallsSampleData = [
     stallFrontPhoto: "midas-curry-storefront.jpg",
     startingYear: 2019,
     ownerName: "Hema Kumari d/o M. Prabu",
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
   {
     userEmail: "email21@email.com",
@@ -456,7 +456,7 @@ const stallsSampleData = [
     stallFrontPhoto: "Balestier-Road-Hoover-Rojak-storefront.jpg",
     startingYear: 2016,
     ownerName: "Reuben Hortense",
-    contactNumber: "+6500000000",
+    contactNumber: "6500000000",
   },
 ];
 

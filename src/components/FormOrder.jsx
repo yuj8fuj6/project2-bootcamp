@@ -7,8 +7,7 @@ const FormOrder = (props) => {
   // console.log(user);
   const dish = props.dish;
   // console.log(dish);
-
-  const dishPrice = 4.5;
+  const stall = props.stall; 
 
   const [order, setOrder] = useState({
     qty: 0,
@@ -23,7 +22,7 @@ const FormOrder = (props) => {
   });
   const [loadOrder, setLoadOrder] = useState(false);
 
-  const totalCost = order.qty * dishPrice;
+  const totalCost = order.qty * dish.price;
 
   let navigate = useNavigate();
 
@@ -43,7 +42,10 @@ const FormOrder = (props) => {
       image: dish.photoURLs[0],
       stallName: dish.stallName,
       dishID: dish.currentDishKey,
-      user: user.firstName, 
+      user: user.firstName,
+      userID: user.uid, 
+      userPhone: user.contactNumber,
+      hawkerPhone: stall.contactNumber, 
     });
 
     setLoadOrder(true);
@@ -52,7 +54,7 @@ const FormOrder = (props) => {
   };
 
   useEffect(() => {
-    if(loadOrder)navigate("/order", { state: fullOrder });
+    if (loadOrder) navigate("/order", { state: fullOrder });
   }, [loadOrder]);
 
   const changeOption = (e) => {
@@ -64,7 +66,7 @@ const FormOrder = (props) => {
   return (
     <div className="text-left text-purple text-lg font-bold border-2 rounded-xl shadow-lg p-2 mt-2">
       <p className="font-black">
-        $ {dishPrice} SGD <span className="font-normal">per bowl</span>
+        $ {dish.price} SGD <span className="font-normal">per bowl</span>
       </p>
       <form className="grid grid-cols-1 justify-start mt-2">
         <label className="text-lg">Qty: </label>
