@@ -136,6 +136,7 @@ const UserProfile = (props) => {
       lastName: userInfo.lastName,
       password: userInfo.password,
       username: userInfo.username,
+      contactNumber: userInfo.contactNumber,
     })
       .then(() => {
         alert("Your profile has been updated successfully.");
@@ -258,6 +259,15 @@ const UserProfile = (props) => {
                 />
               </label>
               <label>
+                <p className="mt-5 text-left ml-16">Contact Number</p>
+                <input
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
+                  name="contactNumber"
+                  value={userInfo.contactNumber}
+                  onChange={handleUserInput}
+                />
+              </label>
+              <label>
                 <p className="mt-5 text-left ml-16">Contact Email</p>
                 <input
                   className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
@@ -327,6 +337,15 @@ const UserProfile = (props) => {
                 <input
                   className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
                   placeholder={user.contactEmail}
+                />
+              </label>
+              <label>
+                <p className="mt-5 text-left ml-16">Contact Number</p>
+                <input
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
+                  placeholder={user.contactNumber}
+                  name="contactNumber"
+                  onChange={handleUserInput}
                 />
               </label>
               <label>
