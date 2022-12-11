@@ -38,6 +38,7 @@ const userSampleData = [
     contactEmail: "email2@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    contactNumber: "+6500000000",
   },
   {
     username: "uncertaincatfish",
@@ -48,6 +49,7 @@ const userSampleData = [
     contactEmail: "email3@email.com",
     karmaPoints: 66,
     reviewsDone: 79,
+    contactNumber: "+6500000000",
   },
   {
     username: "ashamedcashews",
@@ -58,6 +60,7 @@ const userSampleData = [
     contactEmail: "email4@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    contactNumber: "+6500000000",
   },
   {
     username: "delirioussamphire",
@@ -68,6 +71,7 @@ const userSampleData = [
     contactEmail: "email5@email.com",
     karmaPoints: 24,
     reviewsDone: 87,
+    contactNumber: "+6500000000",
   },
   {
     username: "resignedtacos",
@@ -78,6 +82,7 @@ const userSampleData = [
     contactEmail: "email6@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    contactNumber: "+6500000000",
   },
   {
     username: "mildalfalfa",
@@ -88,6 +93,7 @@ const userSampleData = [
     contactEmail: "email7@email.com",
     karmaPoints: 10,
     reviewsDone: 34,
+    contactNumber: "+6500000000",
   },
   {
     username: "needfulflapjack",
@@ -98,6 +104,7 @@ const userSampleData = [
     contactEmail: "email8@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    contactNumber: "+6500000000",
   },
   {
     username: "selfishdough",
@@ -108,6 +115,7 @@ const userSampleData = [
     contactEmail: "email9@email.com",
     karmaPoints: 78,
     reviewsDone: 61,
+    contactNumber: "+6500000000",
   },
   {
     username: "enragedsausages",
@@ -118,6 +126,7 @@ const userSampleData = [
     contactEmail: "email10@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    contactNumber: "+6500000000",
   },
   {
     username: "interestshortcake",
@@ -128,6 +137,7 @@ const userSampleData = [
     contactEmail: "email11@email.com",
     karmaPoints: 14,
     reviewsDone: 54,
+    contactNumber: "+6500000000",
   },
   {
     username: "crushedcauliflower",
@@ -138,6 +148,7 @@ const userSampleData = [
     contactEmail: "email12@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    contactNumber: "+6500000000",
   },
   {
     username: "loyalblueberries",
@@ -148,6 +159,7 @@ const userSampleData = [
     contactEmail: "email51@email.com",
     karmaPoints: 4,
     reviewsDone: 74,
+    contactNumber: "+6500000000",
   },
   {
     username: "homesickrice",
@@ -158,6 +170,7 @@ const userSampleData = [
     contactEmail: "email13@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    contactNumber: "+6500000000",
   },
   {
     username: "distractedtapioca",
@@ -168,6 +181,7 @@ const userSampleData = [
     contactEmail: "email14@email.com",
     karmaPoints: 68,
     reviewsDone: 43,
+    contactNumber: "+6500000000",
   },
   {
     username: "lazypolenta",
@@ -178,6 +192,7 @@ const userSampleData = [
     contactEmail: "email15@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    contactNumber: "+6500000000",
   },
   {
     username: "outragedbattenburg",
@@ -188,6 +203,7 @@ const userSampleData = [
     contactEmail: "email16@email.com",
     karmaPoints: 47,
     reviewsDone: 17,
+    contactNumber: "+6500000000",
   },
   {
     username: "terrifieddoughnut",
@@ -198,6 +214,7 @@ const userSampleData = [
     contactEmail: "email17@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    contactNumber: "+6500000000",
   },
   {
     username: "vengefulromaine",
@@ -208,6 +225,7 @@ const userSampleData = [
     contactEmail: "email18@email.com",
     karmaPoints: 97,
     reviewsDone: 8,
+    contactNumber: "+6500000000",
   },
   {
     username: "perturbedcrab",
@@ -218,6 +236,7 @@ const userSampleData = [
     contactEmail: "email19@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    contactNumber: "+6500000000",
   },
   {
     username: "mourningpinto",
@@ -228,6 +247,7 @@ const userSampleData = [
     contactEmail: "email20@email.com",
     karmaPoints: 59,
     reviewsDone: 45,
+    contactNumber: "+6500000000",
   },
   {
     username: "acceptingcupcake",
@@ -238,6 +258,7 @@ const userSampleData = [
     contactEmail: "email21@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    contactNumber: "+6500000000",
   },
 ];
 
@@ -257,6 +278,7 @@ const userSeeding = function () {
       contactEmail,
       karmaPoints,
       reviewsDone,
+      contactNumber,
     } = user;
     await createUserWithEmailAndPassword(auth, contactEmail, password)
       .then(async (response) => {
@@ -271,6 +293,7 @@ const userSeeding = function () {
           contactEmail,
           karmaPoints,
           reviewsDone,
+          contactNumber,
         };
         const usersRef = databaseRef(database, USER_PROFILES_DATABASE + uid);
         // const usersListRef = push(usersRef);
@@ -307,11 +330,12 @@ const stallsSampleData = [
     openingHours: "06:30am to 02:00pm",
     openingDays: "Wed-Mon",
     stallStory:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     stallMenu: [1],
     stallFrontPhoto: "rolina-curry-puff-storefront.jpg",
     startingYear: 2019,
     ownerName: "Eliza Sobia Binte Hairul Anuar",
+    contactNumber: "+6500000000",
   },
   {
     userEmail: "email4@email.com",
@@ -326,6 +350,7 @@ const stallsSampleData = [
     stallFrontPhoto: "ding-gua-gua-fried-rice-ambience.jpg",
     startingYear: 2020,
     ownerName: "Wen Ming Law",
+    contactNumber: "+6500000000",
   },
   {
     userEmail: "email10@email.com",
@@ -340,6 +365,7 @@ const stallsSampleData = [
     stallFrontPhoto: "cendol-geylang-serai-storefront.jpg",
     startingYear: 2015,
     ownerName: "Ridwan Zaidi Bin Muhamad Noor",
+    contactNumber: "+6500000000",
   },
   {
     userEmail: "email2@email.com",
@@ -349,11 +375,12 @@ const stallsSampleData = [
     openingHours: "09:00am to 05:30pm",
     openingDays: "Wed-Mon",
     stallStory:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget arcu dictum varius duis at consectetur. Magna fermentum iaculis eu non diam phasellus vestibulum lorem sed. Elementum tempus egestas sed sed risus pretium quam vulputate dignissim.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     stallMenu: [5, 6],
     stallFrontPhoto: "minced-pork-bros-storefront.jpg",
     startingYear: 2007,
     ownerName: "Yi Min How",
+    contactNumber: "+6500000000",
   },
   {
     userEmail: "email6@email.com",
@@ -363,11 +390,12 @@ const stallsSampleData = [
     openingHours: "07:00am to 04:00pm",
     openingDays: "Wed-Mon",
     stallStory:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget arcu dictum varius duis at consectetur. Magna fermentum iaculis eu non diam phasellus vestibulum lorem sed. Elementum tempus egestas sed sed risus pretium quam vulputate dignissim.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     stallMenu: [11, 12],
     stallFrontPhoto: "beach-road-prawn-noodle-house-storefront.jpg",
     startingYear: 2001,
     ownerName: "Xin Ling Tin",
+    contactNumber: "+6500000000",
   },
   {
     userEmail: "email8@email.com",
@@ -382,6 +410,7 @@ const stallsSampleData = [
     stallFrontPhoto: "first-street-teochew-fish-soup-storefront.jpg",
     startingYear: 2014,
     ownerName: "Min Hui Shen",
+    contactNumber: "+6500000000",
   },
   {
     userEmail: "email17@email.com",
@@ -397,6 +426,7 @@ const stallsSampleData = [
       "ah-gong-minced-pork-noodle-storefront-with-owner-elin.jpg",
     startingYear: 2018,
     ownerName: "De Kang Lam",
+    contactNumber: "+6500000000",
   },
   {
     userEmail: "email12@email.com",
@@ -411,6 +441,7 @@ const stallsSampleData = [
     stallFrontPhoto: "midas-curry-storefront.jpg",
     startingYear: 2019,
     ownerName: "Hema Kumari d/o M. Prabu",
+    contactNumber: "+6500000000",
   },
   {
     userEmail: "email21@email.com",
@@ -425,6 +456,7 @@ const stallsSampleData = [
     stallFrontPhoto: "Balestier-Road-Hoover-Rojak-storefront.jpg",
     startingYear: 2016,
     ownerName: "Reuben Hortense",
+    contactNumber: "+6500000000",
   },
 ];
 
@@ -439,6 +471,7 @@ const dishes = [
     photoURLs: [],
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    price: 1.5,
   },
   {
     dishName: "Prawn Fried Rice",
@@ -453,6 +486,7 @@ const dishes = [
     photoURLs: [],
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    price: 6,
   },
   {
     dishName: "Egg Fried Rice",
@@ -463,6 +497,7 @@ const dishes = [
     photoURLs: [],
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    price: 6,
   },
   {
     dishName: "Cendol",
@@ -473,6 +508,7 @@ const dishes = [
     photoURLs: [],
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    price: 3,
   },
   {
     dishName: "Seafood Minced Meat Noodles",
@@ -489,6 +525,7 @@ const dishes = [
     photoURLs: [],
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    price: 6,
   },
   {
     dishName: "Modern Pork Noodles",
@@ -499,6 +536,7 @@ const dishes = [
     photoURLs: [],
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    price: 5.5,
   },
   {
     dishName: "Fish Soup",
@@ -509,6 +547,7 @@ const dishes = [
     photoURLs: [],
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    price: 6,
   },
   {
     dishName: "Minced Meat Noodles",
@@ -519,6 +558,7 @@ const dishes = [
     photoURLs: [],
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    price: 5.5,
   },
   {
     dishName: "Curry Set",
@@ -529,6 +569,7 @@ const dishes = [
     photoURLs: [],
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    price: 6,
   },
   {
     dishName: "Prata",
@@ -539,6 +580,7 @@ const dishes = [
     photoURLs: [],
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    price: 1.5,
   },
   {
     dishName: "Prawn Noodles",
@@ -549,6 +591,7 @@ const dishes = [
     photoURLs: [],
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    price: 6,
   },
   {
     dishName: "Ngoh Hiang Platter",
@@ -565,6 +608,7 @@ const dishes = [
     photoURLs: [],
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    price: 9,
   },
 ];
 
@@ -616,6 +660,7 @@ const hawkerAndDishSeeding = async function () {
           userEmail: stall.userEmail,
           ownerName: stall.ownerName,
           startingYear: stall.startingYear,
+          contactNumber: stall.contactNumber,
         };
         const stallsListRef = databaseRef(database, HAWKER_DATABASE);
         const newStallsRef = push(stallsListRef);
@@ -666,6 +711,7 @@ const hawkerAndDishSeeding = async function () {
       story: dish.story,
       hawkerKey: dish.hawkerKey,
       userKey: dish.userKey,
+      price: dish.price,
     };
     const dishListRef = databaseRef(database, DISH_DATABASE);
     const newDishRef = push(dishListRef);
@@ -685,5 +731,5 @@ const hawkerAndDishSeeding = async function () {
 
 //function calls
 //please run userSeeding() first, then run hawkerAndDishSeeding(), to do so comment out the function you are not running before executing this file.
-// userSeeding();
+userSeeding();
 hawkerAndDishSeeding();
