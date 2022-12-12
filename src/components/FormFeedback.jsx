@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ContactForm from "./ContactForm";
 
 const FormFeedback = (props) => {
   const [feedback, setFeedback] = useState({
@@ -22,7 +23,7 @@ const FormFeedback = (props) => {
       <p className="text-sm mt-2">Contact us at abcde@gmail.com</p>
       <p className="text-sm mt-2">to find out more about our platform !</p>
       <p className="mt-5">Feedback Form</p>
-      <form className="grid grid-cols-1 space-y-2">
+      {/* <form className="grid grid-cols-1 space-y-2">
         <input
           className="border-solid border-2 rounded text-sm"
           type="name"
@@ -53,7 +54,8 @@ const FormFeedback = (props) => {
           onChange={handleFeedback}
           name="comment"
         ></input>
-      </form>
+      </form> */}
+      <ContactForm />
       <div className="flex justify-center mt-5">
         <button
           onClick={handleSubmit}

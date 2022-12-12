@@ -31,3 +31,25 @@
     1px 1px 0 #9D7D9B;
   font-size: 0.7rem;
 }
+
+.container{
+  position: relative;
+  flex-direction: column;
+  width: 90vw;
+  height: 30vh;
+}
+
+.center{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.map{
+  position: absolute;
+}
+
+.test{
+  background-color: #9D7D9B;
+}
