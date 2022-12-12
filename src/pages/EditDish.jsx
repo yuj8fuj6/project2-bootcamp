@@ -83,6 +83,8 @@ const EditDish = () => {
           })
         )
         .catch((error) => alert(error));
+
+      promises.push(uploadDishMainPhoto);
     }
 
     for (let i = 0; i < newDishImgs.length; i++) {
@@ -124,9 +126,7 @@ const EditDish = () => {
         <NavBar />
       </div>
       <div>
-        <h1 className="text-left underline text-orange m-1 text-2xl">
-          Edit Dish
-        </h1>
+        <h1 className="text-left text-orange m-1 text-2xl">Edit Dish</h1>
         <form className="container mx-1 text-left" onSubmit={onDishEditSubmit}>
           <label className="text-purple">
             Dish Name:
