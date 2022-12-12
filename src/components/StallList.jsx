@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+
 import { UserContext } from "../App";
 import {
   ref as databaseRef,
@@ -9,13 +9,15 @@ import {
   orderByChild,
   remove,
   onValue,
+  get,
+  child,
+  Database,
 } from "firebase/database";
 import { Button } from "../components";
 import { useNavigate } from "react-router-dom";
+import { database } from "../firebase";
 
 const MenuList = ({ stall }) => {
-  console.log(stall);
-  console.log(...stall);
   const [currentStall, setCurrentStall] = useState(...stall);
   console.log(currentStall);
   const [stallMenu, setStallMenu] = useState([]);
@@ -30,20 +32,16 @@ const MenuList = ({ stall }) => {
 
     onValue(menuQuery, (snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
         const dishKeys = Object.keys(snapshot.val());
-        console.log(dishKeys);
         const dishDetails = Object.values(snapshot.val());
-        console.log(dishDetails);
         const dishArr = [];
         for (let i = 0; i < dishDetails.length; i++) {
           dishArr.push({ ...dishDetails[i], dishKey: dishKeys[i] });
-          console.log(dishArr);
           setStallMenu(dishArr);
         }
       }
     });
-  });
+  }, [stallMenu, db]);
 
   useEffect(() => {
     getMenuDetails();
@@ -51,6 +49,11 @@ const MenuList = ({ stall }) => {
 
   const navigate = useNavigate();
   console.log(stallMenu);
+
+  const deleteMenu = (dishKey) => {
+    const db = getDatabase();
+    remove(databaseRef(db, `dishes/` + dishKey));
+  };
 
   return (
     <div>
@@ -63,10 +66,20 @@ const MenuList = ({ stall }) => {
               key={dish.dishKey}
             >
               {dish.dishName}
+              <Button type="button" onClick={() => deleteMenu(dish.dishKey)}>
+                Delete
+              </Button>
+              <Button
+                type="button"
+                onClick={() => navigate("/editDish", { state: dish })}
+              >
+                Edit
+              </Button>
             </li>
           ))}
         </ol>
         <Button
+          className="text-black"
           type="button"
           onClick={() => navigate("/createDish", { state: stall })}
         >
@@ -114,46 +127,61 @@ const StallList = () => {
 
   const deleteStall = (stallKey) => {
     const db = getDatabase();
-    const stallRef = databaseRef(db, "dishes/" + stallKey);
+    const stallRef = databaseRef(db, "hawkers/" + stallKey);
     remove(stallRef);
+
+    const userHawkerRef = databaseRef(
+      db,
+      "user-hawkers/" + user.uid + stallKey
+    );
+    remove(userHawkerRef);
+
+    const hawkerDishesRef = databaseRef(db, "hawker-dishes/" + stallKey);
+    remove(hawkerDishesRef);
   };
 
   if (stallDetails.length > 0) {
     return (
       <div className="flex justify-around flex-wrap w-screen p-1">
-        {stallDetails.map((stall) => (
-          <div
-            key={stall.stallKey}
-            className="w-full rounded-lg shadow-md lg:max-w-sm hover:bg-orange/90 hover:opacity-75"
-          >
-            <img
-              className="object-cover w-full h-72 p-2 rounded-2xl drop-shadow-xl"
-              src={stall.stallFrontPhotoURL}
-              alt="stallfront"
-            />
-            <div className="p-4 text-left">
-              <h4 className="text-lg font-extrabold text-purple">
-                {stall.stallName}
-              </h4>
-              <h5 className="text-sm font-extrabold text-purple">
-                {stall.stallAddress}
-              </h5>
-            </div>
-            <MenuList stall={stallDetails} />
+        <div className="flex justify-evenly flex-wrap sm:flex-1 overflow-auto h-[32rem]">
+          <div className="text-purple text-2xl">Your Stalls</div>
+          {stallDetails.map((stall) => (
+            <div
+              key={stall.stallKey}
+              className="w-full rounded-lg shadow-md lg:max-w-sm hover:bg-orange/90 hover:opacity-75"
+            >
+              <img
+                className="object-cover w-full h-72 p-2 rounded-2xl drop-shadow-xl"
+                src={stall.stallFrontPhotoURL}
+                alt="stallfront"
+              />
+              <div className="p-4 text-left">
+                <h4 className="text-lg font-extrabold text-purple">
+                  {stall.stallName}
+                </h4>
+                <h5 className="text-sm font-extrabold text-purple">
+                  {stall.stallAddress}
+                </h5>
+              </div>
+              <MenuList stall={stallDetails} />
 
-            <p className="m-2 mt-5 mb-10">
-              <Button type="button" onClick={() => deleteStall(stall.stallKey)}>
-                Delete Stall
-              </Button>
-              <Button
-                type="button"
-                onClick={() => navigate("/editStall", { state: stall })}
-              >
-                Edit Stall
-              </Button>
-            </p>
-          </div>
-        ))}
+              <p className="m-2 mt-5 mb-10">
+                <Button
+                  type="button"
+                  onClick={() => deleteStall(stall.stallKey)}
+                >
+                  Delete Stall
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => navigate("/editStall", { state: stall })}
+                >
+                  Edit Stall
+                </Button>
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
