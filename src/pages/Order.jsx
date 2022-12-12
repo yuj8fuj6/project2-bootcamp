@@ -43,7 +43,6 @@ const Order = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const orderTime = new Date();
     const ordersListRef = databaseRef(database, ORDER_DATABASE);
     const newOrder = {
       dishID: dishID,
@@ -58,7 +57,7 @@ const Order = () => {
       image: image,
     };
     const newOrderRef = push(ordersListRef);
-    set(newOrderRef, { ...newOrder, orderTime: orderTime })
+    set(newOrderRef, { ...newOrder, orderTime: Date() })
       .then(() => {
         window.location.href = `https://wa.me/${hawkerPhoneNumber}?text=${user}%20(Contact%20Number:%20${userPhone})%20has%20ordered%20${qty}%20nos.%20of%20${dishName}!%20Mode%20of%20Pick-up%20will%20be%20${option}.%20Expected%20time%20of%20Pick-up%20today%20-%20${time}.%20The%20payment%20of%20SGD%20${cost}%20will%20be%20made%20via%20PayNow%20before%20the%20pick-up.`;
       })
