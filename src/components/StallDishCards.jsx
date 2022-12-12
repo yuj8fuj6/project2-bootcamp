@@ -25,7 +25,7 @@ const StallDishCards = (props) => {
                   {items.dishName}
                 </h4>
                 <p className="mb-2 leading-normal text-sm font-medium text-purple italic ">
-                  SGD 4.50
+                  SGD {items.price}
                 </p>
               </div>
               <div className="flex flex-wrap justify-start space-x-10 mx-5 text-purple">
