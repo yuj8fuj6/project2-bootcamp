@@ -1,8 +1,7 @@
 import React from "react";
 import { Header, NavBar } from "../components";
-import { useState, useEffect, useMemo, useCallback } from "react";
-import { GoogleMap, useJsApiLoader, MarkerF} from "@react-google-maps/api";
-import { getDatabase, ref, child, get } from "firebase/database";
+import {  useEffect } from "react";
+import { useJsApiLoader } from "@react-google-maps/api";
 import UserMap from "../components/Map";
 
 let center = {
@@ -26,21 +25,6 @@ export default function Search() {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEYS,
     libraries: ["places"], //libraries for api
   });
-
-  //Get hawker's location from database
-  const dbRef = ref(getDatabase());
-  get(child(dbRef, `hawkers/`))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        let ss = Object.values(snapshot.val());
-        console.log(ss);
-      } else {
-        console.log("No data available");
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
 
   if (!isLoaded) return <div>Loading...</div>;
   return (
