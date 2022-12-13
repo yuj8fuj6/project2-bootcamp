@@ -83,6 +83,8 @@ const EditDish = () => {
           })
         )
         .catch((error) => alert(error));
+
+      promises.push(uploadDishMainPhoto);
     }
 
     for (let i = 0; i < newDishImgs.length; i++) {
@@ -124,9 +126,7 @@ const EditDish = () => {
         <NavBar />
       </div>
       <div>
-        <h1 className="text-left underline text-orange m-1 text-2xl">
-          Edit Dish
-        </h1>
+        <h1 className="text-left text-orange m-1 text-2xl">Edit Dish</h1>
         <form className="container mx-1 text-left" onSubmit={onDishEditSubmit}>
           <label className="text-purple">
             Dish Name:
@@ -189,6 +189,21 @@ const EditDish = () => {
               <h1 className="text-purple text-xl font-bold drop-shadow-md">
                 Description
               </h1>
+              <label className="text-purple text-xs">
+                Price
+                <p>
+                  <input
+                    className="border border-black text-gray-700 rounded-lg w-16 max-w-xs mr-1 pl-1"
+                    name="price"
+                    onChange={handleDishInputs}
+                    value={dishDetails.price}
+                    type="number"
+                    step="0.01"
+                    min="0"
+                  />
+                  SGD
+                </p>
+              </label>
               <p>
                 <label className="text-purple text-xs">
                   Ingredient List (separate each ingredient with a comma)

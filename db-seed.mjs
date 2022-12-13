@@ -38,6 +38,7 @@ const userSampleData = [
     contactEmail: "email2@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    likesDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -48,8 +49,9 @@ const userSampleData = [
     userType: "user",
     contactEmail: "email3@email.com",
     karmaPoints: 66,
-    reviewsDone: 79,
     contactNumber: "6500000000",
+    likesDone: 0,
+    reviewsDone: 0,
   },
   {
     username: "ashamedcashews",
@@ -60,6 +62,7 @@ const userSampleData = [
     contactEmail: "email4@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    likesDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -69,8 +72,8 @@ const userSampleData = [
     lastName: "Law",
     userType: "user",
     contactEmail: "email5@email.com",
-    karmaPoints: 24,
-    reviewsDone: 87,
+    likesDone: 0,
+    reviewsDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -82,6 +85,7 @@ const userSampleData = [
     contactEmail: "email6@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    likesDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -92,7 +96,8 @@ const userSampleData = [
     userType: "user",
     contactEmail: "email7@email.com",
     karmaPoints: 10,
-    reviewsDone: 34,
+    likesDone: 0,
+    reviewsDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -104,6 +109,7 @@ const userSampleData = [
     contactEmail: "email8@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    likesDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -114,7 +120,8 @@ const userSampleData = [
     userType: "user",
     contactEmail: "email9@email.com",
     karmaPoints: 78,
-    reviewsDone: 61,
+    likesDone: 0,
+    reviewsDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -126,6 +133,7 @@ const userSampleData = [
     contactEmail: "email10@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    likesDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -136,7 +144,8 @@ const userSampleData = [
     userType: "user",
     contactEmail: "email11@email.com",
     karmaPoints: 14,
-    reviewsDone: 54,
+    likesDone: 0,
+    reviewsDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -147,7 +156,8 @@ const userSampleData = [
     userType: "hawker",
     contactEmail: "email12@email.com",
     karmaPoints: null,
-    reviewsDone: null,
+    likesDone: null,
+    likesDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -158,7 +168,8 @@ const userSampleData = [
     userType: "user",
     contactEmail: "email51@email.com",
     karmaPoints: 4,
-    reviewsDone: 74,
+    likesDone: 0,
+    reviewsDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -170,6 +181,7 @@ const userSampleData = [
     contactEmail: "email13@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    likesDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -180,7 +192,8 @@ const userSampleData = [
     userType: "user",
     contactEmail: "email14@email.com",
     karmaPoints: 68,
-    reviewsDone: 43,
+    likesDone: 0,
+    reviewsDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -192,6 +205,7 @@ const userSampleData = [
     contactEmail: "email15@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    likesDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -202,7 +216,8 @@ const userSampleData = [
     userType: "user",
     contactEmail: "email16@email.com",
     karmaPoints: 47,
-    reviewsDone: 17,
+    likesDone: 0,
+    reviewsDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -214,6 +229,7 @@ const userSampleData = [
     contactEmail: "email17@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    likesDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -224,7 +240,8 @@ const userSampleData = [
     userType: "user",
     contactEmail: "email18@email.com",
     karmaPoints: 97,
-    reviewsDone: 8,
+    likesDone: 0,
+    reviewsDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -236,6 +253,7 @@ const userSampleData = [
     contactEmail: "email19@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    likesDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -246,7 +264,8 @@ const userSampleData = [
     userType: "user",
     contactEmail: "email20@email.com",
     karmaPoints: 59,
-    reviewsDone: 45,
+    likesDone: 0,
+    reviewsDone: 0,
     contactNumber: "6500000000",
   },
   {
@@ -258,6 +277,7 @@ const userSampleData = [
     contactEmail: "email21@email.com",
     karmaPoints: null,
     reviewsDone: null,
+    likesDone: 0,
     contactNumber: "6500000000",
   },
 ];
@@ -279,6 +299,7 @@ const userSeeding = function () {
       karmaPoints,
       reviewsDone,
       contactNumber,
+      likesDone,
     } = user;
     await createUserWithEmailAndPassword(auth, contactEmail, password)
       .then(async (response) => {
@@ -294,16 +315,14 @@ const userSeeding = function () {
           karmaPoints,
           reviewsDone,
           contactNumber,
+          likesDone,
         };
         const usersRef = databaseRef(database, USER_PROFILES_DATABASE + uid);
-        // const usersListRef = push(usersRef);
-        // const userKey = usersListRef.key;
 
         const userKeysRef = databaseRef(
           database,
-          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ","),
+          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ",")
         );
-        // const userKeysListRef = push(userKeysRef);
 
         await set(usersRef, userRef);
 
@@ -472,6 +491,7 @@ const dishes = [
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     price: 1.5,
+    likes: 0,
   },
   {
     dishName: "Prawn Fried Rice",
@@ -487,6 +507,7 @@ const dishes = [
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     price: 6,
+    likes: 0,
   },
   {
     dishName: "Egg Fried Rice",
@@ -498,6 +519,7 @@ const dishes = [
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     price: 6,
+    likes: 0,
   },
   {
     dishName: "Cendol",
@@ -509,6 +531,7 @@ const dishes = [
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     price: 3,
+    likes: 0,
   },
   {
     dishName: "Seafood Minced Meat Noodles",
@@ -526,6 +549,7 @@ const dishes = [
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     price: 6,
+    likes: 0,
   },
   {
     dishName: "Modern Pork Noodles",
@@ -537,6 +561,7 @@ const dishes = [
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     price: 5.5,
+    likes: 0,
   },
   {
     dishName: "Fish Soup",
@@ -548,6 +573,7 @@ const dishes = [
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     price: 6,
+    likes: 0,
   },
   {
     dishName: "Minced Meat Noodles",
@@ -559,6 +585,7 @@ const dishes = [
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     price: 5.5,
+    likes: 0,
   },
   {
     dishName: "Curry Set",
@@ -570,6 +597,7 @@ const dishes = [
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     price: 6,
+    likes: 0,
   },
   {
     dishName: "Prata",
@@ -581,6 +609,7 @@ const dishes = [
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     price: 1.5,
+    likes: 0,
   },
   {
     dishName: "Prawn Noodles",
@@ -592,6 +621,7 @@ const dishes = [
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     price: 6,
+    likes: 0,
   },
   {
     dishName: "Ngoh Hiang Platter",
@@ -609,6 +639,7 @@ const dishes = [
     story:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     price: 9,
+    likes: 0,
   },
 ];
 
@@ -638,13 +669,13 @@ const hawkerAndDishSeeding = async function () {
     await get(child(dbRef, `${USERKEYS_DATABASE}/${stallEmailRef}`)).then(
       (snapshot) => {
         userID = snapshot.val();
-      },
+      }
     );
 
     userHawkerKeys[userID] = {};
 
     await getDownloadURL(
-      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`),
+      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`)
     )
       .then((url) => {
         stall.stallFrontPhotoURL = url;
@@ -661,6 +692,7 @@ const hawkerAndDishSeeding = async function () {
           ownerName: stall.ownerName,
           startingYear: stall.startingYear,
           contactNumber: stall.contactNumber,
+          totalLikes: 0,
         };
         const stallsListRef = databaseRef(database, HAWKER_DATABASE);
         const newStallsRef = push(stallsListRef);
@@ -692,7 +724,7 @@ const hawkerAndDishSeeding = async function () {
     for (let m = 0; m < dish.photos.length; m++) {
       let dishPhoto = dish.photos[m];
       await getDownloadURL(
-        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`),
+        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`)
       )
         .then((url) => {
           dish.photoURLs.push(url);
@@ -712,6 +744,7 @@ const hawkerAndDishSeeding = async function () {
       hawkerKey: dish.hawkerKey,
       userKey: dish.userKey,
       price: dish.price,
+      totalLikes: 0,
     };
     const dishListRef = databaseRef(database, DISH_DATABASE);
     const newDishRef = push(dishListRef);
@@ -723,7 +756,7 @@ const hawkerAndDishSeeding = async function () {
 
   const hawkerDishKeysRef = databaseRef(
     database,
-    HAWKER_DISH_RELATION_DATABASE,
+    HAWKER_DISH_RELATION_DATABASE
   );
   set(hawkerDishKeysRef, hawkerDishKeys);
   console.log("end of uploads, ctrl+c to exit");
@@ -731,5 +764,5 @@ const hawkerAndDishSeeding = async function () {
 
 //function calls
 //please run userSeeding() first, then run hawkerAndDishSeeding(), to do so comment out the function you are not running before executing this file.
-userSeeding();
+// userSeeding();
 hawkerAndDishSeeding();
