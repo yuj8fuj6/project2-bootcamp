@@ -1,35 +1,55 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Header, NavBar, Button, FormOrder, FormReview } from "../components";
 import {
   BsHandThumbsUp,
   BsChatLeftText,
   BsHandThumbsUpFill,
 } from "react-icons/bs";
-import { Link } from "react-router-dom";
-import { DishContext } from "../contexts/DishContext";
+import { useLocation, Link } from "react-router-dom";
+import { HawkerContext } from "../contexts/HawkerContext";
+import { UserContext } from "../App";
+import { OrderContext } from "../contexts/OrderContext";
 
 const Dish = () => {
-  const dishData = useContext(DishContext);
-  console.log(dishData);
+  const location = useLocation();
+  const dish = location.state;
+  const user = useContext(UserContext);
+  const stall = useContext(HawkerContext);
+  const order = useContext(OrderContext);
+  console.log(order);
+  const [haveOrdered, setHaveOrdered] = useState(false);
 
-  //Filter Function to be added here.
-  const dishSelected = dishData[0];
-  // console.log(dishSelected);
+  const stallFiltered = stall
+    .filter((stall) => stall.currentHawkerKey === dish.hawkerKey)
+    .pop();
+  // console.log(stallFiltered);
 
   //Try to make image modal popup.
-  const dishPhotos = dishSelected.val.photoURLs.map((photoURL) => (
-    <img src={photoURL} className="w-1/3 m-2 rounded-lg" />
+  const dishPhotos = dish.photoURLs.map((photoURL) => (
+    <img src={photoURL} className="w-1/3 m-1 rounded-lg" />
   ));
 
-  const dishIngredients = dishSelected.val.ingredientList.map((item) => (
+  const dishIngredients = dish.ingredientList.map((item) => (
     <ul>
       <li>{item}</li>
     </ul>
   ));
 
-  const dishAttributes = dishSelected.val.attribute.map((item) => (
-    <>{item}, </>
-  ));
+  const dishAttributes = dish.attribute.map((item) => <>{item}, </>);
+
+  let ordersFilteredByDish;
+
+  useEffect(() => {
+    if (user) {
+      const ordersFiltered = order.filter((order) => order.userID === user.uid);
+      ordersFilteredByDish = ordersFiltered
+        .filter((order) => order.dishID === dish.currentDishKey)
+        .pop();
+    }
+    if (ordersFilteredByDish) {
+      setHaveOrdered(true);
+    }
+  }, []);
 
   const [checked, setChecked] = useState({
     like: false,
@@ -124,12 +144,14 @@ const Dish = () => {
       <div className="flex justify-evenly flex-wrap w-screen">
         <div className="text-left">
           <p className="text-orange text-xl font-semibold drop-shadow-lg">
-            {dishSelected.val.dishName}
+            {dish.dishName}
           </p>
           <p className="text-orange text-xxs italic font-semibold">
-            by {dishSelected.val.stallName}
+            by {dish.stallName}
           </p>
-          <p className="text-orange text-xxs italic font-semibold">Location</p>
+          <p className="text-orange text-xxs italic font-semibold">
+            {stallFiltered.foodCenterName}
+          </p>
         </div>
         <div className="flex flex-wrap justify-start space-x-2 mt-0.5 text-purple">
           <div className="text-3xl font-semibold">
@@ -144,7 +166,7 @@ const Dish = () => {
           <div>20</div>
         </div>
         <img
-          src={dishSelected.val.photoURLs[0]}
+          src={dish.photoURLs[0]}
           alt="dish"
           className="p-4 rounded-3xl drop-shadow-xl"
         />
@@ -152,12 +174,12 @@ const Dish = () => {
           <p className="text-purple text-xl font-semibold drop-shadow-lg">
             Photos
           </p>
-          {dishPhotos}
+          <div className="flex flex-wrap">{dishPhotos}</div>
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1">
           <p className="text-xl font-semibold drop-shadow-lg">Description</p>
           <p className="text-lg font-semibold pt-4">Story</p>
-          <p className="text-xxs lg:text-sm pt-4">{dishSelected.val.story}</p>
+          <p className="text-xs lg:text-sm pt-4">{dish.story}</p>
           <p className="text-lg font-semibold pt-4">Contains</p>
           <p className="text-green text-sm lg:text-sm pt-4">
             {dishIngredients}
@@ -167,18 +189,27 @@ const Dish = () => {
           <p className="text-lg font-semibold mb-3 pt-4">
             Wanna know more about the stall?
           </p>
-          <Link to="/stall">
+          <Link to="/stall" state={stallFiltered}>
             <Button>Visit Stall!</Button>
           </Link>
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
           <p className="text-xl font-semibold drop-shadow-lg">Order</p>
-          <FormOrder />
+          <FormOrder user={user} dish={dish} stall={stallFiltered} />
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
           <p className="text-xl font-semibold drop-shadow-lg">Add A Review</p>
           {/* Need conditional rendering after checking whether past history - user has ordered this dish */}
-          <FormReview />
+          {haveOrdered ? (
+            <FormReview user={user} dish={dish} stall={stallFiltered} />
+          ) : (
+            <div className="text-left text-orange text-lg font-bold border-2 rounded-xl shadow-lg p-2 mt-2">
+              <p>
+                Order this dish to add a review and help your favourite stall
+                grow!
+              </p>
+            </div>
+          )}
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
           <p className="text-xl font-semibold drop-shadow-lg mb-4">Reviews</p>

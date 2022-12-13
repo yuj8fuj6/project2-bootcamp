@@ -3,7 +3,6 @@ import {
   Header,
   NavBar,
   StallCarousel,
-  SearchFunction,
   DishCards,
   FormFeedback,
 } from "../components";
@@ -13,8 +12,8 @@ import { HawkerContext } from "../contexts/HawkerContext";
 const Landing = () => {
   const userDetails = useContext(UserContext);
 
-  console.log(userDetails);
-  // Data Structure 
+  // console.log(userDetails);
+  // Data Structure
   // contactEmail, firstName, karmaPoints, lastName, reviewsDone, userType, username
 
   return (
@@ -24,7 +23,7 @@ const Landing = () => {
         <NavBar />
       </div>
       <div>
-        <p className="text-orange text-xl font-semibold drop-shadow-lg text-left ml-4 mb-2">
+        <p className="text-orange text-xl font-semibold drop-shadow-lg text-left ml-4 mb-2 lg:ml-56">
           {userDetails ? `Welcome back ${userDetails.firstName}!` : null}
         </p>
       </div>
@@ -35,7 +34,6 @@ const Landing = () => {
         <p className="text-orange text-xl font-semibold drop-shadow-lg text-left">
           Community Reviews
         </p>
-        <SearchFunction />
       </div>
       <div className="flex justify-around flex-wrap w-screen p-1">
         <DishCards />

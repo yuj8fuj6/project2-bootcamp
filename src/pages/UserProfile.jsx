@@ -12,6 +12,8 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { BsHandThumbsUp, BsChatLeftText, BsSun } from "react-icons/bs";
+import StallList from "../components/StallList";
+import { OrderCards } from "../components";
 
 const USER_PHOTO_FOLDER = "userphotos";
 
@@ -20,7 +22,7 @@ const UserProfile = (props) => {
   const [profilePhoto, setProfilePhoto] = useState();
   const [editMode, setEditMode] = useState(false);
   const [userInfo, setUserInfo] = useState({ ...user });
-  console.log(userInfo);
+  // console.log(userInfo);
 
   const handleProfilePhoto = (event) => {
     const urlDisplay = URL.createObjectURL(event.target.files[0]);
@@ -98,7 +100,7 @@ const UserProfile = (props) => {
   }, [user.profilePhoto]);
 
   const handleUserInput = (event) => {
-    console.log(userInfo);
+    // console.log(userInfo);
     setUserInfo({
       ...userInfo,
       [event.target.name]: event.target.value,
@@ -109,7 +111,7 @@ const UserProfile = (props) => {
     event.preventDefault();
     const newLocal = !editMode;
     setEditMode(newLocal);
-    console.log(userInfo, user);
+    // console.log(userInfo, user);
   };
 
   const navigate = useNavigate();
@@ -123,10 +125,6 @@ const UserProfile = (props) => {
       .catch((error) => console.log(error));
   };
 
-  // May need to do something to the database as logging out happens faster than DOM update.
-
-  // Uploading of user photo not included yet.
-
   const db = getDatabase();
   const authDetails = getAuth();
 
@@ -139,6 +137,7 @@ const UserProfile = (props) => {
       lastName: userInfo.lastName,
       password: userInfo.password,
       username: userInfo.username,
+      contactNumber: userInfo.contactNumber,
     })
       .then(() => {
         alert("Your profile has been updated successfully.");
@@ -191,6 +190,17 @@ const UserProfile = (props) => {
 
     alert("Profile photo has been successfully uploaded!");
   };
+
+  useEffect(() => {
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+      return "";
+    };
+
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
+  }, []);
 
   return (
     <div>
@@ -257,6 +267,15 @@ const UserProfile = (props) => {
                   name="lastName"
                   placeholder={userInfo.lastName}
                   value={userInfo.lastName}
+                  onChange={handleUserInput}
+                />
+              </label>
+              <label>
+                <p className="mt-5 text-left ml-16">Contact Number</p>
+                <input
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
+                  name="contactNumber"
+                  value={userInfo.contactNumber}
                   onChange={handleUserInput}
                 />
               </label>
@@ -333,6 +352,15 @@ const UserProfile = (props) => {
                 />
               </label>
               <label>
+                <p className="mt-5 text-left ml-16">Contact Number</p>
+                <input
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
+                  placeholder={user.contactNumber}
+                  name="contactNumber"
+                  onChange={handleUserInput}
+                />
+              </label>
+              <label>
                 <p className="mt-5 text-left ml-16">Username</p>
                 <input
                   className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
@@ -376,9 +404,12 @@ const UserProfile = (props) => {
                 Create New Stall
               </Button>
             </p>
-            <p className="m-2 mt-5 mb-10">
-              <Button type="button">Edit Existing Stall</Button>
-            </p>
+            <StallList />
+          </>
+        )}
+        {userInfo.userType === "user" && (
+          <>
+            <OrderCards />
           </>
         )}
       </div>

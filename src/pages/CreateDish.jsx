@@ -14,9 +14,9 @@ import {
   getDatabase,
   child,
   update,
-  onValue,
 } from "firebase/database";
 import { UserContext } from "../App";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DISH_PHOTOS_FOLDER = "dishphotos/";
 const DISH_DATABASE = "dishes/";
@@ -25,7 +25,7 @@ const USER_HAWKERS = "user-hawkers/";
 
 const CreateDish = () => {
   const user = useContext(UserContext);
-  console.log(user);
+  const { state } = useLocation();
 
   const defaultDishDetails = {
     dishName: "",
@@ -36,43 +36,24 @@ const CreateDish = () => {
   const [dishMainImg, setDishMainImg] = useState();
   const [dishOtherImgs, setDishOtherImgs] = useState([]);
   const [dishDetails, setDishDetails] = useState(defaultDishDetails);
-  const [hawkerUID, setHawkerUID] = useState();
-  const [hawkerError, setHawkerError] = useState();
+  const [hawkerDetails, setHawkerDetails] = useState(...state);
   const [stallName, setStallName] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [loadingMsg, setLoadingMsg] = useState();
 
-  console.log(dishDetails);
-  console.log(dishMainImg);
-  console.log(dishOtherImgs);
-
-  const fetchHawkerUID = useCallback(() => {
-    console.log(user);
-    const dbRef = databaseRef(getDatabase());
-    get(child(dbRef, `user-hawkers/${user.uid}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          console.log(snapshot);
-          setHawkerUID(Object.keys(snapshot.val())[0]);
-        } else {
-          setHawkerError("Create a stall before adding a dish");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [user]);
-
-  useEffect(() => {
-    fetchHawkerUID();
-  }, [user, fetchHawkerUID]);
-  console.log(hawkerUID);
-
   const handleDishInputs = (event) => {
+    if (event.target.name === "price") {
+      // let price = parseInt(event.target.value);
+      setDishDetails({
+        ...dishDetails,
+        price: Number(event.target.value),
+      });
+    }
     setDishDetails({
       ...dishDetails,
       [event.target.name]: event.target.value,
     });
+    console.log(dishDetails);
   };
 
   const handleIngredientAttributeInputs = (event) => {
@@ -92,7 +73,6 @@ const CreateDish = () => {
   };
 
   const handleOtherDishPhotos = (event) => {
-    console.log(event);
     const urlDisplay = URL.createObjectURL(event.target.files[0]);
     setDishOtherImgs((prevDishImgs) => [
       ...prevDishImgs,
@@ -103,6 +83,8 @@ const CreateDish = () => {
     ]);
   };
 
+  const navigate = useNavigate();
+
   const onDishSubmit = async (event) => {
     event.preventDefault();
 
@@ -111,7 +93,9 @@ const CreateDish = () => {
       `dishphotos/${dishMainImg.file.name}`
     );
     let stallFrontImgURL = "";
+    let stallFrontImgName = dishMainImg.file.name;
     let dishOtherImgURLs = [];
+    let dishImgNames = [];
 
     const uploadDishMainPhoto = uploadBytes(dishMainImgRef, dishMainImg.file)
       .then(() =>
@@ -120,7 +104,7 @@ const CreateDish = () => {
           console.log(stallFrontImgURL);
         })
       )
-      .catch((error) => setErrorMsg(error));
+      .catch((error) => alert(error));
 
     const uploadPhotoPromises = [uploadDishMainPhoto];
 
@@ -138,7 +122,7 @@ const CreateDish = () => {
               console.log(dishOtherImgURLs);
             });
           })
-          .catch((error) => setErrorMsg(error))
+          .catch((error) => alert(error))
       );
     }
 
@@ -148,17 +132,21 @@ const CreateDish = () => {
       await Promise.all(uploadPhotoPromises).then(() => {
         const newDish = {
           ...dishDetails,
-          [hawkerUID]: true,
+          hawkerKey: hawkerDetails.stallKey,
           photoURLs: [stallFrontImgURL, ...dishOtherImgURLs],
           userKey: user.uid,
+          stallName: hawkerDetails.stallName,
         };
         const dishListRef = databaseRef(database, DISH_DATABASE);
         const newDishRef = push(dishListRef);
         const newDishRefKey = newDishRef.key;
         set(newDishRef, newDish);
 
-        const dbRef = databaseRef(database, `hawker-dishes/${hawkerUID}`);
-        const newHawkerDishEntry = { [newDishRefKey]: true };
+        const dbRef = databaseRef(
+          database,
+          `hawker-dishes/${hawkerDetails.stallKey}`
+        );
+        const newHawkerDishEntry = { [newDishRefKey]: newDish.dishName };
         update(dbRef, newHawkerDishEntry).then(() => {
           console.log("updated");
         });
@@ -167,11 +155,13 @@ const CreateDish = () => {
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      navigate("/profile");
     }
   };
 
   if (!user) return <div>Loading...</div>;
-  if (!hawkerUID)
+  if (!hawkerDetails)
     return (
       <div>Please create a stall profile first before creating a dish.</div>
     );
@@ -250,19 +240,25 @@ const CreateDish = () => {
               </h1>
               <p>
                 <label className="text-purple text-xs">
-                  Story (tell us more about the dish or the stall)
-                  <textarea
-                    className="border border-black rounded-lg text-gray-700 w-full max-w-xs"
-                    name="story"
-                    onChange={handleDishInputs}
-                  />
+                  Price
+                  <p>
+                    <input
+                      className="border border-black text-gray-700 rounded-lg w-16 max-w-xs mr-1 pl-1"
+                      name="price"
+                      onChange={handleDishInputs}
+                      type="number"
+                      step="0.01"
+                      min="0"
+                    />
+                    SGD
+                  </p>
                 </label>
               </p>
               <p>
                 <label className="text-purple text-xs">
                   Ingredient List (separate each ingredient with a comma)
                   <textarea
-                    className="border border-black rounded-lg w-full max-w-xs"
+                    className="border border-black text-gray-700 rounded-lg w-full max-w-xs pl-1 pr-1"
                     name="ingredientList"
                     onChange={handleIngredientAttributeInputs}
                   />
@@ -272,9 +268,19 @@ const CreateDish = () => {
                 <label className="text-purple text-xs">
                   Taste (separate each taste with a comma)
                   <textarea
-                    className="border border-black rounded-lg w-full max-w-xs"
+                    className="border border-black text-gray-700 rounded-lg w-full max-w-xs pl-1 pr-1"
                     name="attribute"
                     onChange={handleIngredientAttributeInputs}
+                  />
+                </label>
+              </p>
+              <p>
+                <label className="text-purple text-xs">
+                  Story (tell us more about the dish or the stall)
+                  <textarea
+                    className="border border-black rounded-lg text-gray-700 w-full max-w-xs pl-1 pr-1"
+                    name="story"
+                    onChange={handleDishInputs}
                   />
                 </label>
               </p>
