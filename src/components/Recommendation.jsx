@@ -19,7 +19,6 @@ Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_MAPS_API_KEYS}`);
 
 export default function Recommendation(props) {
   const [hawkerData, setHawkerData] = useState([]);
-  const [temp, setTemp] = useState({})
   //Get hawker's data from database
   useEffect(() => {
     async function getData() {
@@ -33,18 +32,22 @@ export default function Recommendation(props) {
           }
         })
         .then(() => {
-          setHawkerData(
-            data.map((hawker) => ({
+          let temp = Promise.all(
+            data.map(async (hawker) => ({
               ...hawker,
-              geoHash: getGeohash(hawker.stallAddress),
+              geoHash: await getGeohash(hawker.stallAddress),
             }))
           );
-        });
+          return temp
+        })
+        .then((results) => {
+          setHawkerData(results)
+        })
     }
     getData();
   }, []);
 
-  console.log(hawkerData)
+  console.log(hawkerData);
 
   //Get Neightbours
   // let neighbours = neighboursOf(geohash.encode(props.pos.lat, props.pos.lng, 6));
@@ -58,7 +61,10 @@ export default function Recommendation(props) {
   // );
 
   // let nearbyStalls = []
-  // for(let i = 0; i < hawkerData.length && ; i++)
+  // let i = 0
+  // while(nearbyStalls.length < 10 && i < hawkerData.length){
+
+  // }
 
 
 
