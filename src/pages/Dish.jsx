@@ -8,12 +8,16 @@ import {
 import { useLocation, Link } from "react-router-dom";
 import { HawkerContext } from "../contexts/HawkerContext";
 import { UserContext } from "../App";
+import { OrderContext } from "../contexts/OrderContext";
 
 const Dish = () => {
   const location = useLocation();
   const dish = location.state;
   const user = useContext(UserContext);
   const stall = useContext(HawkerContext);
+  const order = useContext(OrderContext);
+  console.log(order);
+  const [haveOrdered, setHaveOrdered] = useState(false);
 
   const stallFiltered = stall
     .filter((stall) => stall.currentHawkerKey === dish.hawkerKey)
@@ -32,6 +36,20 @@ const Dish = () => {
   ));
 
   const dishAttributes = dish.attribute.map((item) => <>{item}, </>);
+
+  let ordersFilteredByDish;
+
+  useEffect(() => {
+    if (user) {
+      const ordersFiltered = order.filter((order) => order.userID === user.uid);
+      ordersFilteredByDish = ordersFiltered
+        .filter((order) => order.dishID === dish.currentDishKey)
+        .pop();
+    }
+    if (ordersFilteredByDish) {
+      setHaveOrdered(true);
+    }
+  }, []);
 
   const [checked, setChecked] = useState({
     like: false,
@@ -131,7 +149,9 @@ const Dish = () => {
           <p className="text-orange text-xxs italic font-semibold">
             by {dish.stallName}
           </p>
-          <p className="text-orange text-xxs italic font-semibold">Location</p>
+          <p className="text-orange text-xxs italic font-semibold">
+            {stallFiltered.foodCenterName}
+          </p>
         </div>
         <div className="flex flex-wrap justify-start space-x-2 mt-0.5 text-purple">
           <div className="text-3xl font-semibold">
@@ -154,14 +174,12 @@ const Dish = () => {
           <p className="text-purple text-xl font-semibold drop-shadow-lg">
             Photos
           </p>
-          <div className="flex flex-wrap">
-          {dishPhotos}
-          </div>
+          <div className="flex flex-wrap">{dishPhotos}</div>
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1">
           <p className="text-xl font-semibold drop-shadow-lg">Description</p>
           <p className="text-lg font-semibold pt-4">Story</p>
-          <p className="text-xxs lg:text-sm pt-4">{dish.story}</p>
+          <p className="text-xs lg:text-sm pt-4">{dish.story}</p>
           <p className="text-lg font-semibold pt-4">Contains</p>
           <p className="text-green text-sm lg:text-sm pt-4">
             {dishIngredients}
@@ -182,7 +200,16 @@ const Dish = () => {
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
           <p className="text-xl font-semibold drop-shadow-lg">Add A Review</p>
           {/* Need conditional rendering after checking whether past history - user has ordered this dish */}
-          <FormReview user={user} dish={dish} stall={stallFiltered} />
+          {haveOrdered ? (
+            <FormReview user={user} dish={dish} stall={stallFiltered} />
+          ) : (
+            <div className="text-left text-orange text-lg font-bold border-2 rounded-xl shadow-lg p-2 mt-2">
+              <p>
+                Order this dish to add a review and help your favourite stall
+                grow!
+              </p>
+            </div>
+          )}
         </div>
         <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
           <p className="text-xl font-semibold drop-shadow-lg mb-4">Reviews</p>

@@ -26,6 +26,10 @@ const OrderCards = () => {
                 <p className="text-xs font-normal">{order.option}</p>
                 <p className="text-xs font-semibold">SGD $ {order.cost}</p>
               </div>
+              <p className="text-xs font-normal">
+                Dish Ordered on: <br></br>
+                {order.orderTime}
+              </p>
             </div>
           </div>
         ))}

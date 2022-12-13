@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ButtonDisabled } from "../components";
 import { BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
+import { database } from "../firebase";
+import { ref as databaseRef, getDatabase, update } from "firebase/database";
 
 const FormReview = (props) => {
   const user = props.user;
@@ -10,20 +12,20 @@ const FormReview = (props) => {
   const stall = props.stall;
   console.log(stall);
 
-  const [review, setReview] = useState({
-    likeCount: 1,
-    review: "",
-  });
+  const [review, setReview] = useState("");
 
-  const [finalReview, setFinalReview] = useState([]);
-  const [checked, setChecked] = useState({
-    like: false,
-  });
-  // Like function to be passed into Firebase realtime storage
-  // Conditional rendering of review component required after checking like
+  const [finalReview, setFinalReview] = useState({});
+  const [like, setLike] = useState(false);
 
   const handleReview = (e) => {
-    setReview({ ...review, [e.target.name]: e.target.value });
+    setReview(e.target.value);
+  };
+
+  const handleLike = () => {
+    setLike(true);
+    if (like) {
+      setLike(false);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -31,6 +33,8 @@ const FormReview = (props) => {
 
     setFinalReview([...finalReview, review]);
     setReview({ likeCount: 1, review: "" });
+
+    // First add review to database - review content, timestamp, dishID, dishName, stallName,
   };
 
   // console.log(review)
@@ -44,15 +48,17 @@ const FormReview = (props) => {
         earning Karma points, please leave a like and a review!
       </p>
       <div className=" flex flex-wrap text-3xl font-semibold mt-4">
-        <BsHandThumbsUp />
+        <button onClick={handleLike}>
+          {like ? <BsHandThumbsUpFill /> : <BsHandThumbsUp />}
+        </button>
         <span className="text-sm indent-4 font-normal">
           Like this dish to leave a review
         </span>
       </div>
       <form className="grid grid-cols-1 justify-start mt-4">
         <label className="text-lg">Review: </label>
-        <input
-          className="border-2 rounded-xl text-sm indent-3 py-6 mt-2"
+        <textarea
+          className="border-2 rounded-xl text-sm py-6 mt-2"
           type="text"
           id="review"
           required
@@ -60,7 +66,9 @@ const FormReview = (props) => {
           value={review.review}
           onChange={handleReview}
           name="review"
-        ></input>
+          disabled={!like}
+          maxLength="200"
+        ></textarea>
       </form>
       <div className="flex justify-center m-3">
         <ButtonDisabled onClick={handleSubmit} user={user}>

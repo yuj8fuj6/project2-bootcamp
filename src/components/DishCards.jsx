@@ -76,8 +76,7 @@ const DishCards = () => {
                     {item.stallName}
                   </h5>
                   <p className="mb-2 leading-normal text-sm font-medium text-purple italic ">
-                    {item.story}
-                    {/* To place last review here */}
+                    "{item.story}"{/* To place last review here */}
                   </p>
                 </div>
                 <div className="flex flex-wrap justify-start space-x-12 mx-5 text-purple">
@@ -114,8 +113,7 @@ const DishCards = () => {
                     {item.stallName}
                   </h5>
                   <p className="mb-2 leading-normal text-sm font-medium text-purple italic ">
-                    {item.story}
-                    {/* To place last review here */}
+                    "{item.story}"{/* To place last review here */}
                   </p>
                 </div>
                 <div className="flex flex-wrap justify-start space-x-12 mx-5 text-purple">
