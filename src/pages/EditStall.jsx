@@ -4,19 +4,21 @@ import { Button } from "../components";
 import { UserContext } from "../App";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getDatabase, update, ref as databaseRef } from "firebase/database";
-
-const HAWKER_PHOTOS_FOLDER = "hawkerphotos";
-const HAWKER_DATABASE = "hawkers";
-const USER_HAWKERS_DATABASE = "user-hawkers/";
+import {
+  getDownloadURL,
+  uploadBytes,
+  ref as storageRef,
+} from "firebase/storage";
+import { storage, database } from "../firebase";
 
 const EditStall = () => {
   const user = useContext(UserContext);
   const { state } = useLocation();
   console.log(state);
-  console.log(user);
 
   const currentStallDetails = state;
   const [editStallDetails, setEditStallDetails] = useState(currentStallDetails);
+
   let {
     foodCenterName,
     openingDays,
@@ -29,6 +31,14 @@ const EditStall = () => {
     stallName,
   } = editStallDetails;
 
+  const [stallFrontDisplay, setStallFrontDisplay] =
+    useState(stallFrontPhotoURL);
+  const [newStallFrontFile, setNewStallFrontFile] = useState();
+  const [otherPhotoURLs, setOtherPhotoURLs] = useState(otherStallPhotosURL);
+  const [newOtherPhotosDisplay, setNewOtherPhotosDisplay] = useState([]);
+  const [newOtherPhotos, setNewOtherPhotos] = useState([]);
+  console.log(editStallDetails);
+
   const handleStallDetailsInput = (event) => {
     setEditStallDetails({
       ...editStallDetails,
@@ -36,7 +46,35 @@ const EditStall = () => {
     });
   };
 
-  console.log(editStallDetails);
+  const handleStallFrontPhoto = (event) => {
+    setStallFrontDisplay(URL.createObjectURL(event.target.files[0]));
+    setNewStallFrontFile(event.target.files[0]);
+  };
+
+  const handleOtherStallPhotos = (event) => {
+    setNewOtherPhotosDisplay((prevDisplays) => [
+      ...prevDisplays,
+      URL.createObjectURL(event.target.files[0]),
+    ]);
+    setNewOtherPhotos((prevPhotos) => [...prevPhotos, event.target.files[0]]);
+  };
+
+  const removeOldPhoto = (index) => {
+    const newPhotoList = otherPhotoURLs.filter((photo, key) => key !== index);
+    setOtherPhotoURLs(newPhotoList);
+  };
+
+  const removeNewPhoto = (index) => {
+    const newPhotoDisplayList = newOtherPhotos.filter(
+      (photo, key) => key !== index
+    );
+    setNewOtherPhotosDisplay(newPhotoDisplayList);
+
+    const newPhotoFileList = newOtherPhotos.filter(
+      (photo, key) => key !== index
+    );
+    setNewOtherPhotos(newPhotoFileList);
+  };
 
   const db = getDatabase();
   const navigate = useNavigate();
@@ -44,14 +82,61 @@ const EditStall = () => {
   const handleEditSubmit = (event) => {
     event.preventDefault();
 
-    const newStallData = editStallDetails;
+    const promises = [];
+    const newPhotoURLs = [];
+    let newStallFrontPhotoURL = "";
 
-    const updates = {};
-    updates[`hawkers/${state.stallKey}/`] = newStallData;
-    updates[`user-hawkers/${user.uid}/${state.stallKey}`] =
-      newStallData.stallName;
+    if (newStallFrontFile) {
+      const stallFrontPhotoRef = storageRef(
+        storage,
+        `hawkerphotos/${newStallFrontFile.name}`
+      );
+      promises.push(
+        uploadBytes(stallFrontPhotoRef, newStallFrontFile)
+          .then(() =>
+            getDownloadURL(stallFrontPhotoRef).then((url) => {
+              newStallFrontPhotoURL = url;
+            })
+          )
+          .catch((error) => alert(error))
+      );
+    } else {
+      newStallFrontPhotoURL = stallFrontDisplay;
+    }
 
-    update(databaseRef(db), updates);
+    for (let i = 0; i < newOtherPhotos.length; i++) {
+      const stallPhotoRef = storageRef(
+        storage,
+        `hawkerphotos/${newOtherPhotos[i].name}`
+      );
+      promises.push(
+        uploadBytes(stallPhotoRef, newOtherPhotos[i])
+          .then(async () => {
+            await getDownloadURL(stallPhotoRef).then((url) => {
+              newPhotoURLs.push(url);
+            });
+          })
+          .catch((error) => alert(error))
+      );
+    }
+
+    Promise.all(promises).then(() => {
+      const newURLs = [...otherPhotoURLs, ...newPhotoURLs];
+
+      const newStallData = {
+        ...editStallDetails,
+        stallFrontPhotoURL: newStallFrontPhotoURL,
+        otherStallPhotosURL: newURLs,
+      };
+
+      const updates = {};
+      updates[`hawkers/${state.stallKey}/`] = newStallData;
+      updates[`user-hawkers/${user.uid}/${state.stallKey}`] =
+        newStallData.stallName;
+
+      update(databaseRef(db), updates);
+    });
+
     navigate("/profile");
   };
 
@@ -79,7 +164,7 @@ const EditStall = () => {
                 {stallFrontPhotoURL ? (
                   <div className="container overflow-hidden flex flex-col items-center justify-center">
                     <img
-                      src={editStallDetails.stallFrontPhotoURL}
+                      src={stallFrontDisplay}
                       alt="storefront preview"
                       className="object-contain"
                     />
@@ -111,7 +196,11 @@ const EditStall = () => {
                   </div>
                 )}
 
-                <input type="file" className="hidden" />
+                <input
+                  type="file"
+                  className="hidden"
+                  onChange={handleStallFrontPhoto}
+                />
               </label>
             </div>
           </div>
@@ -119,8 +208,39 @@ const EditStall = () => {
             <div className="container border rounded m-1 w-1/2">
               <p>Other Stall Images:</p>
               <div className="grid grid-cols-3">
-                {otherStallPhotosURL.map((imgs) => (
-                  <img src={imgs} alt="stall" />
+                {otherPhotoURLs.map((imgs, index) => (
+                  <div className="relative group">
+                    <img
+                      key={index}
+                      src={imgs}
+                      alt="stall"
+                      className="rounded-md p1"
+                    />
+                    <button
+                      type="button"
+                      className="absolute hidden group-hover:block bottom-1/2 left-1/2 rounded-full border bg-indigo-500 opacity-80 text-slate-50"
+                      onClick={() => removeOldPhoto(index)}
+                    >
+                      delete
+                    </button>
+                  </div>
+                ))}
+                {newOtherPhotosDisplay.map((imgs, index) => (
+                  <div className="relative group">
+                    <img
+                      key={index}
+                      src={imgs}
+                      alt="stall"
+                      className="rounded-md p1"
+                    />
+                    <button
+                      type="button"
+                      className="absolute hidden group-hover:block bottom-1/2 left-1/2 rounded-full border bg-indigo-500 opacity-80 text-slate-50"
+                      onClick={() => removeNewPhoto(index)}
+                    >
+                      delete
+                    </button>
+                  </div>
                 ))}
                 <div className="flex flex-auto items-center justify-center w-30">
                   <label className="flex flex-col items-center justify-center w-full h-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -129,7 +249,11 @@ const EditStall = () => {
                         <span className="font-semibold">Click to upload</span>
                       </p>
                     </div>
-                    <input type="file" className="hidden" />
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={handleOtherStallPhotos}
+                    />
                   </label>
                 </div>
               </div>
