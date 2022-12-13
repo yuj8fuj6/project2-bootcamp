@@ -1,24 +1,17 @@
 import React from "react";
-import { getDatabase, ref, child, get, set } from "firebase/database";
+import { getDatabase, ref, child, get} from "firebase/database";
 import Card from "./Card";
 import Geocode from "react-geocode";
 import { useState, useEffect } from "react";
 var geohash = require("ngeohash");
 const dbRef = ref(getDatabase());
-
-// const neighboursOf = require('geohash-neighbours').neighboursOf
-// const northeastOf = require("geohash-neighbours").northeastOf;
-// const northOf = require("geohash-neighbours").northOf;
-// const northwestOf = require("geohash-neighbours").northwestOf;
-// const southwestOf = require("geohash-neighbours").southwestOf;
-// const southOf = require("geohash-neighbours").southOf;
-// const southeastOf = require("geohash-neighbours").southeastOf;
-
+const arr = [[[1, -1],[-1,-1]],[[1, 0],[-1,0]],[[1, 1],[-1,1]]] //arr for directions of neighbour of geohash
 
 Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_MAPS_API_KEYS}`);
 
-export default function Recommendation(props) {
+export default function Recommendation({ pos }) {
   const [hawkerData, setHawkerData] = useState([]);
+  const [stalls, setStalls] = useState([])
   //Get hawker's data from database
   useEffect(() => {
     async function getData() {
@@ -45,28 +38,10 @@ export default function Recommendation(props) {
         })
     }
     getData();
+    setStalls(getNearbyStalls(pos, hawkerData))
   }, []);
 
-  console.log(hawkerData);
-
-  //Get Neightbours
-  // let neighbours = neighboursOf(geohash.encode(props.pos.lat, props.pos.lng, 6));
-  // neighbours.push(
-  //   northwestOf(neighbours[1]),
-  //   northOf(neighbours[1]),
-  //   northeastOf(neighbours[1]),
-  //   southwestOf(neighbours[6]),
-  //   southOf(neighbours[6]),
-  //   southeastOf(neighbours[6]),
-  // );
-
-  // let nearbyStalls = []
-  // let i = 0
-  // while(nearbyStalls.length < 10 && i < hawkerData.length){
-
-  // }
-
-
+  console.log(stalls)
 
   return (
     <div>
@@ -86,13 +61,40 @@ function getGeohash(address) {
   return convertGeohash(address)
 }
 
-// let convertGeohash = async function(address){
-//   let response = await getLocation(address)
-//   const { lat, lng } = response.results[0].geometry.location;
-//   return geohash.encode(lat, lng, 6)
-// }
-
 let getLocation = function(address){
   return Geocode.fromAddress(address)
 }
 
+function getNearbyStalls(pos, hawkerData){
+  let neighbours = getNeighbours(pos)
+  let stalls = getStalls(neighbours, hawkerData)
+  return stalls
+}
+
+function getNeighbours(pos){
+  //Get Neighbours
+  // let loc = geohash.encode(pos.lat, pos.lng, 6);
+  let loc = "w21z70";
+  let neighbours = [...geohash.neighbors(loc), loc];
+  for (let i = 0; i <= 2; i++) {
+    neighbours.push(
+      geohash.neighbor(neighbours[0], arr[i][0]),
+      geohash.neighbor(neighbours[4], arr[i][0])
+    );
+  }
+  return neighbours
+}
+
+function getStalls(neighbours, hawkerData){
+   let i = 0;
+   let nearbystalls = [];
+   while (i < neighbours.length && nearbystalls.length <= 10) {
+     nearbystalls.push(
+       ...hawkerData.filter((ele) => {
+         return ele.geoHash === neighbours[i];
+       })
+     );
+     i++;
+   }
+   return nearbystalls
+}
