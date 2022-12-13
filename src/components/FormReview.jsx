@@ -34,7 +34,8 @@ const FormReview = (props) => {
     setFinalReview([...finalReview, review]);
     setReview({ likeCount: 1, review: "" });
 
-    // First add review to database - review content, timestamp, dishID, dishName, stallName,
+    // First add review to database - review, timestamp, dishID, dishName, stallName, userID, hawkerID, userImage, userName, like
+    // For the likes - ill update the realtime DB using the update method - hawker - likes, dish - likes.
   };
 
   // console.log(review)
