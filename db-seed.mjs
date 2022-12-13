@@ -17,16 +17,7 @@ import {
 } from "firebase/auth";
 
 //please enter firebaseConfig here
-const firebaseConfig = {
-  apiKey: "AIzaSyC2Ityf-J7yIIHqzpzycCdugPDv4sMF2jg",
-  authDomain: "project2-bootcamp-60212.firebaseapp.com",
-  databaseURL:
-    "https://project2-bootcamp-60212-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "project2-bootcamp-60212",
-  storageBucket: "project2-bootcamp-60212.appspot.com",
-  messagingSenderId: "771559810358",
-  appId: "1:771559810358:web:470659e17c89d4f0603f97",
-};
+const firebaseConfig = {};
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
