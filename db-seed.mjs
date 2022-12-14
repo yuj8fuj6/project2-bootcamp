@@ -1011,7 +1011,7 @@ const dishReviewsSeeding = async function () {
     const hawkerQuery = query(
       databaseRef(db, "hawkers/"),
       orderByChild("stallName"),
-      equalTo(review[i].stallName)
+      equalTo(review[i].stallName),
     );
 
     await get(hawkerQuery).then((snapshot) => {
@@ -1022,7 +1022,7 @@ const dishReviewsSeeding = async function () {
     const dishQuery = query(
       databaseRef(db, "dishes/"),
       orderByChild("dishName"),
-      equalTo(review[i].dishName)
+      equalTo(review[i].dishName),
     );
 
     await get(dishQuery).then((snapshot) => {
@@ -1032,7 +1032,7 @@ const dishReviewsSeeding = async function () {
 
     const reviewsRef = databaseRef(
       database,
-      `reviews/${review[i].dishID}/${review[i].userID}`
+      `reviews/${review[i].dishID}/${review[i].userID}`,
     );
 
     set(reviewsRef, review[i]);

@@ -2,7 +2,11 @@ import React, { useState, useContext, useEffect } from "react";
 import { ButtonDisabled } from "../components";
 import { BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
 import { database } from "../firebase";
-import { ref as databaseRef, getDatabase, update } from "firebase/database";
+import {
+  ref as databaseRef,
+  update,
+  set,
+} from "firebase/database";
 
 const FormReview = (props) => {
   const user = props.user;
@@ -14,7 +18,6 @@ const FormReview = (props) => {
 
   const [review, setReview] = useState("");
 
-  const [finalReview, setFinalReview] = useState({});
   const [like, setLike] = useState(false);
 
   const handleReview = (e) => {
@@ -30,12 +33,28 @@ const FormReview = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    setFinalReview([...finalReview, review]);
-    setReview({ likeCount: 1, review: "" });
-
-    // First add review to database - review, timestamp, dishID, dishName, stallName, userID, hawkerID, userImage, userName, like
-    // For the likes - ill update the realtime DB using the update method - hawker - likes, dish - likes.
+    const reviewsListRef = databaseRef(
+      database,
+      `reviews/${dish.currentDishKey}/${user.uid}`,
+    );
+    const newReview = {
+      dishName: dish.dishName,
+      dishID: dish.currentDishKey,
+      stallName: stall.stallName,
+      hawkerID: stall.currentHawkerKey,
+      firstName: user.firstName,
+      contactEmail: user.contactEmail,
+      usertype: user.userType,
+      userID: user.uid,
+      date: Date(),
+      likes: 0,
+      content: review,
+    };
+    set(reviewsListRef, newReview).catch((error) => {
+      console.log(error);
+    });
+    
+    // update(databaseRef(database, ))
   };
 
   // console.log(review)
