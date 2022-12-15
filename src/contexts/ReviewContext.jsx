@@ -11,24 +11,26 @@ export const ReviewContext = createContext();
 
 export const ReviewContextProvider = (props) => {
   const [reviewData, setReviewData] = useState([]);
+  const [reviewObj, setReviewObj] = useState({});
 
   useEffect(() => {
     const db = getDatabase();
     const reviewArr = [];
-    const reviewData = query(databaseRef(db, `reviews/`), orderByChild(`user`));
+    const review = {};
+    const reviewData = query(databaseRef(db, `reviews`), orderByChild(`user`));
     onChildAdded(reviewData, (snapshot) => {
-      // console.log(snapshot.val())
       const currentReview = snapshot.val();
       const currentReviewKey = snapshot.key;
       reviewArr.push({ ...currentReview, currentReviewKey });
       setReviewData(reviewArr);
+
+      review[`${currentReviewKey}`] = currentReview;
+      setReviewObj({ ...reviewObj, ...review });
     });
   }, []);
 
-  console.log(reviewData);
-
   return (
-    <ReviewContext.Provider value={reviewData}>
+    <ReviewContext.Provider value={{ reviewData, reviewObj }}>
       {props.children}
     </ReviewContext.Provider>
   );
