@@ -11,44 +11,54 @@ Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_MAPS_API_KEYS}`);
 
 export default function Recommendation({ pos }) {
   const [hawkerData, setHawkerData] = useState([]);
-  const [stalls, setStalls] = useState([])
+  const [stalls, setStalls] = useState()
   //Get hawker's data from database
-  useEffect(() => {
-    async function getData() {
-      let data;
-      await get(child(dbRef, `hawkers/`))
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            data = Object.values(snapshot.val());
-          } else {
-            console.log("No data available");
-          }
-        })
-        .then(() => {
-          let temp = Promise.all(
-            data.map(async (hawker) => ({
-              ...hawker,
-              geoHash: await getGeohash(hawker.stallAddress),
-            }))
-          );
-          return temp
-        })
-        .then((results) => {
-          setHawkerData(results)
-        })
+  async function getData() {
+    let data;
+    const snapshot = await get(child(dbRef, `hawkers/`));
+    if (snapshot.exists()) {
+      data = Object.values(snapshot.val());
+    } else {
+      console.log("No data available");
     }
-    getData();
-    setStalls(getNearbyStalls(pos, hawkerData))
+    Promise.all(
+      data.map(async (hawker) => ({
+        ...hawker,
+        geoHash: await getGeohash(hawker.stallAddress),
+      }))
+    ).then((result) => {
+      console.log(result);
+      setHawkerData(result);
+      setStalls(getNearbyStalls(pos, result));
+      console.log(hawkerData[0]);
+    });
+  }
+
+  useEffect(() => {
+    getData()
   }, []);
 
-  console.log(stalls)
 
-  return (
-    <div>
-      <h3>Stalls Near You</h3>
-      <Card />
-    </div>
-  );
+  if(stalls){
+    let element = stalls.map((ele) => {
+      return (
+        <Card
+          stallName={ele.stallName}
+          stallImage={ele.stallFrontPhotoURL}
+          stallStory={ele.stallStory}
+        />
+      );
+    })
+    return (
+      <div>
+        <h3>Stalls Near You</h3>
+        {element}
+      </div>
+    );
+  }
+  else{
+    return <p>Loading...</p>
+  }
 }
 
 function getGeohash(address) {
