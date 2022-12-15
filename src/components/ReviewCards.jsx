@@ -19,26 +19,31 @@ const ReviewList = ({ review }) => {
   const [url, setURL] = useState();
   const [like, setLike] = useState(false);
   const user = useContext(UserContext);
-  const currentUserKey = user.uid;
+  const [currentUserKey, setCurrentUserKey] = useState();
   const [currentReview, setCurrentReview] = useState(review);
 
   const dbRef = databaseRef(getDatabase());
 
   useEffect(() => {
-    const db = getDatabase();
-    onValue(
-      databaseRef(
-        db,
-        `reviews/${currentReview.dishID}/${currentReview.userID}/likers/${currentUserKey}`
-      ),
-      (snapshot) => {
-        if (snapshot.exists()) {
-          setLike(true);
-        } else {
-          setLike(false);
+    if (!user) {
+      setCurrentUserKey(null);
+    } else {
+      setCurrentUserKey(user.uid);
+      const db = getDatabase();
+      onValue(
+        databaseRef(
+          db,
+          `reviews/${currentReview.dishID}/${currentReview.userID}/likers/${currentUserKey}`
+        ),
+        (snapshot) => {
+          if (snapshot.exists()) {
+            setLike(true);
+          } else {
+            setLike(false);
+          }
         }
-      }
-    );
+      );
+    }
   }, []);
 
   get(child(dbRef, `users/${review.userID}/profilePhoto`))
@@ -52,6 +57,10 @@ const ReviewList = ({ review }) => {
     });
 
   const handleLike = () => {
+    if (!user) {
+      return alert("Log in first to like posts");
+    }
+
     setLike(!like);
     const reviewerKey = user.uid;
 
