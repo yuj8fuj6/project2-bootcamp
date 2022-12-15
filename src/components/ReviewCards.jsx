@@ -4,63 +4,99 @@ import {
   BsChatLeftText,
   BsHandThumbsUpFill,
 } from "react-icons/bs";
+import { UserContext } from "../App";
+import { ReviewContext } from "../contexts/ReviewContext";
+import { child, get, getDatabase, ref as databaseRef } from "firebase/database";
+import { database } from "../firebase";
 
-const ReviewCards = () => {
-  //To comment out later
-  const reviews = [
-    {
-      reviewID: 1,
-      name: "Tom",
-      usertype: "Regular User",
-      date: "12 November 2022",
-      likes: "100",
-      imgURL: "/SampleProfilePhotos/user1.jpg",
-      content:
-        "Tantalizingly delicious! Would visit again! Mr. Tan was very friendly and the food was great. Need another bowl of that prawn noodles.",
-    },
-    {
-      reviewID: 1,
-      name: "Tom",
-      usertype: "Regular User",
-      date: "12 November 2022",
-      likes: "100",
-      imgURL: "/SampleProfilePhotos/user1.jpg",
-      content:
-        "Tantalizingly delicious! Would visit again! Mr. Tan was very friendly and the food was great. Need another bowl of that prawn noodles.",
-    },
-    {
-      reviewID: 1,
-      name: "Tom",
-      usertype: "Regular User",
-      date: "12 November 2022",
-      likes: "100",
-      imgURL: "/SampleProfilePhotos/user1.jpg",
-      content:
-        "Tantalizingly delicious! Would visit again! Mr. Tan was very friendly and the food was great. Need another bowl of that prawn noodles.",
-    },
-    {
-      reviewID: 1,
-      name: "Tom",
-      usertype: "Regular User",
-      date: "12 November 2022",
-      likes: "100",
-      imgURL: "/SampleProfilePhotos/user1.jpg",
-      content:
-        "Tantalizingly delicious! Would visit again! Mr. Tan was very friendly and the food was great. Need another bowl of that prawn noodles.",
-    },
-  ];
+const getUserProfilePhoto = (userKey) => {
+  const url = "";
+  console.log("hello");
+  const dbRef = databaseRef(getDatabase());
+  get(child(dbRef, `users/${userKey}/profilePhoto`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        url = snapshot.val();
+      } else console.log("no photo");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
-  const reviewList = reviews.map((review) => (
+  return url;
+};
+
+const ReviewList = ({ review }) => {
+  console.log(review.userID);
+
+  const [url, setURL] = useState();
+
+  const dbRef = databaseRef(getDatabase());
+  get(child(dbRef, `users/${review.userID}/profilePhoto`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        setURL(snapshot.val());
+      } else console.log("no photo");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  return (
     <div className="flex flex-wrap mb-3">
-      <img
-        src={review.imgURL}
-        alt="profile"
-        className="rounded-full drop-shadow-xl w-24 h-24 lg:w-48 lg:h-48 object-cover mt-4"
-      />
+      {url ? (
+        <img
+          src={url}
+          alt="profile"
+          className="rounded-full drop-shadow-xl w-24 h-24 lg:w-48 lg:h-48 object-cover mt-4"
+        />
+      ) : (
+        <div className="rounded-full drop-shadow-xl w-24 h-24 lg:w-48 lg:h-48 object-cover mt-4">
+          <svg
+            className="m-w-none h-auto"
+            viewBox="0 0 32 32"
+            enableBackground="new 0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g>
+              <circle
+                cx="16"
+                cy="16"
+                fill="#D3D3D3"
+                r="15"
+                stroke="#D3D3D3"
+                strokeLinejoin="round"
+                strokeMiterlimit="10"
+                strokeWidth="2"
+              />
+              <path
+                d="M26,27L26,27   c0-5.523-4.477-10-10-10h0c-5.523,0-10,4.477-10,10v0"
+                fill="none"
+                stroke="white"
+                strokeLinejoin="round"
+                strokeMiterlimit="10"
+                strokeWidth="2"
+              />
+              <circle
+                cx="16"
+                cy="11"
+                fill="none"
+                r="6"
+                stroke="white"
+                strokeLinejoin="round"
+                strokeMiterlimit="10"
+                strokeWidth="2"
+              />
+            </g>
+          </svg>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 w-4/6 pl-4 mt-4">
         <div className="font-extrabold">
           <p>
-            {review.name} - <span className="italic">{review.usertype}</span>
+            {review.firstName} -{" "}
+            <span className="italic">{review.usertype}</span>
           </p>
           <p className="font-normal">{review.date}</p>
         </div>
@@ -82,12 +118,29 @@ const ReviewCards = () => {
         <div className="text-xs italic">"{review.content}"</div>
       </div>
     </div>
-  ));
+  );
+};
+
+const ReviewCards = ({ currentDish }) => {
+  const { reviewObj } = useContext(ReviewContext);
+
+  console.log(currentDish);
+  console.log(reviewObj);
+
+  const { currentDishKey } = currentDish;
+
+  const dishReviewsList = Object.values(reviewObj[currentDishKey]);
+  console.log(dishReviewsList);
 
   return (
     <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
       <p className="text-xl font-semibold drop-shadow-lg mb-4">Reviews</p>
-      <div className="overflow-scroll h-[32rem]">{reviewList}</div>
+      {/* <div className="overflow-scroll h-[32rem]">{reviewList}</div> */}
+      <div className="overflow-scroll h-[32rem]">
+        {dishReviewsList.map((review) => (
+          <ReviewList review={review} />
+        ))}
+      </div>
     </div>
   );
 };
