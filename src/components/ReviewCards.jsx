@@ -21,7 +21,6 @@ const ReviewList = ({ review }) => {
   const user = useContext(UserContext);
   const currentUserKey = user.uid;
   const [currentReview, setCurrentReview] = useState(review);
-  console.log(currentReview);
 
   const dbRef = databaseRef(getDatabase());
 
@@ -60,7 +59,6 @@ const ReviewList = ({ review }) => {
       getDatabase(),
       `/reviews/${review.dishID}/${review.userID}/`
     );
-    console.log(reviewRef);
 
     runTransaction(reviewRef, (post) => {
       if (post) {
