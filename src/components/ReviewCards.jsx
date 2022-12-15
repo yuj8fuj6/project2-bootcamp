@@ -10,6 +10,7 @@ import {
   child,
   get,
   getDatabase,
+  onValue,
   ref as databaseRef,
   runTransaction,
 } from "firebase/database";
@@ -18,9 +19,29 @@ const ReviewList = ({ review }) => {
   const [url, setURL] = useState();
   const [like, setLike] = useState(false);
   const user = useContext(UserContext);
+  const currentUserKey = user.uid;
   const [currentReview, setCurrentReview] = useState(review);
+  console.log(currentReview);
 
   const dbRef = databaseRef(getDatabase());
+
+  useEffect(() => {
+    const db = getDatabase();
+    onValue(
+      databaseRef(
+        db,
+        `reviews/${currentReview.dishID}/${currentReview.userID}/likers/${currentUserKey}`
+      ),
+      (snapshot) => {
+        if (snapshot.exists()) {
+          setLike(true);
+        } else {
+          setLike(false);
+        }
+      }
+    );
+  }, []);
+
   get(child(dbRef, `users/${review.userID}/profilePhoto`))
     .then((snapshot) => {
       if (snapshot.exists()) {
