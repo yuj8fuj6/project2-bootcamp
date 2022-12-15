@@ -139,7 +139,7 @@ const Dish = () => {
             </div>
           )}
         </div>
-        <ReviewCards />
+        <ReviewCards currentDish={dish} />
       </div>
     </div>
   );
