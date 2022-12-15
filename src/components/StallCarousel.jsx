@@ -4,6 +4,7 @@ import { Button } from ".";
 import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
 import { HawkerContext } from "../contexts/HawkerContext";
 import { Carousel } from "antd";
+import { ReviewContext } from "../contexts/ReviewContext";
 
 const contentStyle = {
   fontFamily: "Sansita",
@@ -13,6 +14,7 @@ const StallCarousel = () => {
   const [randomStall, setRandomStall] = useState();
 
   const stallData = useContext(HawkerContext);
+  const reviewData = useContext(ReviewContext); 
 
   const randomizeStall = (array) => {
     let currentIndex = array.length,
@@ -35,6 +37,10 @@ const StallCarousel = () => {
       setRandomStall(stallSelect);
     }
   }, [stallData]);
+
+  const reviewFiltered = reviewData.filter((review) => Object.keys(review) === randomStall.currentHawkerKey)
+
+  console.log(Object.keys(reviewData))
 
   return (
     <div className="w-full">

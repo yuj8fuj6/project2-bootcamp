@@ -15,12 +15,12 @@ export const ReviewContextProvider = (props) => {
   useEffect(() => {
     const db = getDatabase();
     const reviewArr = [];
-    const reviewData = query(databaseRef(db, `reviews`), orderByChild(`user`));
+    const reviewData = query(databaseRef(db, `reviews/`), orderByChild(`user`));
     onChildAdded(reviewData, (snapshot) => {
       // console.log(snapshot.val())
-      const currentOrder = snapshot.val();
-      const currentOrderKey = snapshot.key;
-      reviewArr.push({ ...currentOrder, currentOrderKey });
+      const currentReview = snapshot.val();
+      const currentReviewKey = snapshot.key;
+      reviewArr.push({ ...currentReview, currentReviewKey });
       setReviewData(reviewArr);
     });
   }, []);

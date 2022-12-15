@@ -34,7 +34,7 @@ const FormReview = (props) => {
     if (review.length !== 0) {
       const reviewsListRef = databaseRef(
         database,
-        `reviews/${dish.currentDishKey}/${user.uid}`,
+        `reviews/${dish.currentDishKey}`,
       );
       const newReview = {
         dishName: dish.dishName,
@@ -49,6 +49,7 @@ const FormReview = (props) => {
         likes: 0,
         content: review,
       };
+
       set(reviewsListRef, newReview).catch((error) => {
         console.log(error);
       });
