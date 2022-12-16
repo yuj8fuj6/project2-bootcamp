@@ -7,15 +7,12 @@ import {
   FormReview,
   ReviewCards,
 } from "../components";
-import {
-  BsHandThumbsUp,
-  BsChatLeftText,
-  BsHandThumbsUpFill,
-} from "react-icons/bs";
+import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
 import { useLocation, Link } from "react-router-dom";
 import { HawkerContext } from "../contexts/HawkerContext";
 import { UserContext } from "../App";
 import { OrderContext } from "../contexts/OrderContext";
+import { Modal } from "antd";
 
 const Dish = () => {
   const location = useLocation();
@@ -23,8 +20,12 @@ const Dish = () => {
   const user = useContext(UserContext);
   const stall = useContext(HawkerContext);
   const order = useContext(OrderContext);
-  console.log(order);
   const [haveOrdered, setHaveOrdered] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const showModal = () => {
+    setOpen(true);
+  };
 
   const stallFiltered = stall
     .filter((stall) => stall.currentHawkerKey === dish.hawkerKey)
@@ -33,7 +34,21 @@ const Dish = () => {
 
   //Try to make image modal popup.
   const dishPhotos = dish.photoURLs.map((photoURL) => (
-    <img src={photoURL} className="w-1/3 m-1 rounded-lg" />
+    <>
+      <button onClick={showModal} className="w-1/3 m-1">
+        <img src={photoURL} className="rounded-lg" />
+      </button>
+      <Modal
+        open={open}
+        okButtonProps={{ hidden: true }}
+        cancelButtonProps={{ hidden: true }}
+        onOk={() => setOpen(false)}
+        onCancel={() => setOpen(false)}
+        centered
+      >
+        <img src={photoURL} className="m-1 rounded-lg" />
+      </Modal>
+    </>
   ));
 
   const dishIngredients = dish.ingredientList.map((item) => (
@@ -57,11 +72,6 @@ const Dish = () => {
       setHaveOrdered(true);
     }
   }, []);
-
-  const [checked, setChecked] = useState({
-    like: false,
-  });
-  // Like function to be passed into Firebase realtime storage
 
   return (
     <div>
