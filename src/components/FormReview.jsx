@@ -6,15 +6,16 @@ import { ref as databaseRef, update, set } from "firebase/database";
 
 const FormReview = (props) => {
   const user = props.user;
-  console.log(user);
+  // console.log(user);
   const dish = props.dish;
-  console.log(dish);
+  // console.log(dish);
   const stall = props.stall;
-  console.log(stall);
+  // console.log(stall);
 
   const [review, setReview] = useState("");
   const [wordCount, setWordCount] = useState(0);
   const [like, setLike] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleReview = (e) => {
     setReview(e.target.value);
@@ -49,6 +50,7 @@ const FormReview = (props) => {
         likes: 0,
         content: review,
       };
+
       set(reviewsListRef, newReview).catch((error) => {
         console.log(error);
       });
@@ -66,47 +68,64 @@ const FormReview = (props) => {
         "Your like has not been submitted! Kindly leave a review to support the hawker.",
       );
     }
-  };
 
-  // console.log(review)
-  // console.log(finalReview)
+    update(databaseRef(database, `hawkers/${stall.currentHawkerKey}/`), {
+      totalLikes: stall.totalLikes + 1,
+    });
+
+    update(databaseRef(database, `dishes/${dish.currentDishKey}/`), {
+      totalLikes: dish.totalLikes + 1,
+    });
+
+    setSubmitted(true);
+  };
 
   return (
     <div className="text-left text-purple text-lg font-bold border-2 rounded-xl shadow-lg p-2 mt-2">
-      <p>You have eaten this dish before!</p>
-      <p className="text-sm font-normal mt-4">
-        If you liked this dish and wish to support your favourite hawker, while
-        earning Karma points, please leave a like and a review!
-      </p>
-      <div className=" flex flex-wrap text-3xl font-semibold mt-4">
-        <button onClick={handleLike}>
-          {like ? <BsHandThumbsUpFill /> : <BsHandThumbsUp />}
-        </button>
-        <span className="text-sm indent-4 font-normal">
-          Like this dish to leave a review
-        </span>
-      </div>
-      <form className="grid grid-cols-1 justify-start mt-4">
-        <label className="text-lg">Review: </label>
-        <textarea
-          className="border-2 rounded-xl text-sm py-6 mt-2 indent-3"
-          type="text"
-          id="review"
-          required
-          placeholder="Fill here"
-          value={review.review}
-          onChange={handleReview}
-          name="review"
-          disabled={!like}
-          maxLength={200}
-        />
-        <p className="text-xxs text-gray-700">Letter Count: {wordCount}/200</p>
-      </form>
-      <div className="flex justify-center m-3">
-        <ButtonDisabled onClick={handleSubmit} user={user}>
-          Submit
-        </ButtonDisabled>
-      </div>
+      {!submitted ? (
+        <>
+          <p>You have eaten this dish before!</p>
+          <p className="text-sm font-normal mt-4">
+            If you liked this dish and wish to support your favourite hawker,
+            while earning Karma points, please leave a like and a review!
+          </p>
+          <div className=" flex flex-wrap text-3xl font-semibold mt-4">
+            <button onClick={handleLike}>
+              {like ? <BsHandThumbsUpFill /> : <BsHandThumbsUp />}
+            </button>
+            <span className="text-sm indent-4 font-normal">
+              Like this dish to leave a review
+            </span>
+          </div>
+          <form className="grid grid-cols-1 justify-start mt-4">
+            <label className="text-lg">Review: </label>
+            <textarea
+              className="border-2 rounded-xl text-sm py-6 mt-2 indent-3"
+              type="text"
+              id="review"
+              required
+              placeholder="Fill here"
+              value={review.review}
+              onChange={handleReview}
+              name="review"
+              disabled={!like}
+              maxLength={200}
+            />
+            <p className="text-xxs text-gray-700">
+              Letter Count: {wordCount}/200
+            </p>
+          </form>
+          <div className="flex justify-center m-3">
+            <ButtonDisabled onClick={handleSubmit} user={user}>
+              Submit
+            </ButtonDisabled>
+          </div>
+        </>
+      ) : (
+        <p className="text-orange">
+          You have already submitted the review for this dish!
+        </p>
+      )}
     </div>
   );
 };

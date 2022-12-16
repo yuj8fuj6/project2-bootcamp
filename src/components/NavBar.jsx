@@ -13,7 +13,7 @@ const NavBar = () => {
         <BsTelephone />
         <div className="text-xxs">Contact</div>
       </HashLink>
-      <Link to="/order">
+      <Link to="/search">
         <BsSearch />
         <div className="text-xxs">Search</div>
       </Link>

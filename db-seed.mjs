@@ -1045,4 +1045,4 @@ const dishReviewsSeeding = async function () {
 // userSeeding();
 // hawkerAndDishSeeding();
 
-dishReviewsSeeding();
+// dishReviewsSeeding();
