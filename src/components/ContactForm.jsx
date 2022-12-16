@@ -20,7 +20,7 @@ export default function ContactForm() {
       <p>Contact Us</p>
       <p className="text-sm mt-2">Contact us at abcde@gmail.com</p>
       <p className="text-sm mt-2">to find out more about our platform !</p>
-      <label htmlFor="email">Feedback Form</label>
+      <label htmlFor="email" className="mb-3">Feedback Form</label>
       <input
         className="border-solid border-2 rounded text-sm text-orange pl-1"
         type="name"

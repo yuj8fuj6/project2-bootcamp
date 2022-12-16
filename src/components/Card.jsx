@@ -19,7 +19,7 @@ export default function Card(props){
       class=" overflow-hidden shadow-lg"
       onClick={handleClick}
     >
-      <div class="px-6 py-4 center border-1 rounded-2xl card border-purple">
+      <div class="px-6 py-4 center border-1 bg-orange rounded-2xl card border-purple hover:opacity-75">
         <div class="text-purple font-bold text-xl mb-2">
           {props.stall.stallName}
         </div>
