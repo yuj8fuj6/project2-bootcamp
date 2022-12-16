@@ -6,11 +6,11 @@ import { ref as databaseRef, update, set } from "firebase/database";
 
 const FormReview = (props) => {
   const user = props.user;
-  console.log(user);
+  // console.log(user);
   const dish = props.dish;
-  console.log(dish);
+  // console.log(dish);
   const stall = props.stall;
-  console.log(stall);
+  // console.log(stall);
 
   const [review, setReview] = useState("");
   const [wordCount, setWordCount] = useState(0);
@@ -34,7 +34,7 @@ const FormReview = (props) => {
     if (review.length !== 0) {
       const reviewsListRef = databaseRef(
         database,
-        `reviews/${dish.currentDishKey}`,
+        `reviews/${dish.currentDishKey}/${user.uid}`,
       );
       const newReview = {
         dishName: dish.dishName,
