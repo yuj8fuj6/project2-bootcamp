@@ -24,10 +24,8 @@ const Dish = () => {
   const user = useContext(UserContext);
   const stall = useContext(HawkerContext);
   const order = useContext(OrderContext);
-  console.log(order);
   const [haveOrdered, setHaveOrdered] = useState(false);
   const { reviewObj } = useContext(ReviewContext);
-  console.log(dish);
 
   const stallFiltered = stall
     .filter((stall) => stall.currentHawkerKey === dish.hawkerKey)

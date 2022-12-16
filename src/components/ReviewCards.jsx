@@ -28,7 +28,6 @@ const ReviewList = ({ review }) => {
     timeStyle: "long",
     dateStyle: "medium",
   });
-  console.log(dateTime);
 
   useEffect(() => {
     if (!user) {
@@ -177,9 +176,26 @@ const ReviewList = ({ review }) => {
 const ReviewCards = ({ currentDish }) => {
   const { reviewObj } = useContext(ReviewContext);
   const { currentDishKey } = currentDish;
+  const [dishReviewsList, setDishReviewsList] = useState([]);
 
-  const dishReviewsList = Object.values(reviewObj[currentDishKey]);
+  useEffect(() => {
+    if (reviewObj) {
+      if (reviewObj[currentDishKey]) {
+        setDishReviewsList(Object.values(reviewObj[currentDishKey]));
+      }
+    } else {
+      setDishReviewsList([]);
+    }
+  }, []);
 
+  if (dishReviewsList.length === 0) {
+    return (
+      <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
+        <p className="text-xl font-semibold drop-shadow-lg mb-4">Reviews</p>
+        <div className="overflow-scroll h-[32rem]">No reviews yet</div>
+      </div>
+    );
+  }
   return (
     <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
       <p className="text-xl font-semibold drop-shadow-lg mb-4">Reviews</p>
