@@ -28,7 +28,7 @@ const Login = () => {
       .catch((error) => {
         console.log(error);
         alert(
-          "Login failed! Please check if your email address and password are correct.",
+          "Login failed! Please check if your email address and password are correct."
         );
       });
   };
@@ -41,7 +41,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-orange">
-      <div className="bg-white w-84 h-4/6 grid grid-cols-1 rounded-xl shadow-xl p-4 space-y-2">
+      <div className="bg-white w-84 h-5/7 grid grid-cols-1 rounded-xl shadow-xl p-4 space-y-2">
         <div className="flex justify-around flex-wrap p-4">
           <HeaderLogin />
         </div>
@@ -73,7 +73,7 @@ const Login = () => {
             <Button type="submit">Log In</Button>
           </div>
         </form>
-        <div className="text-purple">
+        <div className="text-purple text-xs">
           If you do not have an existing account,
           <br />
           <Link
