@@ -26,6 +26,7 @@ import { HawkerContextProvider } from "./contexts/HawkerContext";
 import EditStall from "./pages/EditStall";
 import EditDish from "./pages/EditDish";
 import { OrderContextProvider } from "./contexts/OrderContext";
+import { ReviewContextProvider } from "./contexts/ReviewContext";
 
 export const UserContext = React.createContext();
 
@@ -92,34 +93,36 @@ function App() {
         <HawkerContextProvider>
           <DishContextProvider>
             <OrderContextProvider>
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Landing />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/registration" element={<Registration />} />
-                  <Route
-                    path="/profile"
-                    element={
-                      <UserProfile clearUserDetails={clearUserDetails} />
-                    }
-                  />
-                  <Route path="/dish" element={<Dish />} />
-                  <Route path="/stall" element={<Stall />} />
-                  <Route path="/order" element={<Order />} />
-                  <Route path="/search" element={<Search />} />
-                  <Route
-                    path="/createDish"
-                    element={<CreateDish userUID={user.uid} />}
-                  />
-                  <Route
-                    path="/createStall"
-                    element={<CreateStall userUID={user.uid} />}
-                  />
-                  <Route path="*" element={<Landing />} />
-                  <Route path="/editStall" element={<EditStall />} />
-                  <Route path="/editDish" element={<EditDish />} />
-                </Routes>
-              </BrowserRouter>
+              <ReviewContextProvider>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Landing />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/registration" element={<Registration />} />
+                    <Route
+                      path="/profile"
+                      element={
+                        <UserProfile clearUserDetails={clearUserDetails} />
+                      }
+                    />
+                    <Route path="/dish" element={<Dish />} />
+                    <Route path="/stall" element={<Stall />} />
+                    <Route path="/order" element={<Order />} />
+                    <Route path="/search" element={<Search />} />
+                    <Route
+                      path="/createDish"
+                      element={<CreateDish userUID={user.uid} />}
+                    />
+                    <Route
+                      path="/createStall"
+                      element={<CreateStall userUID={user.uid} />}
+                    />
+                    <Route path="*" element={<Landing />} />
+                    <Route path="/editStall" element={<EditStall />} />
+                    <Route path="/editDish" element={<EditDish />} />
+                  </Routes>
+                </BrowserRouter>
+              </ReviewContextProvider>
             </OrderContextProvider>
           </DishContextProvider>
         </HawkerContextProvider>

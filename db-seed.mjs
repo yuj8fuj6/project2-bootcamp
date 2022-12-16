@@ -5,6 +5,9 @@ import {
   getDatabase,
   get,
   child,
+  orderByChild,
+  equalTo,
+  query,
   update,
 } from "firebase/database";
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
@@ -330,7 +333,7 @@ const userSeeding = function () {
 
         const userKeysRef = databaseRef(
           database,
-          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ",")
+          USERKEYS_DATABASE + userRef.contactEmail.replace(".", ","),
         );
 
         await set(usersRef, userRef);
@@ -652,6 +655,239 @@ const dishes = [
   },
 ];
 
+const review = [
+  {
+    dishName: "Curry Puff",
+    stallName: "Rolina Traditional Hainanese Curry Puffs",
+    firstName: "blockson",
+    contactEmail: "email20@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Delicious! One of the best curry puff in Singapore!",
+  },
+  {
+    dishName: "Prawn Fried Rice",
+    stallName: "Ding Gua Gua Fried Rice",
+    firstName: "De Kang",
+    contactEmail: "email17@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Delicious! Would eat again.",
+  },
+  {
+    dishName: "Egg Fried Rice",
+    stallName: "Ding Gua Gua Fried Rice",
+    firstName: " Kai Feng",
+    contactEmail: "email18@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Tasty, would eat again",
+  },
+  {
+    dishName: "Cendol",
+    stallName: "Cendol Geylang Serai",
+    firstName: "Raihan Nazir",
+    contactEmail: "email9@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Taste of childhood.",
+  },
+  {
+    dishName: "Seafood Minced Meat Noodles",
+    stallName: "Minced Pork Bros",
+    firstName: "Santhil Kumar",
+    contactEmail: "email14@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Tasty, would eat again.",
+  },
+  {
+    dishName: "Modern Pork Noodles",
+    stallName: "Minced Pork Bros",
+    firstName: "Ashvin Nair",
+    contactEmail: "email51@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Tasty, would eat again.",
+  },
+  {
+    dishName: "Seafood Minced Meat Noodles",
+    stallName: "Minced Pork Bros",
+    firstName: "Anya Shazri",
+    contactEmail: "email11@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Delicious, really tasty minced meat noodles.",
+  },
+  {
+    dishName: "Curry Puff",
+    stallName: "Rolina Traditional Hainanese Curry Puffs",
+    firstName: "Raihan Nazir",
+    contactEmail: "email9@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Best.",
+  },
+  {
+    dishName: "Fish Soup",
+    stallName: "First Street Teochew Fish Soup",
+    firstName: "Jun Ming",
+    contactEmail: "email7@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Really tasty, eat it once a week.",
+  },
+  {
+    dishName: "Minced Meat Noodles",
+    stallName: "Ah Gong Minced Pork Noodles",
+    firstName: "Wen Ming",
+    contactEmail: "email4@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "It is great, owner is really nice too",
+  },
+  {
+    dishName: "Ngoh Hiang Platter",
+    stallName: "Beach Road Prawn Noodle House",
+    firstName: "Yong Rui",
+    contactEmail: "email3@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Love having this as a treat.",
+  },
+  {
+    dishName: "Ngoh Hiang Platter",
+    stallName: "Beach Road Prawn Noodle House",
+    firstName: "Jun Ming",
+    contactEmail: "email7@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "It is great, owner is really nice too",
+  },
+  {
+    dishName: "Ngoh Hiang Platter",
+    stallName: "Beach Road Prawn Noodle House",
+    firstName: " Kai Feng",
+    contactEmail: "email18@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Really tasty, eat it once a week.",
+  },
+  {
+    dishName: "Ngoh Hiang Platter",
+    stallName: "Beach Road Prawn Noodle House",
+    firstName: "De Kang",
+    contactEmail: "email17@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Tasty, would eat again.",
+  },
+  {
+    dishName: "Ngoh Hiang Platter",
+    stallName: "Beach Road Prawn Noodle House",
+    firstName: "blockson",
+    contactEmail: "email20@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Delicious! Would eat again.",
+  },
+  {
+    dishName: "Cendol",
+    stallName: "Cendol Geylang Serai",
+    firstName: "Ashvin Nair",
+    contactEmail: "email51@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Taste of childhood.",
+  },
+  {
+    dishName: "Cendol",
+    stallName: "Cendol Geylang Serai",
+    firstName: "Jun Ming",
+    contactEmail: "email7@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Tasty, would eat again",
+  },
+  {
+    dishName: "Cendol",
+    stallName: "Cendol Geylang Serai",
+    firstName: "Yong Rui",
+    contactEmail: "email3@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "It is great, owner is really nice too",
+  },
+  {
+    dishName: "Fish Soup",
+    stallName: "First Street Teochew Fish Soup",
+    firstName: " Kai Feng",
+    contactEmail: "email18@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Really tasty, eat it once a week.",
+  },
+  {
+    dishName: "Fish Soup",
+    stallName: "First Street Teochew Fish Soup",
+    firstName: "Yong Rui",
+    contactEmail: "email3@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Tasty, would eat again.",
+  },
+  {
+    dishName: "Fish Soup",
+    stallName: "First Street Teochew Fish Soup",
+    firstName: "De Kang",
+    contactEmail: "email17@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Soup is really tasty and comforting.",
+  },
+  {
+    dishName: "Curry Puff",
+    stallName: "Rolina Traditional Hainanese Curry Puffs",
+    firstName: "blockson",
+    contactEmail: "email20@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Whole family loves this.",
+  },
+  {
+    dishName: "Curry Puff",
+    stallName: "Rolina Traditional Hainanese Curry Puffs",
+    firstName: "blockson",
+    contactEmail: "email20@email.com",
+    usertype: "user",
+    date: Date("2022-11-12"),
+    likes: "0",
+    content: "Freshly made curry puffs, loads of filling.",
+  },
+];
+
 //Hawker and Dishes Seeding
 //Dish photos have been uploaded to Storage prior.
 //Create reference to the dish photo, retrieve the url and update it to the dish post
@@ -678,13 +914,13 @@ const hawkerAndDishSeeding = async function () {
     await get(child(dbRef, `${USERKEYS_DATABASE}/${stallEmailRef}`)).then(
       (snapshot) => {
         userID = snapshot.val();
-      }
+      },
     );
 
     userHawkerKeys[userID] = {};
 
     await getDownloadURL(
-      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`)
+      storageRef(storage, `${HAWKER_PHOTOS_FOLDER}/${stall.stallFrontPhoto}`),
     )
       .then((url) => {
         stall.stallFrontPhotoURL = url;
@@ -733,7 +969,7 @@ const hawkerAndDishSeeding = async function () {
     for (let m = 0; m < dish.photos.length; m++) {
       let dishPhoto = dish.photos[m];
       await getDownloadURL(
-        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`)
+        storageRef(storage, `${DISH_PHOTOS_FOLDER}/${dishPhoto}`),
       )
         .then((url) => {
           dish.photoURLs.push(url);
@@ -765,13 +1001,57 @@ const hawkerAndDishSeeding = async function () {
 
   const hawkerDishKeysRef = databaseRef(
     database,
-    HAWKER_DISH_RELATION_DATABASE
+    HAWKER_DISH_RELATION_DATABASE,
   );
   set(hawkerDishKeysRef, hawkerDishKeys);
   console.log("end of uploads, ctrl+c to exit");
 };
 
+const dishReviewsSeeding = async function () {
+  const dbRef = databaseRef(database);
+  const db = getDatabase();
+
+  for (let i = 0; i < review.length; i++) {
+    const email = review[i].contactEmail.replace(".", ",");
+
+    await get(child(dbRef, `userkeys/${email}`)).then((snapshot) => {
+      review[i]["userID"] = snapshot.val();
+    });
+    const hawkerQuery = query(
+      databaseRef(db, "hawkers/"),
+      orderByChild("stallName"),
+      equalTo(review[i].stallName),
+    );
+
+    await get(hawkerQuery).then((snapshot) => {
+      const hawkerKey = Object.keys(snapshot.val());
+      review[i]["hawkerID"] = hawkerKey[0];
+    });
+
+    const dishQuery = query(
+      databaseRef(db, "dishes/"),
+      orderByChild("dishName"),
+      equalTo(review[i].dishName),
+    );
+
+    await get(dishQuery).then((snapshot) => {
+      const dishID = Object.keys(snapshot.val());
+      review[i]["dishID"] = dishID[0];
+    });
+
+    const reviewsRef = databaseRef(
+      database,
+      `reviews/${review[i].dishID}/${review[i].userID}`,
+    );
+
+    set(reviewsRef, review[i]);
+  }
+  console.log("Uploads done, ctrl+c to exit");
+};
+
 //function calls
 //please run userSeeding() first, then run hawkerAndDishSeeding(), to do so comment out the function you are not running before executing this file.
 // userSeeding();
-hawkerAndDishSeeding();
+// hawkerAndDishSeeding();
+
+dishReviewsSeeding();
