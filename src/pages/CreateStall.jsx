@@ -170,7 +170,7 @@ const CreateStall = () => {
                     <img
                       src={stallFrontImg}
                       alt="storefront preview"
-                      className="object-contain"
+                      className="p-4 rounded-3xl drop-shadow-xl"
                     />
                   </div>
                 ) : (
@@ -191,21 +191,19 @@ const CreateStall = () => {
                       ></path>
                     </svg>
                     <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
+                      <span className="font-semibold">Click to upload</span>
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      SVG, PNG, JPG or GIF (MAX 5MB)
+                      SVG, PNG or JPG
                     </p>
                   </div>
                 )}
-
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={handleStallFrontPhoto}
-                />
               </label>
+              <input
+                type="file"
+                className="hidden"
+                onChange={handleStallFrontPhoto}
+              />
             </div>
           </div>
           <div className="flex">

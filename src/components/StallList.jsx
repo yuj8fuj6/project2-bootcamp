@@ -38,11 +38,11 @@ const MenuList = ({ stall }) => {
         }
       }
     });
-  }, [stallMenu, db]);
+  }, []);
 
   useEffect(() => {
     getMenuDetails();
-  }, []);
+  }, [getMenuDetails]);
 
   const navigate = useNavigate();
   console.log(stallMenu);
@@ -58,10 +58,7 @@ const MenuList = ({ stall }) => {
         <h4 className="text-lg font-extrabold text-purple">Stall Menu</h4>
         <ol>
           {stallMenu.map((dish) => (
-            <li
-              className="text-sm font-extrabold text-purple"
-              key={dish.dishKey}
-            >
+            <li className="text-sm text-purple" key={dish.dishKey}>
               {dish.dishName}
               <Button type="button" onClick={() => deleteMenu(dish.dishKey)}>
                 Delete

@@ -41,7 +41,7 @@ const Registration = () => {
     createUserWithEmailAndPassword(
       auth,
       registrationDetails.contactEmail,
-      registrationDetails.password,
+      registrationDetails.password
     )
       .then((userCredential) => {
         const user = userCredential.user;
@@ -53,12 +53,12 @@ const Registration = () => {
 
         const usersListRef = databaseRef(
           database,
-          USER_PROFILES_DATABASE + user.uid,
+          USER_PROFILES_DATABASE + user.uid
         );
 
         const emailUIDListRef = databaseRef(
           database,
-          USER_EMAIL + registrationDetails.contactEmail.replace(".", ","),
+          USER_EMAIL + registrationDetails.contactEmail.replace(".", ",")
         );
 
         set(usersListRef, {
@@ -67,6 +67,7 @@ const Registration = () => {
           firstName: registrationDetails.firstName,
           lastName: registrationDetails.lastName,
           contactEmail: registrationDetails.contactEmail,
+          contactNumber: registrationDetails.contactNumber,
           date: Date(),
           userType: displayedForm,
           karmaPoints: 0,
@@ -94,6 +95,10 @@ const Registration = () => {
       </div>
       <div className="mt-10 text-purple">
         {errorCode && <p>{errorCode.message}</p>}
+        <p className="text-2xl mt-10 mb-10 font-semibold drop-shadow-xl">
+          {displayedForm.charAt(0).toUpperCase() + displayedForm.slice(1)} Sign
+          Up
+        </p>
         <div className="inline-block relative w-64">
           <label className="block text-sm font-bold mb-2">
             Choose Account Type
@@ -115,10 +120,7 @@ const Registration = () => {
             </svg>
           </div>
         </div>
-        <p className="text-2xl mt-10 font-semibold drop-shadow-xl">
-          {displayedForm.charAt(0).toUpperCase() + displayedForm.slice(1)} Sign
-          Up
-        </p>
+
         <form
           className="bg-white rounded px-8 pt-6 pb-8 mb-4 text-left"
           onSubmit={handleSubmit}
@@ -130,7 +132,7 @@ const Registration = () => {
                 onChange={handleFormInputs}
                 name="firstName"
                 value={registrationDetails.firstName}
-                className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-gray-700"
                 type="text"
               />
             </label>
@@ -140,7 +142,7 @@ const Registration = () => {
                 onChange={handleFormInputs}
                 name="lastName"
                 value={registrationDetails.lastName}
-                className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-gray-700"
                 type="text"
               />
             </label>
@@ -151,11 +153,20 @@ const Registration = () => {
                   onChange={handleFormInputs}
                   value={registrationDetails.stallName}
                   name="stallName"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-gray-700"
                   type="text"
                 />
               </label>
             )}
+            <label className="block text-sm font-bold mb-2">
+              Contact Number
+              <input
+                onChange={handleFormInputs}
+                value={registrationDetails.contactNumber}
+                name="contactNumber"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </label>
             <label className="block text-sm font-bold mb-2">
               Contact Email
               <input
