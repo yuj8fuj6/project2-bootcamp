@@ -17,18 +17,15 @@ export const HawkerContextProvider = (props) => {
     const hawkerArr = [];
     const hawkerData = query(
       databaseRef(db, `hawkers`),
-      orderByChild(`stallName`),
+      orderByChild(`stallName`)
     );
     onChildAdded(hawkerData, (snapshot) => {
-      // console.log(snapshot.val())
       const currentHawker = snapshot.val();
       const currentHawkerKey = snapshot.key;
       hawkerArr.push({ ...currentHawker, currentHawkerKey });
       setHawkerData(hawkerArr);
     });
   }, []);
-
-  console.log(hawkerData);
 
   return (
     <HawkerContext.Provider value={hawkerData}>
