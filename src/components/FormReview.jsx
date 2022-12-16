@@ -68,6 +68,9 @@ const FormReview = (props) => {
         "Your like has not been submitted! Kindly leave a review to support the hawker.",
       );
     }
+
+    update(databaseRef(database, ))
+
     setSubmitted(true);
   };
 

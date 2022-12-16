@@ -12,6 +12,7 @@ import { useLocation, Link } from "react-router-dom";
 import { HawkerContext } from "../contexts/HawkerContext";
 import { UserContext } from "../App";
 import { OrderContext } from "../contexts/OrderContext";
+import { ReviewContext } from "../contexts/ReviewContext";
 import { Modal } from "antd";
 
 const Dish = () => {
@@ -21,7 +22,10 @@ const Dish = () => {
   const stall = useContext(HawkerContext);
   const order = useContext(OrderContext);
   const [haveOrdered, setHaveOrdered] = useState(false);
+  const { reviewObj } = useContext(ReviewContext);
   const [open, setOpen] = useState(false);
+
+console.log(reviewObj)
 
   const showModal = () => {
     setOpen(true);
@@ -31,6 +35,8 @@ const Dish = () => {
     .filter((stall) => stall.currentHawkerKey === dish.hawkerKey)
     .pop();
   // console.log(stallFiltered);
+
+  console.log(dish)
 
   //Try to make image modal popup.
   const dishPhotos = dish.photoURLs.map((photoURL) => (
@@ -73,6 +79,22 @@ const Dish = () => {
     }
   }, []);
 
+  const [checked, setChecked] = useState({
+    like: false,
+  });
+  // Like function to be passed into Firebase realtime storage
+
+  const reviewCount = (dishKey) => {
+    let count = 0;
+
+    if (reviewObj[dishKey]) {
+      count = Object.keys(reviewObj[dishKey]).length;
+      return <div>{count}</div>;
+    } else {
+      return <div>{count}</div>;
+    }
+  };
+
   return (
     <div>
       <div className="flex justify-around flex-wrap w-screen p-4">
@@ -96,12 +118,12 @@ const Dish = () => {
             <BsHandThumbsUp />
             <div className="text-xxs">Likes</div>
           </div>
-          <div>100</div>
+          <div>{dish.totalLikes}</div>
           <div className="text-3xl font-semibold">
             <BsChatLeftText />
             <div className="text-xxs">Reviews</div>
           </div>
-          <div>20</div>
+          <div>{reviewCount(dish.currentDishKey)}</div>
         </div>
         <img
           src={dish.photoURLs[0]}
