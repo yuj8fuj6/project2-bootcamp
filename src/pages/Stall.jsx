@@ -7,9 +7,8 @@ import { useLocation, Link } from "react-router-dom";
 const Stall = () => {
   const location = useLocation();
   const hawkerData = location.state;
-
   const dishData = useContext(DishContext);
-
+  console.log(hawkerData);
   const dishFiltered = dishData.filter(
     (dish) => dish.hawkerKey === hawkerData.currentHawkerKey,
   );
@@ -19,6 +18,7 @@ const Stall = () => {
     <img
       src={hawkerData.stallFrontPhotoURL}
       className="p-4 rounded-3xl drop-shadow-xl"
+      alt = ""
     />
   );
 

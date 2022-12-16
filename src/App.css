@@ -35,3 +35,21 @@
 .carousel {
     height: "30vh",
 }
+
+#marker{
+  height: 20px;
+  width: 20px;
+}
+
+.map-container{
+  height: 40vh;
+  width: 100vw;
+  max-width: 1000px;
+}
+
+.center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

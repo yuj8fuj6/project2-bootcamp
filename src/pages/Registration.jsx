@@ -33,7 +33,7 @@ const Registration = () => {
     setDisplayedForm(event.target.value);
   };
 
-  const navigate = useNavigate();
+  let navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
