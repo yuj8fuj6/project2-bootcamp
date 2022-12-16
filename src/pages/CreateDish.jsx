@@ -26,6 +26,7 @@ const USER_HAWKERS = "user-hawkers/";
 const CreateDish = () => {
   const user = useContext(UserContext);
   const { state } = useLocation();
+  console.log(state);
 
   const defaultDishDetails = {
     dishName: "",
@@ -36,10 +37,11 @@ const CreateDish = () => {
   const [dishMainImg, setDishMainImg] = useState();
   const [dishOtherImgs, setDishOtherImgs] = useState([]);
   const [dishDetails, setDishDetails] = useState(defaultDishDetails);
-  const [hawkerDetails, setHawkerDetails] = useState(...state);
+  const [hawkerDetails, setHawkerDetails] = useState(state);
   const [stallName, setStallName] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [loadingMsg, setLoadingMsg] = useState();
+  const [wordCount, setWordCount] = useState(0);
 
   const handleDishInputs = (event) => {
     if (event.target.name === "price") {
@@ -47,6 +49,16 @@ const CreateDish = () => {
       setDishDetails({
         ...dishDetails,
         price: Number(event.target.value),
+      });
+    }
+
+    if (event.target.name === "story") {
+      const userInput = event.target.value;
+      const charCount = userInput.length;
+      setWordCount(charCount);
+      setDishDetails({
+        ...dishDetails,
+        [event.target.name]: event.target.value,
       });
     }
     setDishDetails({
@@ -101,7 +113,6 @@ const CreateDish = () => {
       .then(() =>
         getDownloadURL(dishMainImgRef).then((url) => {
           stallFrontImgURL = url;
-          console.log(stallFrontImgURL);
         })
       )
       .catch((error) => alert(error));
@@ -150,11 +161,10 @@ const CreateDish = () => {
         update(dbRef, newHawkerDishEntry).then(() => {
           console.log("updated");
         });
-        console.log("exit");
         setLoadingMsg();
       });
     } catch (error) {
-      console.log(error);
+      alert(error);
     } finally {
       navigate("/profile");
     }
@@ -173,9 +183,7 @@ const CreateDish = () => {
         <NavBar />
       </div>
       <div>
-        <h1 className="text-left underline text-orange m-1 text-2xl">
-          Create Dish
-        </h1>
+        <h1 className="text-left text-green m-1 text-2xl">Create Dish</h1>
         <form className="container mx-1 text-left" onSubmit={onDishSubmit}>
           <label className="text-purple">
             Dish Name:
@@ -183,7 +191,7 @@ const CreateDish = () => {
               name="dishName"
               value={dishDetails.dishName}
               onChange={handleDishInputs}
-              className="border border-black rounded-lg text-gray-700 m-1"
+              className="border border-black rounded-lg text-gray-700 m-1 pl-1 pr-1"
             />
           </label>
           <p className="text-purple">Dish Display Image:</p>
@@ -243,7 +251,7 @@ const CreateDish = () => {
                   Price
                   <p>
                     <input
-                      className="border border-black text-gray-700 rounded-lg w-16 max-w-xs mr-1 pl-1"
+                      className="border border-black text-gray-700 rounded-lg w-16 max-w-xs mr-1 pl-1 pr-1"
                       name="price"
                       onChange={handleDishInputs}
                       type="number"
@@ -281,7 +289,12 @@ const CreateDish = () => {
                     className="border border-black rounded-lg text-gray-700 w-full max-w-xs pl-1 pr-1"
                     name="story"
                     onChange={handleDishInputs}
+                    maxLength={200}
+                    type="text"
                   />
+                  <p className="text-xxs text-gray-700">
+                    Letter Count: {wordCount}/200
+                  </p>
                 </label>
               </p>
             </div>

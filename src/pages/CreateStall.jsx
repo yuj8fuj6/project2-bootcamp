@@ -148,20 +148,21 @@ const CreateStall = () => {
         <NavBar />
       </div>
       <div>
+        <h1 className="text-left text-green m-1 text-2xl">CREATE STALL</h1>
         <form
           className="container mx-1 text-left"
           onSubmit={submitStallDetails}
         >
-          <label>
+          <label className="text-purple">
             Stall Name:
             <input
               name="stallName"
-              className="border border-black rounded-lg"
+              className="border ml-1 pl-1 pr-1 border-black rounded-lg text-gray-700"
               onChange={handleStallInputs}
               value={stallDetails.stallName}
             />
           </label>
-          <p>Stall Front Image:</p>
+          <p className="text-purple">Stall Front Image:</p>
           <div className="container mx-auto flex flex-wrap">
             <div className="flex flex-auto items-center justify-center w-f">
               <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -170,7 +171,7 @@ const CreateStall = () => {
                     <img
                       src={stallFrontImg}
                       alt="storefront preview"
-                      className="object-contain"
+                      className="p-4 rounded-3xl drop-shadow-xl"
                     />
                   </div>
                 ) : (
@@ -191,11 +192,10 @@ const CreateStall = () => {
                       ></path>
                     </svg>
                     <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
+                      <span className="font-semibold">Click to upload</span>
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      SVG, PNG, JPG or GIF (MAX 5MB)
+                      SVG, PNG or JPG
                     </p>
                   </div>
                 )}
@@ -210,7 +210,7 @@ const CreateStall = () => {
           </div>
           <div className="flex">
             <div className="container border rounded m-1 w-1/2">
-              <p>Other Stall Images:</p>
+              <p className="text-purple font-bold">Other Stall Images:</p>
               <div className="grid grid-cols-3">
                 {otherStallImgs.map((imgs) => (
                   <img src={imgs} alt="stall" />
@@ -233,45 +233,45 @@ const CreateStall = () => {
             </div>
 
             <div className="container p-3 border border-grey rounded-lg w-1/2 m-1">
-              <p>Details</p>
-              <p className="underline">Location</p>
+              <p className="text-purple font-bold">Details :</p>
+              <p className="text-purple underline">Location</p>
               <p>
-                <label>
+                <label className="text-purple">
                   Food Center:
                   <input
-                    className="border border-black rounded-lg w-full max-w-xs"
+                    className="border border-black rounded-lg w-full max-w-xs text-gray-700 pl-1 pr-1"
                     name="foodCenterName"
                     onChange={handleStallInputs}
                   />
                 </label>
               </p>
               <p>
-                <label>
+                <label className="text-purple">
                   Address:
                   <input
-                    className="border border-black rounded-lg w-full max-w-xs"
+                    className="border border-black rounded-lg w-full max-w-xs text-gray-700 pl-1 pr-1"
                     name="stallAddress"
                     onChange={handleStallInputs}
                   />
                 </label>
               </p>
 
-              <p className="underline">Opening Hours</p>
+              <p className="text-purple underline">Opening Hours</p>
               <p>
-                <label>
+                <label className="text-purple">
                   Days:
                   <input
-                    className="border border-black rounded-lg w-full max-w-xs"
+                    className="border border-black rounded-lg w-full max-w-xs text-gray-700 pl-1 pr-1"
                     name="openingDays"
                     onChange={handleStallInputs}
                   />
                 </label>
               </p>
               <p>
-                <label>
+                <label className="text-purple">
                   Time:
                   <input
-                    className="border border-black rounded-lg w-full max-w-xs"
+                    className="border border-black rounded-lg w-full max-w-xs text-gray-700 pl-1 pr-1"
                     name="openingHours"
                     onChange={handleStallInputs}
                   />
@@ -281,17 +281,17 @@ const CreateStall = () => {
           </div>
           <div className="container p-3 border border-grey rounded-lg">
             <label>
-              <p>Year Started</p>
+              <p className="text-purple">Year Started</p>
               <input
-                className="border border-black rounded-lg w-full max-w-xs"
+                className="border border-black rounded-lg w-full max-w-xs text-gray-700 pl-1 pr-1"
                 name="startingYear"
                 onChange={handleStallInputs}
               />
             </label>
             <label>
-              <p>Our Story</p>
+              <p className="text-purple">Our Story</p>
               <textarea
-                className="border border-black rounded-lg w-full"
+                className="border border-black rounded-lg w-full text-gray-700 pl-1 pr-1"
                 type="text"
                 name="stallStory"
                 onChange={handleStallInputs}

@@ -9,16 +9,13 @@ import {
   orderByChild,
   remove,
   onValue,
-  get,
-  child,
-  Database,
 } from "firebase/database";
 import { Button } from "../components";
 import { useNavigate } from "react-router-dom";
 import { database } from "../firebase";
 
-const MenuList = ({ stall }) => {
-  const [currentStall, setCurrentStall] = useState(...stall);
+const MenuList = ({ stallDetail }) => {
+  const [currentStall, setCurrentStall] = useState(stallDetail);
   console.log(currentStall);
   const [stallMenu, setStallMenu] = useState([]);
   const db = getDatabase();
@@ -41,14 +38,13 @@ const MenuList = ({ stall }) => {
         }
       }
     });
-  }, [stallMenu, db]);
+  }, []);
 
   useEffect(() => {
     getMenuDetails();
-  }, []);
+  }, [getMenuDetails]);
 
   const navigate = useNavigate();
-  console.log(stallMenu);
 
   const deleteMenu = (dishKey) => {
     const db = getDatabase();
@@ -58,33 +54,78 @@ const MenuList = ({ stall }) => {
   return (
     <div>
       <div className="p-4 text-left">
-        <h4 className="text-lg font-extrabold text-purple">Stall Menu</h4>
+        <div className="flex align-middle">
+          <h4 className="text-lg font-extrabold text-purple pr-2">
+            Stall Menu
+          </h4>
+          <button
+            className="text-gray-500 flex pt-2"
+            type="button"
+            onClick={() => navigate("/createDish", { state: currentStall })}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              fill="currentColor"
+              class="bi bi-plus-circle"
+              viewBox="0 0 16 16"
+            >
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+            </svg>
+            <h5 className="text-sm pl-1">Add dish</h5>
+          </button>
+        </div>
+
         <ol>
           {stallMenu.map((dish) => (
-            <li
-              className="text-sm font-extrabold text-purple"
-              key={dish.dishKey}
-            >
+            <li className="text-md text-green" key={dish.dishKey}>
+              {console.log(dish)}
               {dish.dishName}
-              <Button type="button" onClick={() => deleteMenu(dish.dishKey)}>
-                Delete
-              </Button>
-              <Button
+              <button
+                type="button"
+                onClick={() => deleteMenu(dish.dishKey)}
+                className="text-gray-500 pl-1 pr-1"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-trash"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                  <path
+                    fillRule="evenodd"
+                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                  />
+                </svg>
+              </button>
+              <button
                 type="button"
                 onClick={() => navigate("/editDish", { state: dish })}
+                className="text-gray-500"
               >
-                Edit
-              </Button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-pencil-square"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                  <path
+                    fill-rule="evenodd"
+                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+                  />
+                </svg>
+              </button>
             </li>
           ))}
         </ol>
-        <Button
-          className="text-black"
-          type="button"
-          onClick={() => navigate("/createDish", { state: stall })}
-        >
-          Add Dish
-        </Button>
       </div>
     </div>
   );
@@ -116,12 +157,11 @@ const StallList = () => {
         }
       }
     });
-  }, [stallDetails, user]);
+  }, []);
 
   useEffect(() => {
     getStallDetails();
-  }, []);
-  console.log(stallDetails);
+  }, [getStallDetails]);
 
   const navigate = useNavigate();
 
@@ -142,29 +182,29 @@ const StallList = () => {
 
   if (stallDetails.length > 0) {
     return (
-      <div className="flex justify-around flex-wrap w-screen p-1">
-        <div className="flex justify-evenly flex-wrap sm:flex-1 overflow-auto h-[32rem]">
-          <div className="text-purple text-2xl">Your Stalls</div>
+      <div>
+        <div className="text-purple text-2xl">Your Stalls</div>
+
+        <div className="flex flex-wrap justify-center md:items-center sm:flex-1 overflow-auto h-[32rem] border">
           {stallDetails.map((stall) => (
             <div
               key={stall.stallKey}
-              className="w-full rounded-lg shadow-md lg:max-w-sm hover:bg-orange/90 hover:opacity-75"
+              className="rounded-lg shadow-md sm:min-w-sm lg:max-w-sm hover:bg-orange/10 hover:opacity-75"
             >
               <img
                 className="object-cover w-full h-72 p-2 rounded-2xl drop-shadow-xl"
                 src={stall.stallFrontPhotoURL}
                 alt="stallfront"
               />
-              <div className="p-4 text-left">
-                <h4 className="text-lg font-extrabold text-purple">
-                  {stall.stallName}
-                </h4>
-                <h5 className="text-sm font-extrabold text-purple">
-                  {stall.stallAddress}
-                </h5>
-              </div>
-              <MenuList stall={stallDetails} />
 
+              <div className="p-4 text-left">
+                <p className="text-xl font-bold text-purple">Stall Name</p>
+                <p className="text-lg text-green">{stall.stallName}</p>
+                <p className="text-sm text-green font-medium italic">
+                  {stall.stallAddress}
+                </p>
+              </div>
+              <MenuList stallDetail={stall} />
               <p className="m-2 mt-5 mb-10">
                 <Button
                   type="button"
