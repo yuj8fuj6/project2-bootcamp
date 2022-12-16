@@ -45,14 +45,21 @@ export default function Recommendation({ pos }) {
         return <Card stall={ele} />;
       });
       return (
-        <div>
-          <h3>Stalls Near You</h3>
+        <div className="center">
+          <h1 className="text-orange font-bold text-xl mb-2">
+            Stalls Near You
+          </h1>
           {element}
         </div>
       );
     }
     else{
-      return <p> There is no stalls near you</p>
+      return (
+        <p className="text-orange font-bold text-xl mb-2 my-10">
+          {" "}
+          There is no stalls near you
+        </p>
+      );
     }
   }
   else{
@@ -104,5 +111,5 @@ function getStalls(neighbours, hawkerData){
      );
      i++;
    }
-   return nearbystalls
+   return [...new Set(nearbystalls)];
 }

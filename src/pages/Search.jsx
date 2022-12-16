@@ -25,7 +25,7 @@ export default function Search() {
 
   if (!isLoaded) return <div>Loading...</div>;
   return (
-    <div className="main">
+    <div className="center">
       <div className="flex justify-around flex-wrap w-screen p-4">
         <Header />
         <NavBar />

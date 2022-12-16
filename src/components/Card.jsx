@@ -9,26 +9,18 @@ export default function Card(props){
   }
 
   return (
-    <div
+    <div className="center"
       class="max-w-sm rounded overflow-hidden shadow-lg"
       onClick={handleClick}
     >
-      <div class="px-6 py-4">
-        <div class="font-bold text-xl mb-2">{props.stall.stallName}</div>
+      <div class="px-6 py-4 center">
+        <div class="text-purple font-bold text-xl mb-2">
+          {props.stall.stallName}
+        </div>
         <img src={props.stall.stallFrontPhotoURL} alt="test" />
-        <p class="text-gray-700 text-base">{props.stall.stallStory}</p>
+        <p class="text-purple text-base">{props.stall.stallStory}</p>
       </div>
-      <div class="px-6 pt-4 pb-2">
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #photography
-        </span>
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #travel
-        </span>
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #winter
-        </span>
-      </div>
+      <div class="px-6 pt-4 pb-2"></div>
     </div>
   );
 }

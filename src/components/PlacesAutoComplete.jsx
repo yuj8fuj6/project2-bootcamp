@@ -31,29 +31,33 @@ const PlacesAutocomplete = ( props ) => {
   };
   
   return (
-      <Combobox onSelect={handleSelect}>
-        <ComboboxInput
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          disabled={!ready}
-          className="combobox-input"
-          placeholder="Search an address"
+    <Combobox
+      onSelect={handleSelect}
+      className="flex items-center justify-center"
+    >
+      <ComboboxInput
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        disabled={!ready}
+        className="combobox-input mx-4 h-7 my-10"
+        placeholder="Search an address"
+      />
+      <Button onClick={props.reCenter}>
+        <img
+          id="marker"
+          src={process.env.PUBLIC_URL + "/misc/orangeMarker.png"}
+          alt="test"
         />
-        <Button onClick={props.reCenter}>
-          <img id="marker"
-            src={process.env.PUBLIC_URL + "/misc/orangeMarker.png"}
-            alt="test"
-          />
-        </Button>
-        <ComboboxPopover>
-          <ComboboxList>
-            {status === "OK" &&
-              data.map(({ place_id, description }) => (
-                <ComboboxOption key={place_id} value={description} />
-              ))}
-          </ComboboxList>
-        </ComboboxPopover>
-      </Combobox>
+      </Button>
+      <ComboboxPopover>
+        <ComboboxList>
+          {status === "OK" &&
+            data.map(({ place_id, description }) => (
+              <ComboboxOption key={place_id} value={description} />
+            ))}
+        </ComboboxList>
+      </ComboboxPopover>
+    </Combobox>
   );
 };
 
