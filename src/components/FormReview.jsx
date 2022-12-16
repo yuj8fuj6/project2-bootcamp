@@ -69,7 +69,13 @@ const FormReview = (props) => {
       );
     }
 
-    update(databaseRef(database, ))
+    update(databaseRef(database, `hawkers/${stall.currentHawkerKey}/`), {
+      totalLikes: stall.totalLikes + 1,
+    });
+
+    update(databaseRef(database, `dishes/${dish.currentDishKey}/`), {
+      totalLikes: dish.totalLikes + 1,
+    });
 
     setSubmitted(true);
   };

@@ -36,8 +36,6 @@ console.log(reviewObj)
     .pop();
   // console.log(stallFiltered);
 
-  console.log(dish)
-
   //Try to make image modal popup.
   const dishPhotos = dish.photoURLs.map((photoURL) => (
     <>
@@ -78,11 +76,6 @@ console.log(reviewObj)
       setHaveOrdered(true);
     }
   }, []);
-
-  const [checked, setChecked] = useState({
-    like: false,
-  });
-  // Like function to be passed into Firebase realtime storage
 
   const reviewCount = (dishKey) => {
     let count = 0;

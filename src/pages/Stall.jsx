@@ -8,7 +8,6 @@ import { Modal } from "antd";
 const Stall = () => {
   const location = useLocation();
   const hawkerData = location.state;
-
   const dishData = useContext(DishContext);
   const [open, setOpen] = useState(false);
 
@@ -21,6 +20,7 @@ const Stall = () => {
     <img
       src={hawkerData.stallFrontPhotoURL}
       className="p-4 rounded-3xl drop-shadow-xl"
+      alt = ""
     />
   );
 
