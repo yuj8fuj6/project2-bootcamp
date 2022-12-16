@@ -9,9 +9,6 @@ import {
   orderByChild,
   remove,
   onValue,
-  get,
-  child,
-  Database,
 } from "firebase/database";
 import { Button } from "../components";
 import { useNavigate } from "react-router-dom";
@@ -116,12 +113,11 @@ const StallList = () => {
         }
       }
     });
-  }, [stallDetails, user]);
+  }, []);
 
   useEffect(() => {
     getStallDetails();
-  }, []);
-  console.log(stallDetails);
+  }, [getStallDetails]);
 
   const navigate = useNavigate();
 
@@ -155,16 +151,13 @@ const StallList = () => {
                 src={stall.stallFrontPhotoURL}
                 alt="stallfront"
               />
+
               <div className="p-4 text-left">
-                <h4 className="text-lg font-extrabold text-purple">
-                  {stall.stallName}
-                </h4>
-                <h5 className="text-sm font-extrabold text-purple">
-                  {stall.stallAddress}
-                </h5>
+                <p className="text-xl font-bold text-purple">Stall Name</p>
+                <p className="text-lg text-purple">{stall.stallName}</p>
+                <p className="text-sm text-purple">{stall.stallAddress}</p>
               </div>
               <MenuList stall={stallDetails} />
-
               <p className="m-2 mt-5 mb-10">
                 <Button
                   type="button"

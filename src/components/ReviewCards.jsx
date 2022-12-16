@@ -186,7 +186,7 @@ const ReviewCards = ({ currentDish }) => {
     } else {
       setDishReviewsList([]);
     }
-  }, []);
+  }, [reviewObj]);
 
   if (dishReviewsList.length === 0) {
     return (
@@ -200,8 +200,8 @@ const ReviewCards = ({ currentDish }) => {
     <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
       <p className="text-xl font-semibold drop-shadow-lg mb-4">Reviews</p>
       <div className="overflow-scroll h-[32rem]">
-        {dishReviewsList.map((review) => (
-          <ReviewList review={review} />
+        {dishReviewsList.map((review, index) => (
+          <ReviewList review={review} key={index} />
         ))}
       </div>
     </div>
