@@ -19,7 +19,6 @@ export default function Recommendation({ pos }) {
     if (snapshot.exists()) {
       data = Object.values(snapshot.val());
       keys = Object.keys(snapshot.val());
-      console.log(pos)
     } else {
       console.log("No data available");
     }
@@ -30,7 +29,6 @@ export default function Recommendation({ pos }) {
         currentHawkerKey: keys[i], //temp fix
       }))
     ).then((result) => {
-      console.log(result);
       setHawkerData(result);
       setStalls(getNearbyStalls(pos, result));
     });
@@ -46,7 +44,6 @@ export default function Recommendation({ pos }) {
       let element = stalls.map((ele) => {
         return <Card stall={ele} />;
       });
-      console.log(stalls);
       return (
         <div>
           <h3>Stalls Near You</h3>

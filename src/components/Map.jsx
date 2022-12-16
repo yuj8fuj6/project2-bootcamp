@@ -3,7 +3,6 @@ import { GoogleMap, MarkerF, panTo } from "@react-google-maps/api";
 import PlacesAutocomplete from "./PlacesAutoComplete";
 import { useState, useCallback } from "react";
 import Recommendation from "./Recommendation";
-import { useEffect } from "react";
 
 
 //get address from DDB usig stalladdress
