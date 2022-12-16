@@ -16,6 +16,7 @@ import { useLocation, Link } from "react-router-dom";
 import { HawkerContext } from "../contexts/HawkerContext";
 import { UserContext } from "../App";
 import { OrderContext } from "../contexts/OrderContext";
+import { ReviewContext } from "../contexts/ReviewContext";
 
 const Dish = () => {
   const location = useLocation();
@@ -25,6 +26,8 @@ const Dish = () => {
   const order = useContext(OrderContext);
   console.log(order);
   const [haveOrdered, setHaveOrdered] = useState(false);
+  const { reviewObj } = useContext(ReviewContext);
+  console.log(dish);
 
   const stallFiltered = stall
     .filter((stall) => stall.currentHawkerKey === dish.hawkerKey)
@@ -63,6 +66,17 @@ const Dish = () => {
   });
   // Like function to be passed into Firebase realtime storage
 
+  const reviewCount = (dishKey) => {
+    let count = 0;
+
+    if (reviewObj[dishKey]) {
+      count = Object.keys(reviewObj[dishKey]).length;
+      return <div>{count}</div>;
+    } else {
+      return <div>{count}</div>;
+    }
+  };
+
   return (
     <div>
       <div className="flex justify-around flex-wrap w-screen p-4">
@@ -86,12 +100,12 @@ const Dish = () => {
             <BsHandThumbsUp />
             <div className="text-xxs">Likes</div>
           </div>
-          <div>100</div>
+          <div>{dish.totalLikes}</div>
           <div className="text-3xl font-semibold">
             <BsChatLeftText />
             <div className="text-xxs">Reviews</div>
           </div>
-          <div>20</div>
+          <div>{reviewCount(dish.currentDishKey)}</div>
         </div>
         <img
           src={dish.photoURLs[0]}
