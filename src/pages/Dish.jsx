@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Header, NavBar, Button, FormOrder, FormReview } from "../components";
+import {
+  Header,
+  NavBar,
+  Button,
+  FormOrder,
+  FormReview,
+  ReviewCards,
+} from "../components";
 import {
   BsHandThumbsUp,
   BsChatLeftText,
@@ -9,6 +16,7 @@ import { useLocation, Link } from "react-router-dom";
 import { HawkerContext } from "../contexts/HawkerContext";
 import { UserContext } from "../App";
 import { OrderContext } from "../contexts/OrderContext";
+import { ReviewContext } from "../contexts/ReviewContext";
 
 const Dish = () => {
   const location = useLocation();
@@ -16,8 +24,8 @@ const Dish = () => {
   const user = useContext(UserContext);
   const stall = useContext(HawkerContext);
   const order = useContext(OrderContext);
-  console.log(order);
   const [haveOrdered, setHaveOrdered] = useState(false);
+  const { reviewObj } = useContext(ReviewContext);
 
   const stallFiltered = stall
     .filter((stall) => stall.currentHawkerKey === dish.hawkerKey)
@@ -56,84 +64,16 @@ const Dish = () => {
   });
   // Like function to be passed into Firebase realtime storage
 
-  //To comment out later
-  const reviews = [
-    {
-      reviewID: 1,
-      name: "Tom",
-      usertype: "Regular User",
-      date: "12 November 2022",
-      likes: "100",
-      imgURL: "/SampleProfilePhotos/user1.jpg",
-      content:
-        "Tantalizingly delicious! Would visit again! Mr. Tan was very friendly and the food was great. Need another bowl of that prawn noodles.",
-    },
-    {
-      reviewID: 1,
-      name: "Tom",
-      usertype: "Regular User",
-      date: "12 November 2022",
-      likes: "100",
-      imgURL: "/SampleProfilePhotos/user1.jpg",
-      content:
-        "Tantalizingly delicious! Would visit again! Mr. Tan was very friendly and the food was great. Need another bowl of that prawn noodles.",
-    },
-    {
-      reviewID: 1,
-      name: "Tom",
-      usertype: "Regular User",
-      date: "12 November 2022",
-      likes: "100",
-      imgURL: "/SampleProfilePhotos/user1.jpg",
-      content:
-        "Tantalizingly delicious! Would visit again! Mr. Tan was very friendly and the food was great. Need another bowl of that prawn noodles.",
-    },
-    {
-      reviewID: 1,
-      name: "Tom",
-      usertype: "Regular User",
-      date: "12 November 2022",
-      likes: "100",
-      imgURL: "/SampleProfilePhotos/user1.jpg",
-      content:
-        "Tantalizingly delicious! Would visit again! Mr. Tan was very friendly and the food was great. Need another bowl of that prawn noodles.",
-    },
-  ];
+  const reviewCount = (dishKey) => {
+    let count = 0;
 
-  const reviewList = reviews.map((review) => (
-    <div className="flex flex-wrap mb-3">
-      <img
-        src={review.imgURL}
-        alt="profile"
-        className="rounded-full drop-shadow-xl w-24 h-24 lg:w-48 lg:h-48 object-cover mt-4"
-      />
-      <div className="grid grid-cols-1 w-4/6 pl-4 mt-4">
-        <div className="font-extrabold">
-          <p>
-            {review.name} - <span className="italic">{review.usertype}</span>
-          </p>
-          <p className="font-normal">{review.date}</p>
-        </div>
-        <div>
-          <div className="flex flex-wrap justify-start space-x-2 mt-2 text-purple">
-            <div className="text-3xl font-semibold">
-              <BsHandThumbsUp />
-              <div className="text-xxs">Likes</div>
-            </div>
-            <div>100</div>
-            <div className="text-3xl font-semibold">
-              <BsHandThumbsUp />
-            </div>
-            <div className="text-xxs w-1/3">
-              Like this comment if you found it useful.
-            </div>
-          </div>
-        </div>
-        <div className="text-xs italic">"{review.content}"</div>
-      </div>
-    </div>
-  ));
-  //Passing of data from Firebase
+    if (reviewObj[dishKey]) {
+      count = Object.keys(reviewObj[dishKey]).length;
+      return <div>{count}</div>;
+    } else {
+      return <div>{count}</div>;
+    }
+  };
 
   return (
     <div>
@@ -158,12 +98,12 @@ const Dish = () => {
             <BsHandThumbsUp />
             <div className="text-xxs">Likes</div>
           </div>
-          <div>100</div>
+          <div>{dish.totalLikes}</div>
           <div className="text-3xl font-semibold">
             <BsChatLeftText />
             <div className="text-xxs">Reviews</div>
           </div>
-          <div>20</div>
+          <div>{reviewCount(dish.currentDishKey)}</div>
         </div>
         <img
           src={dish.photoURLs[0]}
@@ -211,10 +151,7 @@ const Dish = () => {
             </div>
           )}
         </div>
-        <div className="border-t-1 w-11/12 border-purple text-purple text-left p-1 mt-2">
-          <p className="text-xl font-semibold drop-shadow-lg mb-4">Reviews</p>
-          <div className="overflow-scroll h-[32rem]">{reviewList}</div>
-        </div>
+        <ReviewCards currentDish={dish} />
       </div>
     </div>
   );

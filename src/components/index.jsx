@@ -10,3 +10,4 @@ export { default as FormReview } from "./FormReview";
 export { default as StallDishCards } from "./StallDishCards";
 export { default as ButtonDisabled } from "./ButtonDisabled";
 export { default as OrderCards } from "./OrderCards";
+export { default as ReviewCards } from "./ReviewCards";
