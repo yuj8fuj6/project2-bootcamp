@@ -11,9 +11,6 @@ const DishCards = () => {
   const dishes = useContext(DishContext);
   const { reviewObj } = useContext(ReviewContext);
 
-  console.log(dishes);
-  console.log(reviewObj);
-
   const handleSearchChange = (e) => {
     if (!e.target.value) {
       setFilter(dishes);

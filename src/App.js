@@ -69,7 +69,6 @@ function App() {
     //     fetchUserDetails();
     //   }, [user, fetchUserDetails]);
 
-    console.log(user);
     const db = getDatabase();
     const currentUser = query(databaseRef(db, `users/${user.uid}`));
     onValue(currentUser, (snapshot) => {
@@ -84,8 +83,6 @@ function App() {
   useEffect(() => {
     fetchUserDetails();
   }, [user, fetchUserDetails]);
-
-  console.log(userDetails);
 
   return (
     <div className="App">

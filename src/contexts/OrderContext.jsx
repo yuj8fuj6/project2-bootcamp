@@ -15,10 +15,7 @@ export const OrderContextProvider = (props) => {
   useEffect(() => {
     const db = getDatabase();
     const orderArr = [];
-    const orderData = query(
-      databaseRef(db, `orders`),
-      orderByChild(`user`),
-    );
+    const orderData = query(databaseRef(db, `orders`), orderByChild(`user`));
     onChildAdded(orderData, (snapshot) => {
       // console.log(snapshot.val())
       const currentOrder = snapshot.val();
@@ -27,8 +24,6 @@ export const OrderContextProvider = (props) => {
       setOrderData(orderArr);
     });
   }, []);
-
-  console.log(orderData);
 
   return (
     <OrderContext.Provider value={orderData}>
