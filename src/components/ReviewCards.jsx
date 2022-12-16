@@ -148,7 +148,7 @@ const ReviewList = ({ review }) => {
             {currentReview.firstName} -{" "}
             <span className="italic">{currentReview.usertype}</span>
           </p>
-          <p className="font-normal">{dateTime}</p>
+          <p className="text-xs">{dateTime}</p>
         </div>
         <div>
           <div className="flex flex-wrap justify-start space-x-2 mt-2 text-purple">
@@ -167,7 +167,7 @@ const ReviewList = ({ review }) => {
             </div>
           </div>
         </div>
-        <div className="text-xs italic">"{currentReview.content}"</div>
+        <div className=" italic">"{currentReview.content}"</div>
       </div>
     </div>
   );

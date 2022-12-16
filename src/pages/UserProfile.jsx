@@ -271,20 +271,20 @@ const UserProfile = (props) => {
                 />
               </label>
               <label>
-                <p className="mt-5 text-left ml-16">Contact Number</p>
-                <input
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
-                  name="contactNumber"
-                  value={userInfo.contactNumber}
-                  onChange={handleUserInput}
-                />
-              </label>
-              <label>
                 <p className="mt-5 text-left ml-16">Contact Email</p>
                 <input
                   className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
                   name="contactEmail"
                   value={userInfo.contactEmail}
+                  onChange={handleUserInput}
+                />
+              </label>
+              <label>
+                <p className="mt-5 text-left ml-16">Contact Number</p>
+                <input
+                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
+                  name="contactNumber"
+                  value={userInfo.contactNumber}
                   onChange={handleUserInput}
                 />
               </label>
@@ -339,27 +339,27 @@ const UserProfile = (props) => {
               />
               <label>
                 <p className="mt-5 text-left ml-16">Last Name</p>
-                <input
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
-                  placeholder={user.lastName}
-                />
               </label>
+              <input
+                className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
+                placeholder={user.lastName}
+              />
               <label>
                 <p className="mt-5 text-left ml-16">Contact Email</p>
-                <input
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
-                  placeholder={user.contactEmail}
-                />
               </label>
+              <input
+                className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
+                placeholder={user.contactEmail}
+              />
               <label>
                 <p className="mt-5 text-left ml-16">Contact Number</p>
-                <input
-                  className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
-                  placeholder={user.contactNumber}
-                  name="contactNumber"
-                  onChange={handleUserInput}
-                />
               </label>
+              <input
+                className="border border-neutral-300 w-3/4 rounded-lg mt-2 indent-3"
+                placeholder={user.contactNumber}
+                name="contactNumber"
+                onChange={handleUserInput}
+              />
               <label>
                 <p className="mt-5 text-left ml-16">Username</p>
                 <input

@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Header, NavBar, StallDishCards } from "../components";
 import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
 import { DishContext } from "../contexts/DishContext";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Modal } from "antd";
 
 const Stall = () => {
   const location = useLocation();
   const hawkerData = location.state;
   const dishData = useContext(DishContext);
-  console.log(hawkerData);
+  const [open, setOpen] = useState(false);
+
   const dishFiltered = dishData.filter(
     (dish) => dish.hawkerKey === hawkerData.currentHawkerKey,
   );
@@ -22,14 +24,26 @@ const Stall = () => {
     />
   );
 
-  // // Other Stall Photos
-  // const otherStallPhotos = hawkerSelected.val.stallFrontPhotoURL.map(
-  //   (photoURL) => <img src={photoURL} className="w-1/3 m-2 rounded-lg" />,
-  // );
+  const showModal = () => {
+    setOpen(true);
+  };
 
-  // To delete once array of other stall photos
   const otherStallPhotos = (
-    <img src={hawkerData.stallFrontPhotoURL} className="w-1/3 m-2 rounded-lg" />
+    <>
+      <button onClick={showModal} className="w-1/3 m-1">
+        <img src={hawkerData.stallFrontPhotoURL} className="rounded-lg" />
+      </button>
+      <Modal
+        open={open}
+        okButtonProps={{ hidden: true }}
+        cancelButtonProps={{ hidden: true }}
+        onOk={() => setOpen(false)}
+        onCancel={() => setOpen(false)}
+        centered
+      >
+        <img src={hawkerData.stallFrontPhotoURL} className="m-1 rounded-lg" />
+      </Modal>
+    </>
   );
 
   return (

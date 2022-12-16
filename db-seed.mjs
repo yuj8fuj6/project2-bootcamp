@@ -20,16 +20,7 @@ import {
 } from "firebase/auth";
 
 //please enter firebaseConfig here
-const firebaseConfig = {
-  apiKey: "AIzaSyAsTD59WCIIkcB_0pAdCqfSxrgpe5bmb6Q",
-  authDomain: "yumee-a614b.firebaseapp.com",
-  databaseURL:
-    "https://yumee-a614b-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "yumee-a614b",
-  storageBucket: "yumee-a614b.appspot.com",
-  messagingSenderId: "362180775951",
-  appId: "1:362180775951:web:59f04c2d76b910c2bad37a",
-};
+const firebaseConfig = {};
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -1054,4 +1045,4 @@ const dishReviewsSeeding = async function () {
 //userSeeding();
 //hawkerAndDishSeeding();
 
-dishReviewsSeeding();
+// dishReviewsSeeding();

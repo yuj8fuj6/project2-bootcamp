@@ -4,7 +4,7 @@ export { default as NavBar } from "./NavBar";
 export { default as StallCarousel } from "./StallCarousel";
 export { default as Button } from "./Button";
 export { default as DishCards } from "./DishCards";
-export { default as FormFeedback } from "./FormFeedback";
+export { default as ContactForm } from "./ContactForm";
 export { default as FormOrder } from "./FormOrder";
 export { default as FormReview } from "./FormReview";
 export { default as StallDishCards } from "./StallDishCards";
