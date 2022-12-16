@@ -4,7 +4,7 @@ import {
   NavBar,
   StallCarousel,
   DishCards,
-  FormFeedback,
+  ContactForm,
 } from "../components";
 import { UserContext } from "../App";
 import { HawkerContext } from "../contexts/HawkerContext";
@@ -40,7 +40,7 @@ const Landing = () => {
       </div>
       <div className="bg-orange">
         <div className="p-5" id="feedback">
-          <FormFeedback />
+          <ContactForm />
         </div>
       </div>
     </div>

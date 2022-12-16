@@ -4,6 +4,8 @@ import { Button } from ".";
 import { BsHandThumbsUp, BsChatLeftText } from "react-icons/bs";
 import { HawkerContext } from "../contexts/HawkerContext";
 import { Carousel } from "antd";
+import { ReviewContext } from "../contexts/ReviewContext";
+import { DishContext } from "../contexts/DishContext";
 
 const contentStyle = {
   fontFamily: "Sansita",
@@ -13,6 +15,8 @@ const StallCarousel = () => {
   const [randomStall, setRandomStall] = useState();
 
   const stallData = useContext(HawkerContext);
+  // const { reviewObj } = useContext(ReviewContext);
+  const dishData = useContext(DishContext);
 
   const randomizeStall = (array) => {
     let currentIndex = array.length,
@@ -35,6 +39,22 @@ const StallCarousel = () => {
       setRandomStall(stallSelect);
     }
   }, [stallData]);
+
+  // let dishesFiltered;
+  // let count = 0;
+
+  // const stallReviewCount = (stall) => {
+  //   dishesFiltered = dishData.filter(
+  //     (dish) => dish.hawkerKey === stall.currentHawkerKey,
+  //   );
+  //   if (dishesFiltered) {
+  //     for (let i = 0; i < dishesFiltered.length; i++) {
+  //       count += Object.keys(
+  //         reviewObj[dishesFiltered[i].currentDishKey],
+  //       ).length;}
+  //     }
+  //     return <div>{count}</div>;
+  //   }
 
   return (
     <div className="w-full">
@@ -78,12 +98,16 @@ const StallCarousel = () => {
                           <BsHandThumbsUp />
                           <div className="text-xxs">Total Likes</div>
                         </div>
-                        <div className="text-2xl font-semibold">200</div>
                         <div className="text-2xl font-semibold">
+                          {stall.totalLikes}
+                        </div>
+                        {/* <div className="text-2xl font-semibold">
                           <BsChatLeftText />
                           <div className="text-xxs">Total Reviews</div>
                         </div>
-                        <div className="text-2xl font-semibold">200</div>
+                        <div className="text-2xl font-semibold">
+                          {dishData && stallReviewCount(stall)}
+                        </div> */}
                       </div>
                     </div>
                     <Link to="/stall" state={stall}>

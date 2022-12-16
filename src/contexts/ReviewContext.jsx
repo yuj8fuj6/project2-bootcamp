@@ -29,6 +29,9 @@ export const ReviewContextProvider = (props) => {
     });
   }, []);
 
+  console.log(reviewObj)
+  console.log(reviewData)
+
   return (
     <ReviewContext.Provider value={{ reviewData, reviewObj }}>
       {props.children}
