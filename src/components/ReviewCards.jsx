@@ -24,6 +24,12 @@ const ReviewList = ({ review }) => {
 
   const dbRef = databaseRef(getDatabase());
 
+  const dateTime = new Date(currentReview.date).toLocaleString("en-GB", {
+    timeStyle: "long",
+    dateStyle: "medium",
+  });
+  console.log(dateTime);
+
   useEffect(() => {
     if (!user) {
       setCurrentUserKey(null);
@@ -143,7 +149,7 @@ const ReviewList = ({ review }) => {
             {currentReview.firstName} -{" "}
             <span className="italic">{currentReview.usertype}</span>
           </p>
-          <p className="font-normal">{currentReview.date}</p>
+          <p className="font-normal">{dateTime}</p>
         </div>
         <div>
           <div className="flex flex-wrap justify-start space-x-2 mt-2 text-purple">
@@ -160,12 +166,6 @@ const ReviewList = ({ review }) => {
               <div>{currentReview.likes}</div>
               <div className="text-xxs">Likes</div>
             </div>
-            {/* <div className="text-3xl font-semibold">
-              <BsHandThumbsUp />
-            </div>
-            <div className="text-xxs w-1/3">
-              Like this comment if you found it useful.
-            </div> */}
           </div>
         </div>
         <div className="text-xs italic">"{currentReview.content}"</div>
