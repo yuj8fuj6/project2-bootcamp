@@ -1,22 +1,22 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Card(props){
+    let navigate = useNavigate();
 
   const handleClick = () =>{
-    alert("nigger")
+    navigate("/stall", {state: props.stall});
   }
 
   return (
-    <div class="max-w-sm rounded overflow-hidden shadow-lg" onClick={handleClick}>
-      <img
-        class="w-full"
-        src="/img/card-top.jpg"
-        alt="Sunset in the mountains"
-      />
+    <div
+      class="max-w-sm rounded overflow-hidden shadow-lg"
+      onClick={handleClick}
+    >
       <div class="px-6 py-4">
-        <div class="font-bold text-xl mb-2">{props.stallName}</div>
-        <img src={props.stallImage} alt="test" />
-        <p class="text-gray-700 text-base">{props.stallStory}</p>
+        <div class="font-bold text-xl mb-2">{props.stall.stallName}</div>
+        <img src={props.stall.stallFrontPhotoURL} alt="test" />
+        <p class="text-gray-700 text-base">{props.stall.stallStory}</p>
       </div>
       <div class="px-6 pt-4 pb-2">
         <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">

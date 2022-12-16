@@ -7,9 +7,8 @@ import { useLocation, Link } from "react-router-dom";
 const Stall = () => {
   const location = useLocation();
   const hawkerData = location.state;
-
   const dishData = useContext(DishContext);
-
+  console.log(hawkerData);
   const dishFiltered = dishData.filter(
     (dish) => dish.hawkerKey === hawkerData.currentHawkerKey,
   );

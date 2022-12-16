@@ -10,6 +10,7 @@ import {
   ComboboxList,
   ComboboxOption,
 } from "@reach/combobox";
+import Button from "./Button";
 
 const PlacesAutocomplete = ( props ) => {
   const {
@@ -28,26 +29,31 @@ const PlacesAutocomplete = ( props ) => {
     const { lat, lng } = await getLatLng(results[0]);
     props.setSelected({ lat, lng });
   };
-
+  
   return (
-    <Combobox onSelect={handleSelect}>
-      <ComboboxInput
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        disabled={!ready}
-        className="combobox-input"
-        placeholder="Search an address"
-      />
-      <button onClick={props.reCenter}>Hey im gay!</button>
-      <ComboboxPopover>
-        <ComboboxList>
-          {status === "OK" &&
-            data.map(({ place_id, description }) => (
-              <ComboboxOption key={place_id} value={description} />
-            ))}
-        </ComboboxList>
-      </ComboboxPopover>
-    </Combobox>
+      <Combobox onSelect={handleSelect}>
+        <ComboboxInput
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          disabled={!ready}
+          className="combobox-input"
+          placeholder="Search an address"
+        />
+        <Button onClick={props.reCenter}>
+          <img id="marker"
+            src={process.env.PUBLIC_URL + "/misc/orangeMarker.png"}
+            alt="test"
+          />
+        </Button>
+        <ComboboxPopover>
+          <ComboboxList>
+            {status === "OK" &&
+              data.map(({ place_id, description }) => (
+                <ComboboxOption key={place_id} value={description} />
+              ))}
+          </ComboboxList>
+        </ComboboxPopover>
+      </Combobox>
   );
 };
 

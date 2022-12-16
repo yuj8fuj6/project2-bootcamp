@@ -11,50 +11,52 @@ Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_MAPS_API_KEYS}`);
 
 export default function Recommendation({ pos }) {
   const [hawkerData, setHawkerData] = useState([]);
-  const [stalls, setStalls] = useState()
+  const [stalls, setStalls] = useState([])
   //Get hawker's data from database
   async function getData() {
-    let data;
+    let data, keys;
     const snapshot = await get(child(dbRef, `hawkers/`));
     if (snapshot.exists()) {
       data = Object.values(snapshot.val());
+      keys = Object.keys(snapshot.val());
+      console.log(pos)
     } else {
       console.log("No data available");
     }
     Promise.all(
-      data.map(async (hawker) => ({
+      data.map(async (hawker, i) => ({
         ...hawker,
         geoHash: await getGeohash(hawker.stallAddress),
+        currentHawkerKey: keys[i], //temp fix
       }))
     ).then((result) => {
       console.log(result);
       setHawkerData(result);
       setStalls(getNearbyStalls(pos, result));
-      console.log(hawkerData[0]);
     });
   }
 
   useEffect(() => {
     getData()
-  }, []);
+  }, [pos]);
 
 
-  if(stalls){
-    let element = stalls.map((ele) => {
+  if(hawkerData){
+    if(stalls.length > 0){
+      let element = stalls.map((ele) => {
+        return <Card stall={ele} />;
+      });
+      console.log(stalls);
       return (
-        <Card
-          stallName={ele.stallName}
-          stallImage={ele.stallFrontPhotoURL}
-          stallStory={ele.stallStory}
-        />
+        <div>
+          <h3>Stalls Near You</h3>
+          {element}
+        </div>
       );
-    })
-    return (
-      <div>
-        <h3>Stalls Near You</h3>
-        {element}
-      </div>
-    );
+    }
+    else{
+      return <p> There is no stalls near you</p>
+    }
   }
   else{
     return <p>Loading...</p>
@@ -83,8 +85,7 @@ function getNearbyStalls(pos, hawkerData){
 
 function getNeighbours(pos){
   //Get Neighbours
-  // let loc = geohash.encode(pos.lat, pos.lng, 6);
-  let loc = "w21z70";
+  let loc = geohash.encode(pos.lat, pos.lng, 6);
   let neighbours = [...geohash.neighbors(loc), loc];
   for (let i = 0; i <= 2; i++) {
     neighbours.push(

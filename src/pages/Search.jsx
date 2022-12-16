@@ -1,24 +1,21 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Header, NavBar } from "../components";
-import {  useEffect } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 import UserMap from "../components/Map";
 
 let center = {
   lat: null,
   lng: null,
-};
-
+}
 
 export default function Search() {
-
   //Initialise users's startinng location
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      center.lat = position.coords.latitude;
-      center.lng = position.coords.longitude;
-    });
-  });
+   useEffect(() => {
+     navigator.geolocation.getCurrentPosition((position) => {
+       center.lat = position.coords.latitude;
+       center.lng = position.coords.longitude;
+     });
+   });
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -33,9 +30,7 @@ export default function Search() {
         <Header />
         <NavBar />
       </div>
-      <div>
-        <UserMap center={center}/>
-      </div>
+      <UserMap center={center}/>
     </div>
   );
 }
