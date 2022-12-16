@@ -45,8 +45,8 @@ export default function Recommendation({ pos }) {
         return <Card stall={ele} />;
       });
       return (
-        <div className="center">
-          <h1 className="text-orange font-bold text-xl mb-2">
+        <div className="center ">
+          <h1 className="text-orange font-bold text-xl mb-2 mt-3">
             Stalls Near You
           </h1>
           {element}

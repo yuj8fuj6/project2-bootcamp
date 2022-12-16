@@ -1,7 +1,8 @@
 import React, {useEffect} from "react";
 import { Header, NavBar } from "../components";
 import { useJsApiLoader } from "@react-google-maps/api";
-import UserMap from "../components/Map";
+import UserMap from "../components/UserMap";
+import { useState } from "react";
 
 let center = {
   lat: null,
@@ -9,13 +10,20 @@ let center = {
 }
 
 export default function Search() {
-  //Initialise users's startinng location
+  const [permission, setPermission] = useState(true) //user permission of location
+  //Initialise users's starting location
    useEffect(() => {
-     navigator.geolocation.getCurrentPosition((position) => {
-       center.lat = position.coords.latitude;
-       center.lng = position.coords.longitude;
-     });
-   });
+     navigator.geolocation.getCurrentPosition(
+       (position) => {
+         center.lat = position.coords.latitude;
+         center.lng = position.coords.longitude;
+       },
+       function (error) {
+         if (error.code === error.PERMISSION_DENIED)
+          setPermission(false);
+       }
+     );
+   },[permission]);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -24,13 +32,13 @@ export default function Search() {
   });
 
   if (!isLoaded) return <div>Loading...</div>;
-  return (
+  else return (
     <div className="center">
       <div className="flex justify-around flex-wrap w-screen p-4">
         <Header />
         <NavBar />
       </div>
-      <UserMap center={center}/>
+      {permission ? <UserMap center={center} /> : <p>Please allow me to eat you</p>}
     </div>
   );
 }

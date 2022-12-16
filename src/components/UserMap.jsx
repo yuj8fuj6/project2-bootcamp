@@ -3,7 +3,7 @@ import { GoogleMap, MarkerF, panTo } from "@react-google-maps/api";
 import PlacesAutocomplete from "./PlacesAutoComplete";
 import { useState, useCallback } from "react";
 import Recommendation from "./Recommendation";
-import FormFeedback from "./FormFeedback";
+import ContactForm from "./ContactForm";
 
 
 //get address from DDB usig stalladdress
@@ -76,7 +76,7 @@ export default function UserMap(props) {
       <Recommendation pos={position} />
       <div className="bg-orange">
         <div className="p-5" id="feedback">
-          <FormFeedback />
+          <ContactForm />
         </div>
       </div>
     </div>
