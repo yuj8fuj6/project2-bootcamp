@@ -38,8 +38,8 @@ const Landing = () => {
       <div className="flex justify-around flex-wrap w-screen p-1">
         <DishCards />
       </div>
-      <div className="bg-orange">
-        <div className="p-5" id="feedback">
+      <div className="bg-orange ">
+        <div className="p-5 mt-10" id="feedback">
           <FormFeedback />
         </div>
       </div>

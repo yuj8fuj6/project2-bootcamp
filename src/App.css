@@ -53,3 +53,11 @@
   justify-content: center;
   flex-direction: column;
 }
+
+.card{
+  max-width: 24rem;
+  max-width: 400px;
+  max-height: 540px;
+  width: 100vw;
+  aspect-ratio: 16/9;
+}

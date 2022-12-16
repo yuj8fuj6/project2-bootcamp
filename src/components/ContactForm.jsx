@@ -15,7 +15,7 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className=" text-white text-xl font-bold flex flex-col justify-center py-2 "
+      className=" text-white text-xl font-bold flex flex-col justify-center py-2"
     >
       <p>Contact Us</p>
       <p className="text-sm mt-2">Contact us at abcde@gmail.com</p>

@@ -1051,7 +1051,7 @@ const dishReviewsSeeding = async function () {
 
 //function calls
 //please run userSeeding() first, then run hawkerAndDishSeeding(), to do so comment out the function you are not running before executing this file.
-// userSeeding();
-// hawkerAndDishSeeding();
+//userSeeding();
+//hawkerAndDishSeeding();
 
 dishReviewsSeeding();
