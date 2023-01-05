@@ -7,6 +7,7 @@ const OrderCards = () => {
 
   const user = useContext(UserContext);
 
+  // let's use the right order of english as you would speak. filteredOrders or userOrders
   const ordersFiltered = orders.filter((order) => order.userID === user.uid);
 
   return (

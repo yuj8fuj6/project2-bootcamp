@@ -40,6 +40,7 @@ const StallCarousel = () => {
     }
   }, [stallData]);
 
+  // remoooooveeeee
   // let dishesFiltered;
   // let count = 0;
 

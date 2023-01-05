@@ -31,12 +31,14 @@ const Order = () => {
   // To be dynamically programmed once hawker phone number is passed
 
   useEffect(() => {
+    // what is this for?
     const unloadCallback = (event) => {
       event.preventDefault();
       event.returnValue = "";
       return "";
     };
 
+    // by right we should avoid any vanilla DOM manipulation, why do this?
     window.addEventListener("beforeunload", unloadCallback);
     return () => window.removeEventListener("beforeunload", unloadCallback);
   }, []);
@@ -59,6 +61,7 @@ const Order = () => {
     const newOrderRef = push(ordersListRef);
     set(newOrderRef, { ...newOrder, orderTime: Date() })
       .then(() => {
+        // could we create a function to create this url and store it somewhere else? Maybe in a utils.js file where we place utility functions
         window.location.href = `https://wa.me/${hawkerPhoneNumber}?text=${user}%20(Contact%20Number:%20${userPhone})%20has%20ordered%20${qty}%20nos.%20of%20${dishName}!%20Mode%20of%20Pick-up%20will%20be%20${option}.%20Expected%20time%20of%20Pick-up%20today%20-%20${time}.%20The%20payment%20of%20SGD%20${cost}%20will%20be%20made%20via%20PayNow%20before%20the%20pick-up.`;
       })
       .catch((error) => {

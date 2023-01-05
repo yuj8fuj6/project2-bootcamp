@@ -4,6 +4,7 @@ import { useState } from "react";
 
 // need styling
 export default function ContactForm() {
+  // this defaultState seems odd :)!
   const [state, handleSubmit] = useForm("xgeqgpbg");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

@@ -27,6 +27,7 @@ export default function Search() {
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
+    // please delete the API key ASAP if you have one. If someone forks your repo and runs it, this api can still possibly be visible in the browser.
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEYS,
     libraries: ["places"], //libraries for api
   });

@@ -21,6 +21,8 @@ export const DishContextProvider = (props) => {
       const currentDish = snapshot.val();
       const currentDishKey = snapshot.key;
       dishArr.push({ ...currentDish, currentDishKey });
+      // not sure if this was a bug, if I recall it was somehow. However, if working properly, the following syntax would be nicer!
+      // setDishData([...dishData, { ...currentDish, currentDishKey}])
       setDishData(dishArr);
     });
   }, []);

@@ -27,6 +27,7 @@ const PlacesAutocomplete = ( props ) => {
 
     const results = await getGeocode({ address });
     const { lat, lng } = await getLatLng(results[0]);
+    // setSelected seems oddly vague. Selected what? setSelectedLocation ?
     props.setSelected({ lat, lng });
   };
   

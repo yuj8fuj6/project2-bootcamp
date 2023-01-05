@@ -47,6 +47,9 @@ function App() {
   // console.log(user.uid);
 
   const fetchUserDetails = useCallback(() => {
+
+// Let's remove unused code and comments always!
+
     //   console.log(user)
     //   const db = getDatabase();
     //   const currentUser = query(
