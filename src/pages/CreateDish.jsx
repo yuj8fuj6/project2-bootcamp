@@ -26,8 +26,10 @@ const USER_HAWKERS = "user-hawkers/";
 const CreateDish = () => {
   const user = useContext(UserContext);
   const { state } = useLocation();
+  // remove console.logs from production code
   console.log(state);
 
+  // static data should be defined outside of the component, so it won't be redeclared after every rerender
   const defaultDishDetails = {
     dishName: "",
     ingredientList: [],
@@ -43,8 +45,11 @@ const CreateDish = () => {
   const [loadingMsg, setLoadingMsg] = useState();
   const [wordCount, setWordCount] = useState(0);
 
+  // i think since price and story are handled differently, it would be nicer to break this into two separate functions, updating different things :)! e.g. handlePriceInput, handleStoryInput
+  // since all these handlers are difficult to handle, I recommend exploring a library like Formik or React-Form-hooks next time! These libraries handle all these updates for you by default.
   const handleDishInputs = (event) => {
     if (event.target.name === "price") {
+      // remove unused comments
       // let price = parseInt(event.target.value);
       setDishDetails({
         ...dishDetails,
@@ -95,6 +100,7 @@ const CreateDish = () => {
     ]);
   };
 
+  // let's use hooks always at the top of the component
   const navigate = useNavigate();
 
   const onDishSubmit = async (event) => {
@@ -104,8 +110,9 @@ const CreateDish = () => {
       storage,
       `dishphotos/${dishMainImg.file.name}`
     );
+
     let stallFrontImgURL = "";
-    let stallFrontImgName = dishMainImg.file.name;
+    let stallFrontImgName = dishMainImg.file.name; // this variable seems to be unused
     let dishOtherImgURLs = [];
     let dishImgNames = [];
 
@@ -119,6 +126,7 @@ const CreateDish = () => {
 
     const uploadPhotoPromises = [uploadDishMainPhoto];
 
+    // just want to highlight that this is very inefficient. Maybe firebase provides some kind of API to make one request with all images at once. That would be O(1) vs O(n). Especially with network requests this might snowball easily into timeouts or client crashes if many images are provided.
     for (let i = 0; i < dishOtherImgs.length; i++) {
       const dishOtherImgsRef = storageRef(
         storage,
@@ -130,6 +138,7 @@ const CreateDish = () => {
           .then(() => {
             getDownloadURL(dishOtherImgsRef).then((url) => {
               dishOtherImgURLs.push(url);
+              // remove console.log from production code
               console.log(dishOtherImgURLs);
             });
           })
@@ -137,9 +146,12 @@ const CreateDish = () => {
       );
     }
 
+    // i would rather get a boolean state and render conditionall in the return statement.
+    // setIsLoading(true) then in the return statement => {isLoading && <p>Loading dish information</p>}
     setLoadingMsg("Loading dish information...");
 
     try {
+      // since this is the only thing running in this try block and it is the last thing running in this function, do we need to await the results?
       await Promise.all(uploadPhotoPromises).then(() => {
         const newDish = {
           ...dishDetails,
@@ -164,12 +176,14 @@ const CreateDish = () => {
         setLoadingMsg();
       });
     } catch (error) {
+      // maybe instead of a JS error, we could render a custom message to the user instead?
       alert(error);
     } finally {
       navigate("/profile");
     }
   };
 
+  // very nice early returns
   if (!user) return <div>Loading...</div>;
   if (!hawkerDetails)
     return (
@@ -198,6 +212,11 @@ const CreateDish = () => {
           <div className="container mx-auto flex flex-wrap">
             <div className="flex flex-auto items-center justify-center w-f">
               <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                {/* I am never a fan of ternary operators within React code, but that is my personal opinion. I would much rather do one positive and one negative render. For me that is easier to read. SUbjective tho
+                
+                {dishMainImg && <div>....</div>}
+                {!dishMainImg && <div>...</div>}
+                */}
                 {dishMainImg ? (
                   <div className="container overflow-hidden flex flex-col items-center justify-center">
                     <img

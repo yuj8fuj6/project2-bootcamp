@@ -22,6 +22,7 @@ export default function Recommendation({ pos }) {
     } else {
       console.log("No data available");
     }
+    // this is definitely a bit of async promise hell, we probably can refactor this somehow...in the future :)!
     Promise.all(
       data.map(async (hawker, i) => ({
         ...hawker,
@@ -38,6 +39,35 @@ export default function Recommendation({ pos }) {
     getData()
   }, [pos]);
 
+/*
+  
+if (hawkerData && stalls.length) return {
+      let element = stalls.map((ele) => {
+        return <Card stall={ele} />;
+      });
+      return (
+        <div className="center ">
+          <h1 className="text-orange font-bold text-xl mb-2 mt-3">
+            Stalls Near You
+          </h1>
+          {element}
+        </div>
+      );
+}
+
+if (hawkerData && !stalls.length) {
+  return (
+        <p className="text-orange font-bold text-xl mb-2 my-10">
+          {" "}
+          There is no stalls near you
+        </p>
+      );
+}
+
+return return <p>Loading...</p>
+        
+
+ */
 
   if(hawkerData){
     if(stalls.length > 0){
@@ -68,6 +98,7 @@ export default function Recommendation({ pos }) {
 }
 
 function getGeohash(address) {
+  // why define the function here if is only used here? to avoid making getGeohash a promise?
   let convertGeohash = async function (address) {
     let response = await getLocation(address);
     const { lat, lng } = response.results[0].geometry.location;
@@ -81,6 +112,7 @@ let getLocation = function(address){
   return Geocode.fromAddress(address)
 }
 
+// very nice coding style here
 function getNearbyStalls(pos, hawkerData){
   let neighbours = getNeighbours(pos)
   let stalls = getStalls(neighbours, hawkerData)
@@ -91,6 +123,7 @@ function getNeighbours(pos){
   //Get Neighbours
   let loc = geohash.encode(pos.lat, pos.lng, 6);
   let neighbours = [...geohash.neighbors(loc), loc];
+  // with such code, would be good to write comments as it is not clear what this is necessarily doing, especially months later and reading it again
   for (let i = 0; i <= 2; i++) {
     neighbours.push(
       geohash.neighbor(neighbours[0], arr[i][0]),

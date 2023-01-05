@@ -14,8 +14,10 @@ import { Button } from "../components";
 import { useNavigate } from "react-router-dom";
 import { database } from "../firebase";
 
+// refactor into own file
 const MenuList = ({ stallDetail }) => {
   const [currentStall, setCurrentStall] = useState(stallDetail);
+  // NO ..... MORE..... CONSOLE....LOGS....PLEASE
   console.log(currentStall);
   const [stallMenu, setStallMenu] = useState([]);
   const db = getDatabase();
@@ -63,6 +65,7 @@ const MenuList = ({ stallDetail }) => {
             type="button"
             onClick={() => navigate("/createDish", { state: currentStall })}
           >
+            {/* definitely own components for icons like such, way to hard too read */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="15"
@@ -180,6 +183,9 @@ const StallList = () => {
     remove(hawkerDishesRef);
   };
 
+  // what do we return if there is no stallDetails? void? If so, I think we should at least define that basecase
+  // if (!stallDetails.length) return null
+  // return (<div>....</div>)
   if (stallDetails.length > 0) {
     return (
       <div>

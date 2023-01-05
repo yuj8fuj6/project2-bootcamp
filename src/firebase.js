@@ -12,7 +12,7 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID,
   databaseURL: process.env.REACT_APP_DATABASE_URL,
 };
-
+// having this in this repo is a security risk, in case this api key and data is still in use. I would delete this app ASAP on firebase.
 // const firebaseConfig = {
 //   apiKey: "AIzaSyAsTD59WCIIkcB_0pAdCqfSxrgpe5bmb6Q",
 //   authDomain: "yumee-a614b.firebaseapp.com",

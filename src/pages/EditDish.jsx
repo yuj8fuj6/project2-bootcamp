@@ -17,6 +17,7 @@ const EditDish = () => {
   const currentDish = state;
   const mainDisplay = state.photoURLs[0];
   const otherPhotos = state.photoURLs.slice(1);
+  // remove
   console.log(state);
 
   const [dishDetails, setDishDetails] = useState(currentDish);
@@ -29,6 +30,7 @@ const EditDish = () => {
   const [dishMainImg, setDishMainImg] = useState();
   const [newDishImgs, setNewDishImgs] = useState([]);
   const [newDishOtherDisplay, setNewDishOtherDisplay] = useState([]);
+  // remove
   console.log(newDishImgs);
 
   const [loadingMessage, setLoadingMessage] = useState();

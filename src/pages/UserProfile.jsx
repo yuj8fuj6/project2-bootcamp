@@ -22,6 +22,7 @@ const UserProfile = (props) => {
   const [profilePhoto, setProfilePhoto] = useState();
   const [editMode, setEditMode] = useState(false);
   const [userInfo, setUserInfo] = useState({ ...user });
+  // remove comments 
   // console.log(userInfo);
 
   const handleProfilePhoto = (event) => {
@@ -31,6 +32,7 @@ const UserProfile = (props) => {
       file: event.target.files[0],
     });
     update(databaseRef(db, `users/${user.uid}`), {
+      // why null? seems redundant to me
       profilePhoto: null,
     })
       .then(() => {
@@ -41,6 +43,7 @@ const UserProfile = (props) => {
       });
   };
 
+  // I think this could be stored outside of the component as it is static
   const tempProfilePhotoIcon = (
     <div className="flex justify-center mt-5">
       <svg
@@ -191,6 +194,7 @@ const UserProfile = (props) => {
     alert("Profile photo has been successfully uploaded!");
   };
 
+  // this again, what is it for I wonder? :)
   useEffect(() => {
     const unloadCallback = (event) => {
       event.preventDefault();
@@ -210,6 +214,15 @@ const UserProfile = (props) => {
       </div>
       <div className="w-screen mt-5 mb-10">
         <div className="flex justify-around w-screen space-x-20">
+          {/* I think you could define this above:
+          
+          const profileType = userInfo.userType === "user" ? "User Profile" : "Hawker Profile"
+
+          then
+
+          <div className="text-xl text-orange font-bold drop-shadow-xl">{profileType}</div>
+          
+          */}
           {userInfo.userType === "user" && (
             <div className="text-xl text-orange font-bold drop-shadow-xl">
               User Profile

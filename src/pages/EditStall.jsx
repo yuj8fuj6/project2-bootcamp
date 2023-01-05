@@ -140,6 +140,9 @@ const EditStall = () => {
     navigate("/profile");
   };
 
+
+  // all these pages are huge, maybe we can break them up into more components?
+  // Make a folder called "Stall", then in there have a folder for "Edit" and "Create", which contain a "Form" component or make one Form for edit and create and add a structure for that. Create more components around this page for each form section etc.
   return (
     <div>
       <div className="flex justify-around flex-wrap w-screen p-4">

@@ -17,6 +17,7 @@ const USER_HAWKERS_DATABASE = "user-hawkers/";
 
 const CreateStall = () => {
   const user = useContext(UserContext);
+  // define outside of component
   const emptyStallDetails = {
     stallName: "",
     stallAddress: "",
@@ -33,6 +34,8 @@ const CreateStall = () => {
   const [otherStallImgs, setOtherStallImgs] = useState([]);
   const [wordCount, setWordCount] = useState(0);
 
+  // maybe you can set the data structure in a way that we have one handler, but it can decide the front photo by its position in the array or by a key in the object. that way you don't need two handlers.
+  // e.g. add validation that a front photo is required. then add front photo as first item in array, then all other photos after. that way front photo is always arr[0]
   const handleStallFrontPhoto = (event) => {
     setStallFrontImg(URL.createObjectURL(event.target.files[0]));
     setStallFrontPhoto(event.target.files[0]);
@@ -46,6 +49,7 @@ const CreateStall = () => {
     setOtherStallPhotos((prevPhotos) => [...prevPhotos, event.target.files[0]]);
   };
 
+  // separate handlers would be nice to keep the responsibility clear
   const handleStallInputs = (event) => {
     if (event.target.name === "startingYear") {
       setStallDetails({
@@ -70,6 +74,7 @@ const CreateStall = () => {
     });
   };
 
+  // define hooks on top
   let navigate = useNavigate();
 
   const submitStallDetails = async function (event) {
@@ -89,6 +94,7 @@ const CreateStall = () => {
         `${HAWKER_PHOTOS_FOLDER}/${otherStallPhotos[i].name}`
       );
 
+      // why this await within push? I would rather await this outside of a push, and push after i got the required result. This seems a bit odd to me :) Must have a reason but a bit weird architecture decision imo as your push might see some funny inserts if uploadBytes doesn't behave as expected.
       uploadPhotoPromises.push(
         await uploadBytes(otherStallPhotosRef, otherStallPhotos[i])
           .then(() => {

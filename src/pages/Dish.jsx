@@ -25,6 +25,7 @@ const Dish = () => {
   const { reviewObj } = useContext(ReviewContext);
   const [open, setOpen] = useState(false);
 
+  // remove console logs and comments
 console.log(reviewObj)
 
   const showModal = () => {
@@ -61,10 +62,13 @@ console.log(reviewObj)
     </ul>
   ));
 
+  // why map it here with fragments instead of p tags like used below?
   const dishAttributes = dish.attribute.map((item) => <>{item}, </>);
 
+  // can we define this variable within the useEffect?
   let ordersFilteredByDish;
 
+  // let's use useEffect on top as it is a hook
   useEffect(() => {
     if (user) {
       const ordersFiltered = order.filter((order) => order.userID === user.uid);
@@ -79,6 +83,21 @@ console.log(reviewObj)
 
   const reviewCount = (dishKey) => {
     let count = 0;
+
+    /* 
+    if (reviewObj[dishKey]) {
+      count = Object.keys(reviewObj[dishKey]).length;
+      return <div>{count}</div>;
+    }
+
+    return <div>{count}</div>
+
+    OR
+    const count = reviewObj[dishKey] ? Object.keys(reviewObj[dishKey]).length : 0;
+    return <div>{count}</div>
+    
+    I try to avoid else statements as much as possible, it makes it neater to read. If we return on if and else, we can skip the else statement. Ternary operator makes much sense here also.
+    */
 
     if (reviewObj[dishKey]) {
       count = Object.keys(reviewObj[dishKey]).length;

@@ -24,6 +24,7 @@ const Stall = () => {
     />
   );
 
+  // i think this doesn't need a function. Can just call the state showModal, setShowModal
   const showModal = () => {
     setOpen(true);
   };

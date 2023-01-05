@@ -15,6 +15,7 @@ import {
   runTransaction,
 } from "firebase/database";
 
+// I think ReviewList deserves its own file.
 const ReviewList = ({ review }) => {
   const [url, setURL] = useState();
   const [like, setLike] = useState(false);
@@ -74,8 +75,10 @@ const ReviewList = ({ review }) => {
       `/reviews/${review.dishID}/${review.userID}/`
     );
 
+    // transaction for simultaneous likes? If so, good use!
     runTransaction(reviewRef, (post) => {
       if (post) {
+        // comments here would be good, or maybe refactoring into a function with a good name describing what it does
         if (post.likers && post.likers[`${reviewerKey}`]) {
           post.likes--;
           post.likers[`${reviewerKey}`] = null;
@@ -102,6 +105,7 @@ const ReviewList = ({ review }) => {
         />
       ) : (
         <div className="rounded-full drop-shadow-xl w-24 h-24 lg:w-48 lg:h-48 object-cover mt-4">
+          {/* these icons should rly have their own components */}
           <svg
             className="m-w-none h-auto"
             viewBox="0 0 32 32"

@@ -14,6 +14,8 @@ const FormReview = (props) => {
 
   const [review, setReview] = useState("");
   const [wordCount, setWordCount] = useState(0);
+  // let's name it like a boolean
+  // isLiked, setIsLiked
   const [like, setLike] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
