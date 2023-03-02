@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+# Yumee!
+### An online platform for hawkers/ food sellers to publicize their food offerings in Singapore 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This app allows users to:
+1. Create and update their online stalls, including a description of their stall history for context, for hawkers. 
+2. Create and update their food offerings/ menus, for hawkers. 
+3. Receive orders from their customers, for hawkers.
+4. Create orders to the hawkers, for customers.
+5. Review and upvote on their favourite dishes, for customers. 
+6. Create and update their profiles, for both hawkers and customers. 
+7. Search for their favourite stalls in close proximity via Google API, for customers.   
 
-## Available Scripts
+## Preview 
+#### Landing Page 
+![Screenshot 2023-03-02 at 12 38 37 PM](https://user-images.githubusercontent.com/105143904/222332688-c2e28d9b-2cf6-44a0-9c6e-0861f692f50e.png)
+![Screenshot 2023-03-02 at 12 40 40 PM](https://user-images.githubusercontent.com/105143904/222332829-2282baf8-9803-46c1-a3ae-e02f00da12ee.png)
 
-In the project directory, you can run:
+#### Stall Page 
+![Screenshot 2023-03-02 at 12 52 05 PM](https://user-images.githubusercontent.com/105143904/222334366-99ca45a8-221e-47da-9e7c-63a1d40960f9.png)
+![Screenshot 2023-03-02 at 12 54 35 PM](https://user-images.githubusercontent.com/105143904/222337929-6cc866d7-d627-4877-9188-dd2d48c37225.png)
 
-### `npm start`
+#### Dish Page 
+![Screenshot 2023-03-02 at 12 55 33 PM](https://user-images.githubusercontent.com/105143904/222334769-39fe2e03-2ea5-4376-8af5-3c4a6805ec69.png)
+![Screenshot 2023-03-02 at 12 56 14 PM](https://user-images.githubusercontent.com/105143904/222334876-1c987032-771a-4325-8176-f63229b71963.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+#### Profile Page 
+![Screenshot 2023-03-02 at 1 22 41 PM](https://user-images.githubusercontent.com/105143904/222338428-5192c176-c04c-4fc3-93ac-569e1f5e0cb0.png)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### Order Summary Page 
+![Screenshot 2023-03-02 at 1 25 16 PM](https://user-images.githubusercontent.com/105143904/222338701-bd178d0b-bebb-4b1c-b339-fd142dfbe0f1.png)
 
-### `npm test`
+#### Create/ Edit Stall Profile - Hawker User 
+![Screenshot 2023-03-02 at 1 27 49 PM](https://user-images.githubusercontent.com/105143904/222339197-6673e82b-74ef-4ad6-965e-ca9c1f361fcd.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Built with 
+- ReactJS
+- Firebase Storage 
+- Firebase Realtime Database 
+- Firebase Authentication
+- Axios
+- Tailwind CSS
